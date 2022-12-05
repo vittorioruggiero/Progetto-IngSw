@@ -1,1 +1,22 @@
-<mxfile host="app.diagrams.net" modified="2022-12-05T16:15:01.854Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="UD8mj0U5Uwf1U5pYh464" version="20.6.0" type="github"><diagram id="rQz2FHpG8r6NLyUr4xRN" name="Pagina-1">zZVNb9swDIZ/jY8dYsvOx3Fxu+3QXZpDgd00i7GFyqIhy3HSXz/KluN4TtEVWIsCBiK+IinyoaAELC2P3w2vip8oQAXRQhwDdhtEUbhga/pxyqlXErbphdxI4Z1GYSefYYj0aiMF1BNHi6isrKZihlpDZicaNwbbqdse1fTUiucwE3YZV3P1UQpb9Oo6Wo36D5B5MZwcLn1/JR+cfSd1wQW2FxK7C1hqEG2/Ko8pKAdv4NLHfXth91yYAW3/JeBXHS9he1gfnsLHzYbdiHv2fBP1WQ5cNb5hX6w9DQQMNlqAS7II2LYtpIVdxTO329LMSStsqcgKaenTgbFwfLHO8Nw9XRvAEqw5kYsPYHHch/gbE4dJb7cj/zD2UItL9isvcj/z/Jx7xEILT+YNlNiMUmqAkwIKSmoLZ9AoKd1Q+BhgyV/AkivAoivAkvfiFc94PciywYP8rMiSa3fsQ5Elc2TccouNVAoiNqNFvVNJW65krknJqHEwJOxR2513c7AcJknP2VfvWEoh3Oa2Jr5S5/ewd62xUXnw3XaSNfgEKSqk3LcatYs0SIXx390R7kmoUGrb8Ui29BGhdPElCRIqMyU7HG36nLuxKWpKzWU3LeC1baG2/2m0q9efj/WVyUbLN0+WzPH57vYu/gTZ3R8=</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-12-05T16:18:37.126Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="vMNi-tF9DKbpIVRq2OSO" version="20.6.0" type="github">
+  <diagram id="rQz2FHpG8r6NLyUr4xRN" name="Pagina-1">
+    <mxGraphModel dx="1038" dy="539" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Zs46eBv8vk1W993-dL3z-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="344" y="415" width="140" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="Zs46eBv8vk1W993-dL3z-3" value="Crea elemento" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="354" y="455" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Zs46eBv8vk1W993-dL3z-4" value="Rimuove elemento" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="354" y="515" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Zs46eBv8vk1W993-dL3z-5" value="Ratatouille23" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="1" vertex="1">
+          <mxGeometry x="374" y="415" width="80" height="26" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
