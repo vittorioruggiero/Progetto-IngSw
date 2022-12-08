@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-12-08T09:55:13.126Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="KexO-wPZJVeovL3xAAuH" version="20.6.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-12-08T14:43:52.699Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="pfZWb53o-seArpv5UwhB" version="20.6.0" type="github">
   <diagram id="rQz2FHpG8r6NLyUr4xRN" name="Pagina-1">
     <mxGraphModel dx="1038" dy="539" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -15,6 +15,28 @@
         </mxCell>
         <mxCell id="Zs46eBv8vk1W993-dL3z-5" value="Ratatouille23" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Verdana;" parent="1" vertex="1">
           <mxGeometry x="374" y="415" width="80" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="z_GL9UqzUkX0JPAsEDND-1" value="Supervisore" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="240" y="480" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="z_GL9UqzUkX0JPAsEDND-3" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="Zs46eBv8vk1W993-dL3z-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="510" as="sourcePoint" />
+            <mxPoint x="440" y="560" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="310" y="510" />
+              <mxPoint x="310" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z_GL9UqzUkX0JPAsEDND-4" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="Zs46eBv8vk1W993-dL3z-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="510" as="sourcePoint" />
+            <mxPoint x="440" y="560" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="310" y="540" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
