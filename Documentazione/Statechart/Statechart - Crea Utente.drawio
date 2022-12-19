@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-12-19T10:57:52.015Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="B9mvIDXRAxQZ2AFU_q0F" version="20.7.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-12-19T11:08:09.916Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="UsNCj0UvUzrs2ivxjpCQ" version="20.7.4" type="github">
   <diagram id="c0r9f48P2s6mSZn0WuiE" name="Pagina-1">
-    <mxGraphModel dx="1050" dy="541" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="724" dy="373" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -112,7 +112,7 @@
             <mxPoint x="580.48" y="252.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-31" value="onClickHomeButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" parent="jbQopthgaankX2Maz5ks-28" vertex="1" connectable="0">
+        <mxCell id="jbQopthgaankX2Maz5ks-31" value="onClickHomeButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=none;" parent="jbQopthgaankX2Maz5ks-28" vertex="1" connectable="0">
           <mxGeometry x="-0.3095" y="1" relative="1" as="geometry">
             <mxPoint x="24" y="-7" as="offset" />
           </mxGeometry>
@@ -123,7 +123,7 @@
             <mxPoint x="580.48" y="267.08" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-32" value="onClickMenuButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" parent="jbQopthgaankX2Maz5ks-29" vertex="1" connectable="0">
+        <mxCell id="jbQopthgaankX2Maz5ks-32" value="onClickMenuButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=none;" parent="jbQopthgaankX2Maz5ks-29" vertex="1" connectable="0">
           <mxGeometry x="-0.2319" y="1" relative="1" as="geometry">
             <mxPoint x="19" y="-6" as="offset" />
           </mxGeometry>
@@ -134,7 +134,7 @@
             <mxPoint x="650.48" y="307.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-33" value="onClickStatisticheButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" parent="jbQopthgaankX2Maz5ks-30" vertex="1" connectable="0">
+        <mxCell id="jbQopthgaankX2Maz5ks-33" value="onClickStatisticheButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=none;" parent="jbQopthgaankX2Maz5ks-30" vertex="1" connectable="0">
           <mxGeometry x="0.3888" relative="1" as="geometry">
             <mxPoint x="-31" y="-7" as="offset" />
           </mxGeometry>
