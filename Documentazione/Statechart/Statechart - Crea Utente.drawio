@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-12-19T11:08:09.916Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="UsNCj0UvUzrs2ivxjpCQ" version="20.7.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-12-19T11:13:33.113Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="WJA-BeRPuxp81bAfZxk1" version="20.7.4" type="github">
   <diagram id="c0r9f48P2s6mSZn0WuiE" name="Pagina-1">
     <mxGraphModel dx="724" dy="373" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -7,7 +7,7 @@
         <mxCell id="jbQopthgaankX2Maz5ks-2" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#030303;" parent="1" vertex="1">
           <mxGeometry x="292" y="60" width="30" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-3" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#000000;rounded=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="jbQopthgaankX2Maz5ks-2" target="jbQopthgaankX2Maz5ks-5" edge="1">
+        <mxCell id="jbQopthgaankX2Maz5ks-3" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=12;strokeColor=#000000;rounded=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="jbQopthgaankX2Maz5ks-2" target="jbQopthgaankX2Maz5ks-5" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="300" y="95" as="targetPoint" />
           </mxGeometry>
@@ -26,7 +26,7 @@
         <mxCell id="jbQopthgaankX2Maz5ks-9" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#030303;" parent="1" vertex="1">
           <mxGeometry x="345.48" y="177.5" width="30" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-10" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#000000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="jbQopthgaankX2Maz5ks-9" target="jbQopthgaankX2Maz5ks-8" edge="1">
+        <mxCell id="jbQopthgaankX2Maz5ks-10" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=12;strokeColor=#000000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="jbQopthgaankX2Maz5ks-9" target="jbQopthgaankX2Maz5ks-8" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="220.48000000000002" y="167.5" as="targetPoint" />
             <mxPoint x="180.48000000000002" y="167.5" as="sourcePoint" />
@@ -73,7 +73,7 @@
             <mxPoint x="580.48" y="377.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-19" value="onClickCreaUtenteButton() &lt;br style=&quot;font-size: 10px;&quot;&gt;[verificaEmail(email)]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" parent="jbQopthgaankX2Maz5ks-17" vertex="1" connectable="0">
+        <mxCell id="jbQopthgaankX2Maz5ks-19" value="onClickCreaUtenteButton() &lt;br style=&quot;font-size: 10px;&quot;&gt;[verificaEmail(email)]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=none;" parent="jbQopthgaankX2Maz5ks-17" vertex="1" connectable="0">
           <mxGeometry x="0.4472" y="1" relative="1" as="geometry">
             <mxPoint x="-67" y="16" as="offset" />
           </mxGeometry>
@@ -150,7 +150,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="jbQopthgaankX2Maz5ks-36" value="onClickAnnullaButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" parent="jbQopthgaankX2Maz5ks-34" vertex="1" connectable="0">
+        <mxCell id="jbQopthgaankX2Maz5ks-36" value="onClickAnnullaButton()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;labelBackgroundColor=none;" parent="jbQopthgaankX2Maz5ks-34" vertex="1" connectable="0">
           <mxGeometry x="0.0221" y="-2" relative="1" as="geometry">
             <mxPoint x="-12" y="-5" as="offset" />
           </mxGeometry>
