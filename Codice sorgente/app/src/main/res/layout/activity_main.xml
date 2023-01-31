@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,41 +12,13 @@
         android:id="@+id/accediButton"
         android:layout_width="103dp"
         android:layout_height="53dp"
+        android:layout_marginBottom="130dp"
+        android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Accedi"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/nomeUtenteEditText"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/nomeUtenteEditText"
-        app:layout_constraintTop_toBottomOf="@+id/nomeUtenteEditText"
-        app:layout_constraintVertical_bias="0.444" />
-
-    <EditText
-        android:id="@+id/nomeUtenteEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Nome utente"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.368" />
-
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/accediButton"
-        app:layout_constraintEnd_toEndOf="@+id/nomeUtenteEditText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/nomeUtenteEditText"
-        app:layout_constraintTop_toBottomOf="@+id/nomeUtenteEditText"
-        app:layout_constraintVertical_bias="0.343" />
+        app:layout_constraintEnd_toEndOf="@+id/passwordLayout"
+        app:layout_constraintStart_toStartOf="@+id/passwordLayout"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
     <TextView
         android:id="@+id/registratiTextView"
@@ -55,21 +28,59 @@
         android:text="Hai un ristorante? Registrati"
         app:layout_constraintBottom_toTopOf="@+id/accediButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.427"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nomeUtenteLayout"
+        android:layout_width="249dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nomeUtenteEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/loginNomeUtenteHint"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayout"
+        android:layout_width="249dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomeUtenteLayout"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/loginPasswordHint"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="149dp"
         android:layout_height="27dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="196dp"
         android:fontFamily="sans-serif-black"
         android:text="Ratatouille23"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
