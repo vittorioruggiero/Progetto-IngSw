@@ -4,10 +4,12 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="loginPasswordHint">Password</string>
-    <string name="loginNomeUtenteHint">Nome Utente</string>
+    <string name="passwordHint">Password</string>
+    <string name="confermaPasswordHint">Conferma Password</string>
+    <string name="nomeUtenteHint">Nome Utente</string>
     <string name="registratiText">Hai un ristorante? Registrati</string>
     <string name="nomeApp">Ratatouille23</string>
     <string name="accedi">Accedi</string>
     <string name="campiErrati">Nome Utente e/o Password errati</string>
+    <string name="emailHint">Email</string>
 </resources>
