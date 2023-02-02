@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     EditText nomeUtenteEditText, passwordEditText;
     TextView campiErratiTextView, registratiTextView;
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegistratiActivity.class);
-                MainActivity.this.startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, RegistratiActivity.class);
+                LoginActivity.this.startActivity(intent);
             }
         };
 
@@ -55,15 +55,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 
                 if(nomeUtenteEditText.getText().toString().equals("admin") && passwordEditText.getText().toString().equals("admin")){
-                    Intent intent = new Intent(MainActivity.this, EmptyActivity.class);
-                    MainActivity.this.startActivity(intent);
+                    Intent intent = new Intent(LoginActivity.this, EmptyActivity.class);
+                    LoginActivity.this.startActivity(intent);
                 }else{
                     campiErratiTextView.setVisibility(View.VISIBLE);
                 }
                 if(nomeUtenteEditText.getText().toString().equals("user") && passwordEditText.getText().toString().equals("user")){
                     campiErratiTextView.setVisibility(View.INVISIBLE);
-                    Intent intent = new Intent(MainActivity.this, ReimpostaPasswordActivity.class);
-                    MainActivity.this.startActivity(intent);
+                    Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
+                    LoginActivity.this.startActivity(intent);
                 }
             }
         });

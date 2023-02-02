@@ -42,7 +42,7 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                     Toast.makeText(ReimpostaPasswordActivity.this, "Password cambiata con successo", Toast.LENGTH_SHORT).show();
                     campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                     passwordDiverseTextView.setVisibility(View.INVISIBLE);
-                    Intent intent = new Intent(ReimpostaPasswordActivity.this, MainActivity.class);
+                    Intent intent = new Intent(ReimpostaPasswordActivity.this, LoginActivity.class);
                     ReimpostaPasswordActivity.this.startActivity(intent);
                 }else{
                     campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
@@ -50,7 +50,5 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 }
