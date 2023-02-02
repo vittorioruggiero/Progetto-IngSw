@@ -15,7 +15,7 @@
             android:name=".RegistratiActivity"
             android:exported="false" />
         <activity
-            android:name=".EmptyActivity"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

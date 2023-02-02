@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 
                 if(nomeUtenteEditText.getText().toString().equals("admin") && passwordEditText.getText().toString().equals("admin")){
-                    Intent intent = new Intent(MainActivity.this, EmptyActivity.class);
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     MainActivity.this.startActivity(intent);
                 }else{
                     campiErratiTextView.setVisibility(View.VISIBLE);
