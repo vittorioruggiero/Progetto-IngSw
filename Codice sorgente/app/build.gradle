@@ -7,7 +7,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.loginactivity"
+        applicationId 'com.example.ratatouille23'
         minSdk 28
         targetSdk 33
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.loginactivity;
+package com.example.ratatouille23;
 
 import android.os.Bundle;
 import android.view.View;

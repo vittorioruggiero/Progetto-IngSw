@@ -1,8 +1,10 @@
-package com.example.loginactivity;
+package com.example.ratatouille23;
+
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import com.example.loginactivity.R;
 
 public class EmptyActivity extends AppCompatActivity {
 
