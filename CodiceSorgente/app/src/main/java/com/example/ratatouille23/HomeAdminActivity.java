@@ -25,16 +25,5 @@ public class HomeAdminActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-//        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-////                navController.navigate(item.getItemId());
-//                switch (item.getItemId()) {
-//                    case R.id.homeAdminFragment:
-//                        Navigation.findNavController(HomeAdminActivity, R.id.fragmentContainerView).navigate(R.id.action);
-//                }
-//                return true;
-//            }
-//        });
     }
 }
