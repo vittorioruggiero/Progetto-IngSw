@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph_home_admin"
+    app:startDestination="@id/homeAdminFragment">
+
+    <fragment
+        android:id="@+id/creaUtenteFragment"
+        android:name="com.example.ratatouille23.CreaUtenteFragment"
+        android:label="fragment_crea_utente"
+        tools:layout="@layout/fragment_crea_utente" />
+    <fragment
+        android:id="@+id/homeAdminFragment"
+        android:name="com.example.ratatouille23.HomeAdminFragment"
+        android:label="fragment_home_admin"
+        tools:layout="@layout/fragment_home_admin" />
+    <fragment
+        android:id="@+id/visualizzaStatisticheFragment"
+        android:name="com.example.ratatouille23.VisualizzaStatisticheFragment"
+        android:label="fragment_visualizza_statistiche"
+        tools:layout="@layout/fragment_visualizza_statistiche" />
+    <fragment
+        android:id="@+id/personalizzaMenuFragment"
+        android:name="com.example.ratatouille23.PersonalizzaMenuFragment"
+        android:label="fragment_personalizza_menu"
+        tools:layout="@layout/fragment_personalizza_menu" />
+</navigation>
