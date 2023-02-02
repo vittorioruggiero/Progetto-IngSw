@@ -12,4 +12,6 @@
     <string name="accedi">Accedi</string>
     <string name="campiErrati">Nome Utente e/o Password errati</string>
     <string name="emailHint">Email</string>
+    <string name="registrati">Registrati</string>
+    <string name="campiNonCompilati">È obbligatorio compilare tutti i campi</string>
 </resources>
