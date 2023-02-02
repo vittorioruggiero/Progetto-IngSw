@@ -60,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     campiErratiTextView.setVisibility(View.VISIBLE);
                 }
+                if(nomeUtenteEditText.getText().toString().equals("user") && passwordEditText.getText().toString().equals("user")){
+                    campiErratiTextView.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(MainActivity.this, ReimpostaPasswordActivity.class);
+                    MainActivity.this.startActivity(intent);
+                }
             }
         });
         

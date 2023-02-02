@@ -9,9 +9,11 @@
     <string name="nomeUtenteHint">Nome Utente</string>
     <string name="registratiText">Hai un ristorante? Registrati</string>
     <string name="nomeApp">Ratatouille23</string>
-    <string name="accedi">Accedi</string>
+    <string name="accediButton">Accedi</string>
     <string name="campiErrati">Nome Utente e/o Password errati</string>
     <string name="emailHint">Email</string>
-    <string name="registrati">Registrati</string>
+    <string name="registratiButton">Registrati</string>
     <string name="campiNonCompilati">È obbligatorio compilare tutti i campi</string>
+    <string name="confermaButton">Conferma</string>
+    <string name="passwordDiverse">Le password non corrispondono</string>
 </resources>

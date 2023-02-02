@@ -12,6 +12,9 @@
         android:theme="@style/Theme.LoginActivity"
         tools:targetApi="31">
         <activity
+            android:name=".ReimpostaPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegistratiActivity"
             android:exported="false" />
         <activity
