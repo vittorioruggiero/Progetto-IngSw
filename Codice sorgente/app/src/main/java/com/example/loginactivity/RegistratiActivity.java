@@ -41,8 +41,10 @@ public class RegistratiActivity extends AppCompatActivity {
                     campiNonCompilatiTextView.setVisibility(View.VISIBLE);
                 }else if(passwordEditText.getText().toString().equals(confermaPasswordEditText.getText().toString())){
                     Toast.makeText(RegistratiActivity.this, "Registrazione effettuata con successo", Toast.LENGTH_SHORT).show();
+                    campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                 }else{
-                    
+                    Toast.makeText(RegistratiActivity.this, "Le password non corrispondono", Toast.LENGTH_SHORT).show();
+                    campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                 }
             }
         });
