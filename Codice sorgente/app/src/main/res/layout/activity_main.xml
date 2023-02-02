@@ -14,7 +14,7 @@
         android:layout_width="103dp"
         android:layout_height="53dp"
         android:layout_marginBottom="130dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
+        android:backgroundTint="@color/YELLOW_LOGO"
         android:text="@string/accedi"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/passwordLayout"
@@ -42,17 +42,20 @@
         android:id="@+id/nomeUtenteLayout"
         android:layout_width="249dp"
         android:layout_height="61dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="68dp"
+        app:boxStrokeColor="@color/GREEN_LOGO"
+        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomeApp">
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nomeUtenteEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/nomeUtenteHint"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/green_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,6 +65,8 @@
         android:layout_width="249dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
+        app:boxStrokeColor="@color/GREEN_LOGO"
+        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nomeUtenteLayout"
@@ -72,24 +77,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/passwordHint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@drawable/green_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Nome App Text View -->
-    <TextView
-        android:id="@+id/nomeApp"
-        android:layout_width="123dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="192dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/nomeApp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Campi Errati Text View -->
     <TextView
@@ -103,6 +94,19 @@
         app:layout_constraintBottom_toTopOf="@+id/nomeUtenteLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Logo App -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="93dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,4 +10,6 @@
     <color name="red">#FF0000</color>
     <color name="DEFAULT_COLOR">#4297AA</color>
     <color name="BUTTON_COLOR">#7CB8FF</color>
+    <color name="GREEN_LOGO">#67CB42</color>
+    <color name="YELLOW_LOGO">#E7F680</color>
 </resources>

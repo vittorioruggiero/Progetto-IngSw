@@ -16,6 +16,8 @@
         android:layout_marginStart="81dp"
         android:layout_marginEnd="81dp"
         android:layout_marginBottom="32dp"
+        app:boxStrokeColor="@color/GREEN_LOGO"
+        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintBottom_toTopOf="@+id/nomeUtenteLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/emailHint"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/green_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -38,6 +41,8 @@
         android:layout_marginStart="81dp"
         android:layout_marginEnd="81dp"
         android:layout_marginBottom="60dp"
+        app:boxStrokeColor="@color/GREEN_LOGO"
+        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintBottom_toTopOf="@+id/registratiButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -49,7 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/confermaPasswordHint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@drawable/green_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,6 +67,8 @@
         android:layout_marginStart="81dp"
         android:layout_marginEnd="81dp"
         android:layout_marginBottom="32dp"
+        app:boxStrokeColor="@color/GREEN_LOGO"
+        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintBottom_toTopOf="@+id/confermaPasswordLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -72,7 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/passwordHint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@drawable/green_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,6 +93,8 @@
         android:layout_marginStart="81dp"
         android:layout_marginEnd="81dp"
         android:layout_marginBottom="32dp"
+        app:boxStrokeColor="@color/GREEN_LOGO"
+        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintBottom_toTopOf="@+id/passwordLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -94,7 +105,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/nomeUtenteHint"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/green_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,27 +116,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="123dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
+        android:backgroundTint="@color/YELLOW_LOGO"
         android:text="@string/registrati"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/confermaPasswordLayout"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="@+id/confermaPasswordLayout" />
-
-    <!-- Nome App Text View -->
-    <TextView
-        android:id="@+id/nomeApp"
-        android:layout_width="123dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="192dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/nomeApp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Campi Non Compilati Text View -->
     <TextView
@@ -139,5 +136,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Logo App -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="93dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
