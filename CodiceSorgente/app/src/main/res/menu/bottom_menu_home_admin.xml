@@ -6,7 +6,7 @@
         android:title="Home"
         android:icon="@drawable/baseline_home" />
     <item
-        android:id="@+id/personalizzaMenuFragment"
+        android:id="@+id/personalizzaMenuAdminFragment"
         android:title="Menù"
         android:icon="@drawable/baseline_restaurant_menu"/>
     <item

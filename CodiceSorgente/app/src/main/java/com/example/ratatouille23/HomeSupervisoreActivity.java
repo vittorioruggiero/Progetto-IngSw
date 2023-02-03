@@ -9,16 +9,16 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class HomeAdminActivity extends AppCompatActivity {
+public class HomeSupervisoreActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_admin);
+        setContentView(R.layout.activity_home_supervisore);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.adminFragmentContainerView);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.supervisoreFragmentContainerView);
         NavController navController = navHostFragment.getNavController();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.adminBottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.supervisoreBottomNavigationView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 }

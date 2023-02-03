@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/DEFAULT_COLOR"
-    tools:context=".HomeAdminActivity">
+    tools:context=".HomeSupervisoreActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/adminBottomNavigationView"
+        android:id="@+id/supervisoreBottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,17 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottom_menu_home_admin"/>
+        app:menu="@menu/bottom_menu_home_supervisore"/>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/adminFragmentContainerView"
+        android:id="@+id/supervisoreFragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="409dp"
         android:layout_height="673dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/adminBottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@+id/supervisoreBottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/navigation_graph_home_admin" />
+        app:navGraph="@navigation/navigation_graph_home_supervisore" />
 </androidx.constraintlayout.widget.ConstraintLayout>
