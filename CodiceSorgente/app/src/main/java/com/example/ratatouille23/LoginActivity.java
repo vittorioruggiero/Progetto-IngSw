@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(nomeUtenteEditText.getText().toString().equals("admin") && passwordEditText.getText().toString().equals("admin")){
                     Intent intent = new Intent(LoginActivity.this, HomeAdminActivity.class);
                     LoginActivity.this.startActivity(intent);
+                    campiErratiTextView.setVisibility(View.INVISIBLE);
                 }else{
                     campiErratiTextView.setVisibility(View.VISIBLE);
                 }

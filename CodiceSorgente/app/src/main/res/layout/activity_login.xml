@@ -43,8 +43,6 @@
         android:layout_width="249dp"
         android:layout_height="61dp"
         android:layout_marginTop="68dp"
-        app:boxStrokeColor="@color/GREEN_LOGO"
-        app:hintTextColor="@color/GREEN_LOGO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoImageView">
@@ -54,8 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/nomeUtenteHint"
-            android:inputType="textPersonName"
-            android:textCursorDrawable="@drawable/green_cursor" />
+            android:inputType="textPersonName" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
