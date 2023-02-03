@@ -1,19 +1,35 @@
 package com.example.ratatouille23;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.*;
 
-/**
+import java.io.IOException;
+
+/*
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeAdminFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class HomeAdminFragment extends Fragment {
+
+    Button selezionaFotoButton;
+    ImageView foto;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +74,38 @@ public class HomeAdminFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_admin, container, false);
+        View v = inflater.inflate(R.layout.fragment_home_admin, container, false);
+
+        selezionaFotoButton = (Button) v.findViewById(R.id.selezionaFotoButton);
+        foto = (ImageView) v.findViewById(R.id.foto);
+
+        selezionaFotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scegliImmagine();
+            }
+        });
+        return v;
     }
+
+    private void scegliImmagine()
+    {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        startForMediaPickerResult.launch(i);
+    }
+
+    private final ActivityResultLauncher<Intent> startForMediaPickerResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                if (data != null && result.getResultCode() == Activity.RESULT_OK) {
+                    Uri resultUri = data.getData();
+                    foto.setImageURI(resultUri);
+                };
+            });
 }
