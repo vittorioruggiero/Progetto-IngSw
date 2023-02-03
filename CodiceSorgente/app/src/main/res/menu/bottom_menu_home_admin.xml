@@ -8,11 +8,11 @@
     <item
         android:id="@+id/personalizzaMenuAdminFragment"
         android:title="Menù"
-        android:icon="@drawable/baseline_restaurant_menu"/>
+        android:icon="@drawable/icona_menu_ristorante"/>
     <item
         android:id="@+id/visualizzaStatisticheFragment"
         android:title="Statistiche"
-        android:icon="@drawable/baseline_bar_chart"/>
+        android:icon="@drawable/icona_statistiche"/>
     <item
         android:id="@+id/creaUtenteFragment"
         android:title="Crea utente"

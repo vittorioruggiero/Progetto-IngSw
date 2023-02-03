@@ -17,7 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottom_menu_home_addetto_sala"/>
+        app:menu="@menu/bottom_menu_home_addetto_sala"
+        app:labelVisibilityMode="labeled"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/addettoSalaFragmentContainerView"
