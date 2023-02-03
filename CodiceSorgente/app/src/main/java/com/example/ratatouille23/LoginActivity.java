@@ -58,13 +58,21 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, HomeAdminActivity.class);
                     LoginActivity.this.startActivity(intent);
                     campiErratiTextView.setVisibility(View.INVISIBLE);
-                }else{
-                    campiErratiTextView.setVisibility(View.VISIBLE);
                 }
-                if(nomeUtenteEditText.getText().toString().equals("user") && passwordEditText.getText().toString().equals("user")){
+
+                else if(nomeUtenteEditText.getText().toString().equals("supervisore") && passwordEditText.getText().toString().equals("supervisore")){
+                    campiErratiTextView.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(LoginActivity.this, HomeSupervisoreActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                }
+
+                else if(nomeUtenteEditText.getText().toString().equals("user") && passwordEditText.getText().toString().equals("user")){
                     campiErratiTextView.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
                     LoginActivity.this.startActivity(intent);
+                }
+                else{
+                    campiErratiTextView.setVisibility(View.VISIBLE);
                 }
             }
         });

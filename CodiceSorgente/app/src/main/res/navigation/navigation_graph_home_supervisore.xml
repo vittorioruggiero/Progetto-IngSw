@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph_home_supervisore"
+    app:startDestination="@id/homeSupervisoreFragment">
+
+    <fragment
+        android:id="@+id/homeSupervisoreFragment"
+        android:name="com.example.ratatouille23.HomeSupervisoreFragment"
+        android:label="fragment_home_supervisore"
+        tools:layout="@layout/fragment_home_supervisore" />
+    <fragment
+        android:id="@+id/personalizzaMenuSupervisoreFragment"
+        android:name="com.example.ratatouille23.PersonalizzaMenuFragment"
+        android:label="fragment_personalizza_menu"
+        tools:layout="@layout/fragment_personalizza_menu" />
+    <fragment
+        android:id="@+id/contiFragment"
+        android:name="com.example.ratatouille23.ContiFragment"
+        android:label="fragment_conti"
+        tools:layout="@layout/fragment_conti" />
+</navigation>
