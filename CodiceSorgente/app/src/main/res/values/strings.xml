@@ -112,4 +112,6 @@
     <string name="nomeAttivita">Nome Attività</string>
     <string name="fragmentContiText">Fragment Conti</string>
     <string name="fragmentHomeSupervisoreText">Fragment Home Supervisore</string>
+    <string name="fragmentHomeAddettoSalaText">Fragment Home Addetto Sala</string>
+    <string name="fragmentOrdinazioniText">Fragment Ordinazioni</string>
 </resources>

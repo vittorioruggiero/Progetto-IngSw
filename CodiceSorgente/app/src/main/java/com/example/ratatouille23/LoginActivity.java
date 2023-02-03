@@ -66,6 +66,12 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.startActivity(intent);
                 }
 
+                else if(nomeUtenteEditText.getText().toString().equals("addettosala") && passwordEditText.getText().toString().equals("addettosala")){
+                    campiErratiTextView.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(LoginActivity.this, HomeAddettoSalaActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                }
+
                 else if(nomeUtenteEditText.getText().toString().equals("user") && passwordEditText.getText().toString().equals("user")){
                     campiErratiTextView.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
