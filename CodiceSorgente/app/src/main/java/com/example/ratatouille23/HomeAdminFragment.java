@@ -3,7 +3,9 @@ package com.example.ratatouille23;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -11,10 +13,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.InputType;
+import android.text.method.KeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.*;
@@ -28,8 +34,9 @@ import java.io.IOException;
  */
 public class HomeAdminFragment extends Fragment {
 
-    Button selezionaFotoButton;
+    Button selezionaFotoButton, modificaButton;
     ImageView foto;
+    EditText nomeAttivitaEditText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,14 +86,30 @@ public class HomeAdminFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home_admin, container, false);
 
         selezionaFotoButton = (Button) v.findViewById(R.id.selezionaFotoButton);
+        modificaButton = (Button) v.findViewById(R.id.modificaButton);
         foto = (ImageView) v.findViewById(R.id.foto);
-
+        nomeAttivitaEditText = (EditText) v.findViewById(R.id.nomeAttivitaEditText);
+        nomeAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
         selezionaFotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scegliImmagine();
             }
         });
+
+        modificaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(nomeAttivitaEditText.isEnabled()){
+                    nomeAttivitaEditText.setEnabled(false);
+                    selezionaFotoButton.setVisibility(View.INVISIBLE);
+                }else {
+                    nomeAttivitaEditText.setEnabled(true);
+                    selezionaFotoButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         return v;
     }
 
@@ -108,4 +131,6 @@ public class HomeAdminFragment extends Fragment {
                     foto.setImageURI(resultUri);
                 };
             });
+
+
 }
