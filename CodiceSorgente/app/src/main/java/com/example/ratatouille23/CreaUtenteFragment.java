@@ -1,5 +1,7 @@
 package com.example.ratatouille23;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +63,42 @@ public class CreaUtenteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_crea_utente, container, false);
+        View view = inflater.inflate(R.layout.fragment_crea_utente, container, false);
+
+        Spinner tipologiaUtenteSpinner = (Spinner) view.findViewById(R.id.tipologiaUtenteSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.tipologia_utente_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipologiaUtenteSpinner.setAdapter(adapter);
+
+        tipologiaUtenteSpinner.setSelection(adapter.getPosition("Supervisore"));
+
+//        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+//        builder1.setMessage("Sei sicuro di voler creare l'utente?");
+//        builder1.setCancelable(true);
+//
+//        builder1.setPositiveButton(
+//                "Conferma",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        builder1.setNegativeButton(
+//                "Annulla",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        AlertDialog alert11 = builder1.create();
+//        alert11.show();
+//
+//        Button creaUtenteButton = (Button) view.findViewById(R.id.creaUtenteButton);
+
+        return view;
     }
 }
