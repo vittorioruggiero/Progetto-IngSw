@@ -11,57 +11,74 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <EditText
-        android:id="@+id/nomeAttivitaEditText"
-        android:layout_width="414dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="232dp"
-        android:enabled="false"
-        android:hint="@string/nomeAttivita"
-        android:inputType="text"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Nome Attività Edit Text -->
 
-    <Button
-        android:id="@+id/selezionaFotoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleziona Foto"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Seleziona foto Button -->
 
-    <ImageView
-        android:id="@+id/foto"
-        android:layout_width="387dp"
-        android:layout_height="167dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="450dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toTopOf="@+id/nomeAttivitaEditText"
+        android:background="@color/SECOND_COLOR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selezionaFotoButton"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/modificaButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="360dp"
-        android:backgroundTint="@color/DEFAULT_COLOR"
-        android:background="@drawable/circle"
-        android:backgroundTintMode="screen"
-        android:drawableTop="@drawable/edit_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/modificaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="167dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:clickable="true"
+            android:src="@drawable/edit_icon"
+            app:backgroundTint="@color/DEFAULT_COLOR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/foto"
+            android:layout_width="0dp"
+            android:layout_height="191dp"
+            android:layout_marginTop="17dp"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nomeAttivitaEditText" />
+
+        <EditText
+            android:id="@+id/nomeAttivitaEditText"
+            android:layout_width="236dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:hint="@string/nomeAttivita"
+            android:inputType="text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/selezionaFotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:src="@drawable/add_image_icon"
+            android:visibility="invisible"
+            app:backgroundTint="@color/DEFAULT_COLOR"
+            app:layout_constraintEnd_toStartOf="@+id/modificaButton"
+            app:layout_constraintStart_toEndOf="@+id/nomeAttivitaEditText"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Foto -->
+
+    <!-- Modifica Button -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

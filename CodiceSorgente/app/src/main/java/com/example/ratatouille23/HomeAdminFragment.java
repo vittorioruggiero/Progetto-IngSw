@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.*;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.IOException;
 
 /*
@@ -33,10 +36,10 @@ import java.io.IOException;
  * create an instance of this fragment.
  */
 public class HomeAdminFragment extends Fragment {
-
-    Button selezionaFotoButton, modificaButton;
+    FloatingActionButton modificaButton, selezionaFotoButton;
     ImageView foto;
     EditText nomeAttivitaEditText;
+    boolean isEditing = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,8 +88,8 @@ public class HomeAdminFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home_admin, container, false);
 
-        selezionaFotoButton = (Button) v.findViewById(R.id.selezionaFotoButton);
-        modificaButton = (Button) v.findViewById(R.id.modificaButton);
+        selezionaFotoButton = (FloatingActionButton) v.findViewById(R.id.selezionaFotoButton);
+        modificaButton = (FloatingActionButton) v.findViewById(R.id.modificaButton);
         foto = (ImageView) v.findViewById(R.id.foto);
         nomeAttivitaEditText = (EditText) v.findViewById(R.id.nomeAttivitaEditText);
         nomeAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
@@ -103,10 +106,16 @@ public class HomeAdminFragment extends Fragment {
                 if(nomeAttivitaEditText.isEnabled()){
                     nomeAttivitaEditText.setEnabled(false);
                     selezionaFotoButton.setVisibility(View.INVISIBLE);
-                }else {
+                }else{
                     nomeAttivitaEditText.setEnabled(true);
                     selezionaFotoButton.setVisibility(View.VISIBLE);
                 }
+                if(isEditing){
+                    modificaButton.setImageResource(R.drawable.edit_icon);
+                }else{
+                    modificaButton.setImageResource(R.drawable.check_icon);
+                }
+                isEditing = !isEditing;
             }
         });
 
