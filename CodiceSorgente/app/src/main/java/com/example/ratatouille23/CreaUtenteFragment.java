@@ -20,6 +20,10 @@ import android.widget.Spinner;
  */
 public class CreaUtenteFragment extends Fragment {
 
+    Spinner tipologiaUtenteSpinner;
+    Button creaUtenteButton;
+    AlertDialog creazioneUtenteAlertDialog;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,9 +67,11 @@ public class CreaUtenteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_crea_utente, container, false);
 
-        Spinner tipologiaUtenteSpinner = (Spinner) view.findViewById(R.id.tipologiaUtenteSpinner);
+        tipologiaUtenteSpinner = (Spinner) view.findViewById(R.id.tipologiaUtenteSpinner);
+        creaUtenteButton = (Button) view.findViewById(R.id.creaUtenteButton);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tipologia_utente_array, android.R.layout.simple_spinner_item);
@@ -74,31 +80,40 @@ public class CreaUtenteFragment extends Fragment {
 
         tipologiaUtenteSpinner.setSelection(adapter.getPosition("Supervisore"));
 
-//        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-//        builder1.setMessage("Sei sicuro di voler creare l'utente?");
-//        builder1.setCancelable(true);
-//
-//        builder1.setPositiveButton(
-//                "Conferma",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        builder1.setNegativeButton(
-//                "Annulla",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        AlertDialog alert11 = builder1.create();
-//        alert11.show();
-//
-//        Button creaUtenteButton = (Button) view.findViewById(R.id.creaUtenteButton);
+        creazioneUtenteAlertDialog = creaCreazioneUtenteAlertDialog();
+
+        creaUtenteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                creazioneUtenteAlertDialog.show();
+            }
+        });
 
         return view;
+    }
+
+    AlertDialog creaCreazioneUtenteAlertDialog() {
+
+        AlertDialog.Builder creazioneUtenteAlertDialogBuilder = new AlertDialog.Builder(getContext());
+        creazioneUtenteAlertDialogBuilder.setMessage("Sei sicuro di voler creare l'utente?");
+        creazioneUtenteAlertDialogBuilder.setCancelable(false);
+
+        creazioneUtenteAlertDialogBuilder.setPositiveButton(
+                "Conferma",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        creazioneUtenteAlertDialogBuilder.setNegativeButton(
+                "Annulla",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return creazioneUtenteAlertDialogBuilder.create();
     }
 }
