@@ -1,24 +1,83 @@
 package com.example.ratatouille23;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 
 public class HomeAdminActivity extends AppCompatActivity {
 
+    NavHostFragment navHostFragment;
+
+    NavController navController;
+
+    BottomNavigationView bottomNavigationView;
+
+    AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_admin);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.adminFragmentContainerView);
-        NavController navController = navHostFragment.getNavController();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.adminBottomNavigationView);
+        uscitaCreazioneUtenteAlertDialog = creaUscitaCreazioneUtenteAlertDialog();
+
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.adminFragmentContainerView);
+        navController = navHostFragment.getNavController();
+        bottomNavigationView = findViewById(R.id.adminBottomNavigationView);
+
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).isChecked() && item.getItemId()!=R.id.creaUtenteFragment) {
+                    uscitaCreazioneUtenteAlertDialog.show();
+                }
+                else navController.navigate(item.getItemId());
+
+                return true;
+            }
+        });
+
+    }
+
+    AlertDialog creaUscitaCreazioneUtenteAlertDialog() {
+
+        AlertDialog.Builder uscitaCreazioneUtenteAlertDialogBuilder = new AlertDialog.Builder(this);
+        uscitaCreazioneUtenteAlertDialogBuilder.setMessage("Uscendo non creerai l'utente. Vuoi proseguire?");
+        uscitaCreazioneUtenteAlertDialogBuilder.setCancelable(false);
+
+        uscitaCreazioneUtenteAlertDialogBuilder.setPositiveButton(
+                "Conferma",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        navController.navigate(bottomNavigationView.getSelectedItemId());
+                    }
+                });
+
+        uscitaCreazioneUtenteAlertDialogBuilder.setNegativeButton(
+                "Annulla",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).setChecked(true);
+//                        bottomNavigationView.setSelectedItemId(R.id.creaUtenteFragment);
+                        dialog.cancel();
+                    }
+                });
+
+        return uscitaCreazioneUtenteAlertDialogBuilder.create();
     }
 }

@@ -1,10 +1,16 @@
 package com.example.ratatouille23;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CreaUtenteFragment#newInstance} factory method to
@@ -20,9 +29,10 @@ import android.widget.Spinner;
  */
 public class CreaUtenteFragment extends Fragment {
 
+    TextInputEditText nuovoUtenteEmailTextInputEditText, nuovoUtenteNomeTextInputEditText, nuovoUtentePasswordTextInputEditText;
     Spinner tipologiaUtenteSpinner;
     Button creaUtenteButton;
-    AlertDialog creazioneUtenteAlertDialog;
+    AlertDialog creazioneUtenteAlertDialog, uscitaCreazioneUtenteAlertDialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,7 +80,29 @@ public class CreaUtenteFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_crea_utente, container, false);
 
+        nuovoUtenteNomeTextInputEditText = view.findViewById(R.id.nuovoUtenteNomeTextInputEditText);
+        nuovoUtenteNomeTextInputEditText.setSaveEnabled(false);
+
+        nuovoUtenteEmailTextInputEditText = view.findViewById(R.id.nuovoUtenteEmailTextInputEditText);
+        nuovoUtenteEmailTextInputEditText.setSaveEnabled(false);
+
+        nuovoUtentePasswordTextInputEditText = view.findViewById(R.id.nuovoUtentePasswordTextInputEditText);
+        nuovoUtentePasswordTextInputEditText.setSaveEnabled(false);
+
         tipologiaUtenteSpinner = (Spinner) view.findViewById(R.id.tipologiaUtenteSpinner);
+        tipologiaUtenteSpinner.setSaveEnabled(false);
+
+        uscitaCreazioneUtenteAlertDialog = creaUscitaCreazioneUtenteAlertDialog();
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setEnabled(false);
+                uscitaCreazioneUtenteAlertDialog.show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
         creaUtenteButton = (Button) view.findViewById(R.id.creaUtenteButton);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -81,7 +113,6 @@ public class CreaUtenteFragment extends Fragment {
         tipologiaUtenteSpinner.setSelection(adapter.getPosition("Supervisore"));
 
         creazioneUtenteAlertDialog = creaCreazioneUtenteAlertDialog();
-
         creaUtenteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +122,6 @@ public class CreaUtenteFragment extends Fragment {
 
         return view;
     }
-
     AlertDialog creaCreazioneUtenteAlertDialog() {
 
         AlertDialog.Builder creazioneUtenteAlertDialogBuilder = new AlertDialog.Builder(getContext());
@@ -116,4 +146,30 @@ public class CreaUtenteFragment extends Fragment {
 
         return creazioneUtenteAlertDialogBuilder.create();
     }
+
+    AlertDialog creaUscitaCreazioneUtenteAlertDialog() {
+
+        AlertDialog.Builder uscitaCreazioneUtenteAlertDialogBuilder = new AlertDialog.Builder(getContext());
+        uscitaCreazioneUtenteAlertDialogBuilder.setMessage("Uscendo non creerai l'utente. Vuoi proseguire?");
+        uscitaCreazioneUtenteAlertDialogBuilder.setCancelable(false);
+
+        uscitaCreazioneUtenteAlertDialogBuilder.setPositiveButton(
+                "Conferma",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requireActivity().onBackPressed();
+                    }
+                });
+
+        uscitaCreazioneUtenteAlertDialogBuilder.setNegativeButton(
+                "Annulla",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return uscitaCreazioneUtenteAlertDialogBuilder.create();
+    }
+
 }
