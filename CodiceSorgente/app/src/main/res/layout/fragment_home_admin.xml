@@ -20,7 +20,7 @@
         android:layout_height="450dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/SECOND_COLOR"
+        android:background="@drawable/layout_bordi_arrotondati"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -52,6 +52,45 @@
 
         <EditText
             android:id="@+id/nomeAttivitaEditText"
+            android:layout_width="236dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:hint="@string/nomeAttivita"
+            android:inputType="text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/luogoAttivitaEditText"
+            android:layout_width="236dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="292dp"
+            android:enabled="false"
+            android:hint="@string/nomeAttivita"
+            android:inputType="text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/telefonoAttivitaEditText"
+            android:layout_width="236dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="352dp"
+            android:enabled="false"
+            android:hint="@string/nomeAttivita"
+            android:inputType="text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/capienzaAttivitaEditText"
             android:layout_width="236dp"
             android:layout_height="51dp"
             android:layout_marginStart="16dp"
