@@ -117,4 +117,10 @@
     <string name="nuovo_utente_text">Nuovo utente</string>
     <string name="seleziona_tipologia_di_utente_text">Seleziona tipologia di utente</string>
     <string name="crea_utente_button_text">Crea utente</string>
+    <string name="luogoAttivita"> Indirizzo</string>
+    <string name="telefonoAttivita"> Telefono</string>
+    <string name="capienzaAttivita"> Capienza</string>
+    <string name="modificaButton">Modifica</string>
+    <string name="immagine">Immagine</string>
+    <string name="selezionaImmagine">Aggiungi Immagine</string>
 </resources>

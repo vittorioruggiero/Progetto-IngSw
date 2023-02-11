@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@color/DEFAULT_COLOR"
+    android:importantForContentCapture="no"
     tools:context=".HomeAdminFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -21,10 +22,12 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/layout_bordi_arrotondati"
+        android:backgroundTint="#4187AF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Modifica Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/modificaButton"
             android:layout_width="wrap_content"
@@ -33,6 +36,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:clickable="true"
+            android:contentDescription="@string/modificaButton"
             android:src="@drawable/edit_icon"
             app:backgroundTint="@color/DEFAULT_COLOR"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,80 +44,134 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Immagine Ristorante -->
         <ImageView
             android:id="@+id/foto"
             android:layout_width="0dp"
             android:layout_height="191dp"
             android:layout_marginTop="17dp"
+            android:contentDescription="@string/immagine"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nomeAttivitaEditText" />
 
+        <!-- Nome Attività Edit Text -->
         <EditText
             android:id="@+id/nomeAttivitaEditText"
             android:layout_width="236dp"
             android:layout_height="51dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:clickable="true"
             android:enabled="false"
             android:hint="@string/nomeAttivita"
+            android:importantForAutofill="no"
             android:inputType="text"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Luogo Attività Edit Text -->
         <EditText
-            android:id="@+id/luogoAttivitaEditText"
-            android:layout_width="236dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="292dp"
+            android:id="@+id/indirizzoAttivitaEditText"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bordi_arrotondati"
             android:enabled="false"
-            android:hint="@string/nomeAttivita"
-            android:inputType="text"
-            android:textSize="20sp"
+            android:hint="@string/luogoAttivita"
+            android:importantForAutofill="no"
+            android:inputType="textPostalAddress"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/foto"
+            tools:ignore="DuplicateSpeakableTextCheck,TouchTargetSizeCheck" />
 
-        <EditText
-            android:id="@+id/telefonoAttivitaEditText"
-            android:layout_width="236dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="352dp"
-            android:enabled="false"
-            android:hint="@string/nomeAttivita"
-            android:inputType="text"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+        <!-- Capienza Attività Edit Text -->
         <EditText
             android:id="@+id/capienzaAttivitaEditText"
-            android:layout_width="236dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bordi_arrotondati"
             android:enabled="false"
-            android:hint="@string/nomeAttivita"
-            android:inputType="text"
-            android:textSize="20sp"
+            android:hint="@string/capienzaAttivita"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/telefonoAttivitaEditText"
+            tools:ignore="DuplicateSpeakableTextCheck,TouchTargetSizeCheck" />
 
+        <!-- Telefono Attività Edit Text -->
+        <EditText
+            android:id="@+id/telefonoAttivitaEditText"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bordi_arrotondati"
+            android:enabled="false"
+            android:hint="@string/telefonoAttivita"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/indirizzoAttivitaEditText"
+            tools:ignore="DuplicateSpeakableTextCheck,TouchTargetSizeCheck" />
+
+        <!-- Seleziona Foto Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/selezionaFotoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:clickable="true"
+            android:contentDescription="@string/selezionaImmagine"
             android:src="@drawable/add_image_icon"
             android:visibility="invisible"
             app:backgroundTint="@color/DEFAULT_COLOR"
             app:layout_constraintEnd_toStartOf="@+id/modificaButton"
             app:layout_constraintStart_toEndOf="@+id/nomeAttivitaEditText"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/mappaImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:contentDescription="@string/luogoAttivita"
+            android:src="@drawable/maps_icon"
+            app:layout_constraintEnd_toStartOf="@+id/indirizzoAttivitaEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/foto" />
+
+        <ImageView
+            android:id="@+id/telefonoImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:contentDescription="@string/telefonoAttivita"
+            android:src="@drawable/phone_icon"
+            app:layout_constraintEnd_toStartOf="@+id/telefonoAttivitaEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mappaImageView" />
+
+        <ImageView
+            android:id="@+id/capienzaImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:contentDescription="@string/capienzaAttivita"
+            android:src="@drawable/table_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/capienzaAttivitaEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/telefonoImageView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Foto -->

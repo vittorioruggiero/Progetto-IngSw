@@ -2,33 +2,21 @@ package com.example.ratatouille23;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
-import android.text.InputType;
-import android.text.method.KeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-import android.*;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.IOException;
 
 /*
  * A simple {@link Fragment} subclass.
@@ -38,7 +26,7 @@ import java.io.IOException;
 public class HomeAdminFragment extends Fragment {
     FloatingActionButton modificaButton, selezionaFotoButton;
     ImageView foto;
-    EditText nomeAttivitaEditText;
+    EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
     boolean isEditing = false;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -93,6 +81,12 @@ public class HomeAdminFragment extends Fragment {
         foto = (ImageView) v.findViewById(R.id.foto);
         nomeAttivitaEditText = (EditText) v.findViewById(R.id.nomeAttivitaEditText);
         nomeAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
+        luogoAttivitaEditText = (EditText) v.findViewById(R.id.indirizzoAttivitaEditText);
+        //luogoAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
+        telefonoAttivitaEditText = (EditText) v.findViewById(R.id.telefonoAttivitaEditText);
+        //telefonoAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
+        capienzaAttivitaEditText = (EditText) v.findViewById(R.id.capienzaAttivitaEditText);
+        //capienzaAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
         selezionaFotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,9 +99,15 @@ public class HomeAdminFragment extends Fragment {
             public void onClick(View view) {
                 if(nomeAttivitaEditText.isEnabled()){
                     nomeAttivitaEditText.setEnabled(false);
+                    luogoAttivitaEditText.setEnabled(false);
+                    capienzaAttivitaEditText.setEnabled(false);
+                    telefonoAttivitaEditText.setEnabled(false);
                     selezionaFotoButton.setVisibility(View.INVISIBLE);
                 }else{
                     nomeAttivitaEditText.setEnabled(true);
+                    luogoAttivitaEditText.setEnabled(true);
+                    telefonoAttivitaEditText.setEnabled(true);
+                    capienzaAttivitaEditText.setEnabled(true);
                     selezionaFotoButton.setVisibility(View.VISIBLE);
                 }
                 if(isEditing){
