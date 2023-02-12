@@ -12,11 +12,8 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <!-- Nome Attività Edit Text -->
-
-    <!-- Seleziona foto Button -->
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="450dp"
         android:layout_marginStart="10dp"
@@ -63,8 +60,7 @@
             android:layout_height="51dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:enabled="false"
+            android:focusable="false"
             android:hint="@string/nomeAttivita"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -79,7 +75,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bordi_arrotondati"
-            android:enabled="false"
+            android:focusable="false"
             android:hint="@string/luogoAttivita"
             android:importantForAutofill="no"
             android:inputType="textPostalAddress"
@@ -96,7 +92,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_bordi_arrotondati"
-            android:enabled="false"
+            android:focusable="false"
             android:hint="@string/capienzaAttivita"
             android:importantForAutofill="no"
             android:inputType="number"
@@ -113,7 +109,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_bordi_arrotondati"
-            android:enabled="false"
+            android:focusable="false"
             android:hint="@string/telefonoAttivita"
             android:importantForAutofill="no"
             android:inputType="phone"
@@ -174,8 +170,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Foto -->
-
-    <!-- Modifica Button -->
+    <Button
+        android:id="@+id/creaAvvisoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/creaAvviso"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

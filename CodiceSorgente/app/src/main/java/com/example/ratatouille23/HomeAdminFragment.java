@@ -1,6 +1,8 @@
 package com.example.ratatouille23;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,8 +15,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,6 +31,8 @@ public class HomeAdminFragment extends Fragment {
     FloatingActionButton modificaButton, selezionaFotoButton;
     ImageView foto;
     EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
+    AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
+    Button creaAvvisoButton;
     boolean isEditing = false;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -82,11 +88,12 @@ public class HomeAdminFragment extends Fragment {
         nomeAttivitaEditText = (EditText) v.findViewById(R.id.nomeAttivitaEditText);
         nomeAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
         luogoAttivitaEditText = (EditText) v.findViewById(R.id.indirizzoAttivitaEditText);
-        //luogoAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
         telefonoAttivitaEditText = (EditText) v.findViewById(R.id.telefonoAttivitaEditText);
-        //telefonoAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
         capienzaAttivitaEditText = (EditText) v.findViewById(R.id.capienzaAttivitaEditText);
-        //capienzaAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
+
+        inserisciAvvisoAlertDialog = creaInserisciAvvisoAlertDialog();
+        creaAvvisoButton = (Button) v.findViewById(R.id.creaAvvisoButton);
+
         selezionaFotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,17 +104,25 @@ public class HomeAdminFragment extends Fragment {
         modificaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nomeAttivitaEditText.isEnabled()){
-                    nomeAttivitaEditText.setEnabled(false);
-                    luogoAttivitaEditText.setEnabled(false);
-                    capienzaAttivitaEditText.setEnabled(false);
-                    telefonoAttivitaEditText.setEnabled(false);
+                if(nomeAttivitaEditText.isFocusable()){
+                    nomeAttivitaEditText.setFocusableInTouchMode(false);
+                    nomeAttivitaEditText.setFocusable(false);
+                    luogoAttivitaEditText.setFocusable(false);
+                    luogoAttivitaEditText.setFocusableInTouchMode(false);
+                    capienzaAttivitaEditText.setFocusable(false);
+                    capienzaAttivitaEditText.setFocusableInTouchMode(false);
+                    telefonoAttivitaEditText.setFocusable(false);
+                    telefonoAttivitaEditText.setFocusableInTouchMode(false);
                     selezionaFotoButton.setVisibility(View.INVISIBLE);
                 }else{
-                    nomeAttivitaEditText.setEnabled(true);
-                    luogoAttivitaEditText.setEnabled(true);
-                    telefonoAttivitaEditText.setEnabled(true);
-                    capienzaAttivitaEditText.setEnabled(true);
+                    nomeAttivitaEditText.setFocusableInTouchMode(true);
+                    nomeAttivitaEditText.setFocusable(true);
+                    luogoAttivitaEditText.setFocusable(true);
+                    luogoAttivitaEditText.setFocusableInTouchMode(true);
+                    capienzaAttivitaEditText.setFocusable(true);
+                    capienzaAttivitaEditText.setFocusableInTouchMode(true);
+                    telefonoAttivitaEditText.setFocusable(true);
+                    telefonoAttivitaEditText.setFocusableInTouchMode(true);
                     selezionaFotoButton.setVisibility(View.VISIBLE);
                 }
                 if(isEditing){
@@ -116,6 +131,13 @@ public class HomeAdminFragment extends Fragment {
                     modificaButton.setImageResource(R.drawable.check_icon);
                 }
                 isEditing = !isEditing;
+            }
+        });
+
+        creaAvvisoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inserisciAvvisoAlertDialog.show();
             }
         });
 
@@ -138,8 +160,63 @@ public class HomeAdminFragment extends Fragment {
                 if (data != null && result.getResultCode() == Activity.RESULT_OK) {
                     Uri resultUri = data.getData();
                     foto.setImageURI(resultUri);
-                };
+                }
             });
 
+
+    AlertDialog creaInserisciAvvisoAlertDialog() {
+
+        AlertDialog.Builder inserisciAvvisoAlertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+        inserisciAvvisoAlertDialogBuilder.setTitle("Avviso");
+        inserisciAvvisoAlertDialogBuilder.setMessage("Inserisci testo");
+
+        confermaCreazioneAvvisoAlertDialog = creaCreazioneAvvisoAlertDialog();
+
+        final EditText testoAvvisoEditText = new EditText(getActivity());
+        inserisciAvvisoAlertDialogBuilder.setView(testoAvvisoEditText);
+
+        inserisciAvvisoAlertDialogBuilder.setPositiveButton(
+                "Conferma",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        confermaCreazioneAvvisoAlertDialog.show();
+                        dialog.cancel();
+                    }
+                });
+
+        inserisciAvvisoAlertDialogBuilder.setNegativeButton(
+                "Annulla",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return inserisciAvvisoAlertDialogBuilder.create();
+    }
+
+    AlertDialog creaCreazioneAvvisoAlertDialog() {
+
+        AlertDialog.Builder creazioneAvvisoAlertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+        creazioneAvvisoAlertDialogBuilder.setMessage("Sei sicuro di voler creare l'avviso?");
+
+        creazioneAvvisoAlertDialogBuilder.setPositiveButton(
+                "Conferma",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        creazioneAvvisoAlertDialogBuilder.setNegativeButton(
+                "Annulla",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        inserisciAvvisoAlertDialog.show();
+                    }
+                });
+
+        return creazioneAvvisoAlertDialogBuilder.create();
+    }
 
 }

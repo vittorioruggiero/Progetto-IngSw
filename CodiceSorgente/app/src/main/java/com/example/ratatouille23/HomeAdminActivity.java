@@ -13,6 +13,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -25,6 +27,7 @@ public class HomeAdminActivity extends AppCompatActivity {
     NavController navController;
 
     BottomNavigationView bottomNavigationView;
+    Button creaAvvisoButton;
 
     AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
@@ -51,8 +54,8 @@ public class HomeAdminActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
+
 
     AlertDialog creaUscitaCreazioneUtenteAlertDialog() {
 
@@ -80,4 +83,5 @@ public class HomeAdminActivity extends AppCompatActivity {
 
         return uscitaCreazioneUtenteAlertDialogBuilder.create();
     }
+
 }

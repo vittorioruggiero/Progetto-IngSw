@@ -123,4 +123,6 @@
     <string name="modificaButton">Modifica</string>
     <string name="immagine">Immagine</string>
     <string name="selezionaImmagine">Aggiungi Immagine</string>
+    <string name="creaAvviso">Crea Avviso</string>
+    <string name="titoloInserisciAvviso">Avviso</string>
 </resources>
