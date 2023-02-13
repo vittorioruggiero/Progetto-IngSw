@@ -27,7 +27,6 @@ public class HomeAdminActivity extends AppCompatActivity {
     NavController navController;
 
     BottomNavigationView bottomNavigationView;
-    Button creaAvvisoButton;
 
     AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override

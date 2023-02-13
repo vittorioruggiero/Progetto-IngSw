@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipologia_prodotto_spinner">
+        <item>Pizze Classiche</item>
+        <item>Pizze Rivisitate</item>
+        <item>Bibite</item>
+        <item>Dolci</item>
+    </string-array>
+</resources>

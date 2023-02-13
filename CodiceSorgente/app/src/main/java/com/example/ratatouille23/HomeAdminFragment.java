@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,12 +27,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * create an instance of this fragment.
  */
 public class HomeAdminFragment extends Fragment {
-    FloatingActionButton modificaButton, selezionaFotoButton;
-    ImageView foto;
-    EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
-    AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
-    Button creaAvvisoButton;
-    boolean isEditing = false;
+    private FloatingActionButton modificaButton, selezionaFotoButton;
+    private ImageView foto;
+    private EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
+    private AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
+    private Button creaAvvisoButton;
+    private boolean isEditing = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,7 +82,7 @@ public class HomeAdminFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home_admin, container, false);
 
         selezionaFotoButton = (FloatingActionButton) v.findViewById(R.id.selezionaFotoButton);
-        modificaButton = (FloatingActionButton) v.findViewById(R.id.modificaButton);
+        modificaButton = (FloatingActionButton) v.findViewById(R.id.opzioniButton);
         foto = (ImageView) v.findViewById(R.id.foto);
         nomeAttivitaEditText = (EditText) v.findViewById(R.id.nomeAttivitaEditText);
         nomeAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);

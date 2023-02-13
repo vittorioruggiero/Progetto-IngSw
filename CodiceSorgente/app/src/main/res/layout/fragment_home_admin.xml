@@ -17,6 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="450dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/layout_bordi_arrotondati"
         android:backgroundTint="#4187AF"
@@ -26,7 +27,7 @@
 
         <!-- Modifica Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/modificaButton"
+            android:id="@+id/opzioniButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="167dp"
@@ -79,6 +80,8 @@
             android:hint="@string/luogoAttivita"
             android:importantForAutofill="no"
             android:inputType="textPostalAddress"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +99,8 @@
             android:hint="@string/capienzaAttivita"
             android:importantForAutofill="no"
             android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,6 +118,8 @@
             android:hint="@string/telefonoAttivita"
             android:importantForAutofill="no"
             android:inputType="phone"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +137,7 @@
             android:src="@drawable/add_image_icon"
             android:visibility="invisible"
             app:backgroundTint="@color/DEFAULT_COLOR"
-            app:layout_constraintEnd_toStartOf="@+id/modificaButton"
+            app:layout_constraintEnd_toStartOf="@+id/opzioniButton"
             app:layout_constraintStart_toEndOf="@+id/nomeAttivitaEditText"
             app:layout_constraintTop_toTopOf="parent" />
 
