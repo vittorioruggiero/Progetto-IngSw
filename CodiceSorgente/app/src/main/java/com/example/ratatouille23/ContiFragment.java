@@ -1,5 +1,7 @@
 package com.example.ratatouille23;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +19,14 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ContiFragment extends Fragment {
+
+    private View inflatedView;
+
+    private Spinner selezionaTavoloSpinner;
+
+    private Button chiudiContoButton;
+
+    private AlertDialog chiusuraContoAlertDialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +71,52 @@ public class ContiFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_conti, container, false);
+        inflatedView = inflater.inflate(R.layout.fragment_conti, container, false);
+
+        chiudiContoButton = inflatedView.findViewById(R.id.chiudiContoButton);
+        selezionaTavoloSpinner = inflatedView.findViewById(R.id.selezionaTavoloSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.tavoli_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selezionaTavoloSpinner.setAdapter(adapter);
+
+        selezionaTavoloSpinner.setSelection(adapter.getPosition("Tavolo 1"));
+
+        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog();
+
+        chiudiContoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chiusuraContoAlertDialog.show();
+            }
+        });
+
+        return inflatedView;
+    }
+
+    AlertDialog creaChiusuraContoAlertDialog() {
+
+        AlertDialog.Builder chiusuraContoAlertDialogBuilder = new AlertDialog.Builder(getContext());
+        chiusuraContoAlertDialogBuilder.setMessage("Sei sicuro di voler chiudere il conto?");
+        chiusuraContoAlertDialogBuilder.setCancelable(false);
+
+        chiusuraContoAlertDialogBuilder.setPositiveButton(
+                "Conferma",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        chiusuraContoAlertDialogBuilder.setNegativeButton(
+                "Annulla",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return chiusuraContoAlertDialogBuilder.create();
     }
 }

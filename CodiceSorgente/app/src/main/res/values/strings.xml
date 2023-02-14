@@ -138,4 +138,10 @@
     <string name="seleziona_tipologia_di_prodotto_text">Seleziona tipologia di prodotto</string>
     <string name="aggiungiSezioneFondo">Aggiungi una sezione sul fondo</string>
     <string name="nuovaSezione">Nuova Sezione</string>
+    <string name="selezionaTavolo">Seleziona il tavolo</string>
+    <string name="numeroCommensali">Numero commensali</string>
+    <string name="prodottiSelezionati">Prodotti selezionati</string>
+    <string name="chiudiConto">Chiudi conto</string>
+    <string name="visualizzaConto">Visualizza conto</string>
+    <string name="totale">Totale</string>
 </resources>
