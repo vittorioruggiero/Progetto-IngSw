@@ -53,6 +53,14 @@ public class HomeAdminActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.navigate(R.id.homeAdminFragment);
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
 

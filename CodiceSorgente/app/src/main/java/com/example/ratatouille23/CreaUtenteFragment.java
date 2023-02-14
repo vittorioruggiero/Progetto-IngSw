@@ -29,6 +29,7 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 public class CreaUtenteFragment extends Fragment {
 
+    View inflatedView;
     TextInputEditText nuovoUtenteEmailTextInputEditText, nuovoUtenteNomeTextInputEditText, nuovoUtentePasswordTextInputEditText;
     Spinner tipologiaUtenteSpinner;
     Button creaUtenteButton;
@@ -78,32 +79,23 @@ public class CreaUtenteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_crea_utente, container, false);
+        View inflatedView = inflater.inflate(R.layout.fragment_crea_utente, container, false);
 
-        nuovoUtenteNomeTextInputEditText = view.findViewById(R.id.nuovoUtenteNomeTextInputEditText);
+        nuovoUtenteNomeTextInputEditText = inflatedView.findViewById(R.id.nuovoUtenteNomeTextInputEditText);
         nuovoUtenteNomeTextInputEditText.setSaveEnabled(false);
 
-        nuovoUtenteEmailTextInputEditText = view.findViewById(R.id.nuovoUtenteEmailTextInputEditText);
+        nuovoUtenteEmailTextInputEditText = inflatedView.findViewById(R.id.nuovoUtenteEmailTextInputEditText);
         nuovoUtenteEmailTextInputEditText.setSaveEnabled(false);
 
-        nuovoUtentePasswordTextInputEditText = view.findViewById(R.id.nuovoUtentePasswordTextInputEditText);
+        nuovoUtentePasswordTextInputEditText = inflatedView.findViewById(R.id.nuovoUtentePasswordTextInputEditText);
         nuovoUtentePasswordTextInputEditText.setSaveEnabled(false);
 
-        tipologiaUtenteSpinner = (Spinner) view.findViewById(R.id.tipologiaUtenteSpinner);
+        tipologiaUtenteSpinner = (Spinner) inflatedView.findViewById(R.id.tipologiaUtenteSpinner);
         tipologiaUtenteSpinner.setSaveEnabled(false);
 
+        creaUtenteButton = (Button) inflatedView.findViewById(R.id.creaUtenteButton);
+
         uscitaCreazioneUtenteAlertDialog = creaUscitaCreazioneUtenteAlertDialog();
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                setEnabled(false);
-                uscitaCreazioneUtenteAlertDialog.show();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-
-        creaUtenteButton = (Button) view.findViewById(R.id.creaUtenteButton);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tipologia_utente_array, android.R.layout.simple_spinner_item);
@@ -120,7 +112,16 @@ public class CreaUtenteFragment extends Fragment {
             }
         });
 
-        return view;
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setEnabled(false);
+                uscitaCreazioneUtenteAlertDialog.show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+        return inflatedView;
     }
     AlertDialog creaCreazioneUtenteAlertDialog() {
 
