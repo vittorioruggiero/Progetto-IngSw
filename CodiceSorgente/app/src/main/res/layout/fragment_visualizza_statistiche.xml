@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:id="@+id/homeAdminConstraintLayout"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:background="@color/DEFAULT_COLOR"
     tools:context=".VisualizzaStatisticheFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/adminBottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/fragmentVisualizzaStatisticheText" />
+        android:layout_height="wrap_content"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_menu_home_admin" >
 
-</FrameLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/adminButtonDataInizioIntervallo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleziona data inizio"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
+
+
+    <TextView
+        android:id="@+id/adminTestoDataInizioIntervallo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="data"
+        android:textSize="25sp"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="64dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

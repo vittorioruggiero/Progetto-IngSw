@@ -1,12 +1,19 @@
 package com.example.ratatouille23;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.TestLooperManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,11 @@ public class VisualizzaStatisticheFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView dataInizio;
+    Button bottoneInizio;
+    Calendar calendario;
+    DatePickerDialog InizioIntervallo;
 
     public VisualizzaStatisticheFragment() {
         // Required empty public constructor
@@ -53,6 +65,24 @@ public class VisualizzaStatisticheFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        bottoneInizio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendario= Calendar.getInstance();
+                int giorno = calendario.get(Calendar.DAY_OF_MONTH);
+                int mese = calendario.get(Calendar.MONTH);
+                int anno = calendario.get(Calendar.YEAR);
+
+                InizioIntervallo = new DatePickerDialog(VisualizzaStatisticheFragment.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int mAnno, int mMese, int mGiorno) {
+                        dataInizio.setText(mGiorno + "/" + (mMese+1) + "/" + mAnno);
+                    }
+                }, giorno, mese, anno);
+                InizioIntervallo.show();
+            }
+        });
     }
 
     @Override
@@ -61,4 +91,6 @@ public class VisualizzaStatisticheFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_visualizza_statistiche, container, false);
     }
+
+
 }
