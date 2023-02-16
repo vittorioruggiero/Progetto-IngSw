@@ -20,16 +20,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/selezionaTavoloSpinner"
+    <RelativeLayout
+        android:id="@+id/contiSpinnerRelativeLayout"
         android:layout_width="248dp"
         android:layout_height="48dp"
         android:layout_marginTop="14dp"
-        android:contentDescription="@string/selezionaTavolo"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selezionaTavoloTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/selezionaTavoloTextView">
+    <Spinner
+        android:id="@+id/selezionaTavoloSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/selezionaTavolo" />
+</RelativeLayout>
 
     <TextView
         android:id="@+id/numeroCommensaliTextView"
@@ -42,7 +48,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selezionaTavoloSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/contiSpinnerRelativeLayout" />
 
     <TextView
         android:id="@+id/numeroCommensaliCifraTextView"
@@ -78,6 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
         android:text="@string/chiudiConto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
         android:text="@string/visualizzaConto"
         app:layout_constraintBottom_toTopOf="@+id/chiudiContoButton"
         app:layout_constraintEnd_toEndOf="parent"

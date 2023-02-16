@@ -22,13 +22,13 @@ import com.google.android.material.navigation.NavigationView;
 
 public class HomeAdminActivity extends AppCompatActivity {
 
-    NavHostFragment navHostFragment;
+    private NavHostFragment navHostFragment;
 
-    NavController navController;
+    private NavController navController;
 
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
 
-    AlertDialog uscitaCreazioneUtenteAlertDialog;
+    private AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

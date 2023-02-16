@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
@@ -139,6 +140,18 @@ public class HomeAdminFragment extends Fragment {
                 inserisciAvvisoAlertDialog.show();
             }
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Provvisorio: fatto per non dover riavviare l'applicazione per tornare alla LoginActivity
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                HomeAdminFragment.this.startActivity(intent);
+                //Esce dall'applicazione come il bottone centrale di Android
+//                getActivity().moveTaskToBack(true);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
     }

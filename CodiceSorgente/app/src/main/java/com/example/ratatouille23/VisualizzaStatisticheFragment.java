@@ -31,10 +31,10 @@ public class VisualizzaStatisticheFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView dataInizio, dataFine;
-    Button bottoneInizio, bottoneFine;
-    Calendar calendario, calendarioFine;
-    DatePickerDialog InizioIntervallo, FineIntervallo;
+    private TextView dataInizio, dataFine;
+    private Button bottoneInizio, bottoneFine;
+    private Calendar calendario, calendarioFine;
+    private DatePickerDialog InizioIntervallo, FineIntervallo;
 
     public VisualizzaStatisticheFragment() {
         // Required empty public constructor

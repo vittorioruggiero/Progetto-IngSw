@@ -29,11 +29,11 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 public class CreaUtenteFragment extends Fragment {
 
-    View inflatedView;
-    TextInputEditText nuovoUtenteEmailTextInputEditText, nuovoUtenteNomeTextInputEditText, nuovoUtentePasswordTextInputEditText;
-    Spinner tipologiaUtenteSpinner;
-    Button creaUtenteButton;
-    AlertDialog creazioneUtenteAlertDialog, uscitaCreazioneUtenteAlertDialog;
+    private View inflatedView;
+    private TextInputEditText nuovoUtenteEmailTextInputEditText, nuovoUtenteNomeTextInputEditText, nuovoUtentePasswordTextInputEditText;
+    private Spinner tipologiaUtenteSpinner;
+    private Button creaUtenteButton;
+    private AlertDialog creazioneUtenteAlertDialog, uscitaCreazioneUtenteAlertDialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText nomeUtenteEditText, passwordEditText;
-    TextView campiErratiTextView, registratiTextView;
-    Button accediButton;
+    private EditText nomeUtenteEditText, passwordEditText;
+    private TextView campiErratiTextView, registratiTextView;
+    private Button accediButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
