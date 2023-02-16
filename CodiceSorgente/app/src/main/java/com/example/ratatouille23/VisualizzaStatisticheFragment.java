@@ -74,7 +74,7 @@ public class VisualizzaStatisticheFragment extends Fragment {
                 int mese = calendario.get(Calendar.MONTH);
                 int anno = calendario.get(Calendar.YEAR);
 
-                InizioIntervallo = new DatePickerDialog(VisualizzaStatisticheFragment.this, new DatePickerDialog.OnDateSetListener() {
+                InizioIntervallo = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mAnno, int mMese, int mGiorno) {
                         dataInizio.setText(mGiorno + "/" + (mMese+1) + "/" + mAnno);
