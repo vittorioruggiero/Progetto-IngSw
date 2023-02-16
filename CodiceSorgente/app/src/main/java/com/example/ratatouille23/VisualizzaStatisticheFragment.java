@@ -31,10 +31,10 @@ public class VisualizzaStatisticheFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView dataInizio;
-    Button bottoneInizio;
-    Calendar calendario;
-    DatePickerDialog InizioIntervallo;
+    TextView dataInizio, dataFine;
+    Button bottoneInizio, bottoneFine;
+    Calendar calendario, calendarioFine;
+    DatePickerDialog InizioIntervallo, FineIntervallo;
 
     public VisualizzaStatisticheFragment() {
         // Required empty public constructor
@@ -72,6 +72,10 @@ public class VisualizzaStatisticheFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_visualizza_statistiche, container, false);
+
+        bottoneInizio = (Button) v.findViewById(R.id.adminButtonDataInizioIntervallo);
+        dataInizio = (TextView) v.findViewById(R.id.adminTestoDataInizioIntervallo);
+        dataInizio.setVisibility(View.INVISIBLE);
         bottoneInizio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,9 +88,32 @@ public class VisualizzaStatisticheFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mAnno, int mMese, int mGiorno) {
                         dataInizio.setText(mGiorno + "/" + (mMese+1) + "/" + mAnno);
+                        dataInizio.setVisibility(View.VISIBLE);
                     }
                 }, giorno, mese, anno);
                 InizioIntervallo.show();
+            }
+        });
+
+        bottoneFine = (Button) v.findViewById(R.id.adminButtonDataFineIntervallo);
+        dataFine = (TextView) v.findViewById(R.id.adminTestoDataFineIntervallo);
+        dataFine.setVisibility(View.INVISIBLE);
+        bottoneFine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendarioFine= Calendar.getInstance();
+                int fingiorno = calendarioFine.get(Calendar.DAY_OF_MONTH);
+                int finmese = calendarioFine.get(Calendar.MONTH);
+                int finanno = calendarioFine.get(Calendar.YEAR);
+
+                FineIntervallo = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int nAnno, int nMese, int nGiorno) {
+                        dataFine.setText(nGiorno + "/" + (nMese+1) + "/" + nAnno);
+                        dataFine.setVisibility(View.VISIBLE);
+                    }
+                }, fingiorno, finmese, finanno);
+                FineIntervallo.show();
             }
         });
 
