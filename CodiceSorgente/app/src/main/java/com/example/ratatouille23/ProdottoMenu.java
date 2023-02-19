@@ -22,6 +22,11 @@ public class ProdottoMenu{
         this.prezzo = prezzo;
     }
 
+    public ProdottoMenu(String nome, double prezzo) {
+        this.nome = nome;
+        this.prezzo = prezzo;
+    }
+
     public String getNome() {
         return nome;
     }

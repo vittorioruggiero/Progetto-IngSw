@@ -5,13 +5,18 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,6 +96,17 @@ public class ContiFragment extends Fragment {
                 chiusuraContoAlertDialog.show();
             }
         });
+
+        List<SingoloOrdine> listaProdotti = new ArrayList<>();
+
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
+
+        RecyclerView recyclerView = (RecyclerView) inflatedView.findViewById(R.id.contiRecyclerView);
+        SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(listaProdotti);
+        recyclerView.setAdapter(singoliOrdiniAdapter);
+        Log.e("Ciao", "Ciao");
 
         return inflatedView;
     }
