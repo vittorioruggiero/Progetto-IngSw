@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AggiungiProdottoFragment#newInstance} factory method to
@@ -21,9 +23,13 @@ import android.widget.Spinner;
  */
 public class AggiungiProdottoFragment extends Fragment {
 
-    Spinner tipologiaProdottoSpinner;
-    EditText nomeProdottoEditText, nomeProdottoSecondaLinguaEditText, costoProdottoEditText, ingredientiProdottoEditText, ingredientiProdottoSecondaLinguaEditText;
-    Button aggiungiProdottoButton;
+    private Spinner tipologiaProdottoSpinner;
+    private EditText nomeProdottoEditText;
+    private EditText nomeProdottoSecondaLinguaEditText;
+    private EditText costoProdottoEditText;
+    private EditText ingredientiProdottoEditText;
+    private EditText ingredientiProdottoSecondaLinguaEditText;
+    private Button aggiungiProdottoButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,22 +85,62 @@ public class AggiungiProdottoFragment extends Fragment {
         tipologiaProdottoSpinner = (Spinner) v.findViewById(R.id.tipologiaProdottoSpinner);
         aggiungiProdottoButton = (Button) v.findViewById(R.id.aggiungiProdottoButton);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.tipologia_prodotto_spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tipologiaProdottoSpinner.setAdapter(adapter);
-
-        tipologiaProdottoSpinner.setSelection(adapter.getPosition("Pizze Classiche"));
 
         aggiungiProdottoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //salva prodotto
-                Fragment fragment = null;
-                fragment = new PersonalizzaMenuFragment();
+                String nomeProdotto = nomeProdottoEditText.getText().toString();
+                String ingredienti = ingredientiProdottoEditText.getText().toString();
+                double costo = Double.parseDouble(costoProdottoEditText.getText().toString());
+
+                //aggiungi prodotto
+                ProdottoMenu nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+                PersonalizzaMenuFragment fragment = new PersonalizzaMenuFragment();
                 sostituisciFragment(fragment);
+
             }
         });
+
+
+        /*ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<SezioneMenu>(getActivity(),
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
+
+        tipologiaProdottoSpinner.setAdapter(adapter);*/
+
+
+
+        /*
+
+        String nome = "Margherita";
+        String ingredienti = "salsa, pomodoro";
+        double prezzo = 50.00;
+
+        ProdottoMenu nuovoProdotto = new ProdottoMenu(nome, ingredienti, prezzo);
+
+        String nomeSezione = "Pizze";
+        List<ProdottoMenu> prodottiSezione = new ArrayList<>();
+
+        prodottiSezione.add(nuovoProdotto);
+
+        sezioni.add(new SezioneMenu(nomeSezione, prodottiSezione));
+        sezioni.add(new SezioneMenu(nomeSezione));
+
+        recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
+        MenuRecyclerAdapter menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni);
+
+        recyclerView.setAdapter(menuRecyclerAdapter);
+
+
+
+
+
+        tipologiaProdottoSpinner.setSelection(adapter.getPosition("Pizze Classiche"));
+
+        */
 
         return v;
     }

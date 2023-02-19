@@ -8,104 +8,81 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-public class ProdottiAdapter extends BaseAdapter {
-    private Context context;
-    private ArrayList<Prodotto> item;
-    private ArrayList<Prodotto> originalItem;
+public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHolder> {
 
-    public ProdottiAdapter() {
-        super();
+    List<ProdottoMenu> prodottiMenu;
+
+
+    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu) {
+        this.prodottiMenu = prodottiMenu;
     }
 
-    public ProdottiAdapter(Context context, ArrayList<Prodotto> item) {
-        this.context = context;
-        this.item = item;
-        //this.originalItem = item;
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.layout_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return item.size();
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        holder.nomeProdottoTextView.setText(prodottiMenu.get(position).getNome());
+        holder.modificaProdottoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ModificaProdottoFragment fragment = new ModificaProdottoFragment();
+                sostituisciFragment(fragment);
+
+            }
+        });
+
     }
 
     @Override
-    public Object getItem(int position) {
-        return item.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (item.get(position).isSection()) {
-            // if section header
-            convertView = inflater.inflate(R.layout.layout_sections, parent, false);
-            TextView titoloSezioneTextView = (TextView) convertView.findViewById(R.id.titoloSezioneTextView);
-            titoloSezioneTextView.setText(((SezioneMenu) item.get(position)).getTitle());
-        } else {
-            // if item
-            convertView = inflater.inflate(R.layout.layout_item, parent, false);
-            TextView titoloProdottoTextView = (TextView) convertView.findViewById(R.id.titoloProdottoTextView);
-            titoloProdottoTextView.setText(((ProdottoMenu) item.get(position)).getTitle());
+    public int getItemCount() {
+        try{
+            return prodottiMenu.size();
         }
-
-        return convertView;
+        catch (NullPointerException e){
+            return 0;
+        }
     }
 
-    public Filter getFilter() {
-        Filter filter = new Filter() {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
+        TextView nomeProdottoTextView;
+        FloatingActionButton modificaProdottoButton;
 
-                item = (ArrayList<Prodotto>) results.values;
-                notifyDataSetChanged();
-            }
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-            @SuppressWarnings("null")
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-
-                FilterResults results = new FilterResults();
-                ArrayList<Prodotto> filteredArrayList = new ArrayList<Prodotto>();
-
-
-                if (originalItem == null || originalItem.size() == 0) {
-                    originalItem = new ArrayList<Prodotto>(item);
-                }
-
-                /*
-                 * if constraint is null then return original value
-                 * else return filtered value
-                 */
-                if (constraint == null && constraint.length() == 0) {
-                    results.count = originalItem.size();
-                    results.values = originalItem;
-                } else {
-                    constraint = constraint.toString().toLowerCase(Locale.ENGLISH);
-                    for (int i = 0; i < originalItem.size(); i++) {
-                        String title = originalItem.get(i).getTitle().toLowerCase(Locale.ENGLISH);
-                        if (title.startsWith(constraint.toString())) {
-                            filteredArrayList.add(originalItem.get(i));
-                        }
-                    }
-                    results.count = filteredArrayList.size();
-                    results.values = filteredArrayList;
-                }
-
-                return results;
-            }
-        };
-
-        return filter;
+            nomeProdottoTextView = itemView.findViewById(R.id.titoloProdottoTextView);
+            modificaProdottoButton = itemView.findViewById(R.id.opzioniButton);
+        }
     }
+
+    public void sostituisciFragment(Fragment fragment){
+        /*FragmentManager fragmentManager = fragment.getChildFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.adminFragmentContainerView, fragment);
+        transaction.commit();*/
+    }
+
 
 }

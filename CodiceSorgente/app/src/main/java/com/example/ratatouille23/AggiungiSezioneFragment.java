@@ -65,9 +65,6 @@ public class AggiungiSezioneFragment extends Fragment implements Serializable {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
-
-
     }
 
     @Override
@@ -79,17 +76,13 @@ public class AggiungiSezioneFragment extends Fragment implements Serializable {
         nomeSezioneEditText = (EditText) v.findViewById(R.id.nuovaSezioneEditText);
         salvaSezioneButton = (Button) v.findViewById(R.id.salvaSezioneButton);
 
-        ArrayList<Prodotto> prodottiMenu = (ArrayList<Prodotto>)getArguments().getSerializable("key");
+        ArrayList<SezioneMenu> sezioni = (ArrayList<SezioneMenu>)getArguments().getSerializable("key");
 
         salvaSezioneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nomeSezione = nomeSezioneEditText.getText().toString();
-                prodottiMenu.add(new SezioneMenu("Dolci2"));
+                //aggiungi sezione
                 PersonalizzaMenuFragment fragment = new PersonalizzaMenuFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("key2", prodottiMenu);
-                fragment.setArguments(bundle);
                 sostituisciFragment(fragment);
             }
         });
@@ -97,7 +90,6 @@ public class AggiungiSezioneFragment extends Fragment implements Serializable {
         return v;
 
     }
-
     public void sostituisciFragment(Fragment fragment){
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.adminFragmentContainerView, fragment);

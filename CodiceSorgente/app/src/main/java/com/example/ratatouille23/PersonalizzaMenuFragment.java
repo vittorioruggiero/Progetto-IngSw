@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.telecom.ConnectionRequest;
@@ -23,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,9 +36,13 @@ import java.util.ArrayList;
  */
 
 
-public class PersonalizzaMenuFragment extends Fragment implements Serializable {
+public class PersonalizzaMenuFragment extends Fragment implements Serializable{
 
-    ArrayList<Prodotto> prodottiMenu = new ArrayList<>();
+    public static final String TAG = "PersonalizzaMenuFragment";
+    private ArrayList<SezioneMenu> sezioni = new ArrayList<>();
+
+    private RecyclerView recyclerView;
+    private MenuRecyclerAdapter menuRecyclerAdapter;
 
     private ListView menuAttivitaListView;
     private EditText cercaEditText;
@@ -86,80 +95,44 @@ public class PersonalizzaMenuFragment extends Fragment implements Serializable {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_personalizza_menu, container, false);
 
-        cercaEditText = (EditText) v.findViewById(R.id.cercaEditText);
-        menuAttivitaListView = (ListView) v.findViewById(R.id.menuAttivitaListView);
+        recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
         opzioniButton = (FloatingActionButton) v.findViewById(R.id.opzioniButton);
 
+        String nome = "Margherita";
+        String ingredienti = "salsa, pomodoro";
+        double prezzo = 50.00;
+        String nomeSezione2 = "Dolci";
 
+        ProdottoMenu nuovoProdotto = new ProdottoMenu(nome, ingredienti, prezzo);
 
-        prodottiMenu.add(new SezioneMenu("Pizze Classiche"));
-        // State Name
-        prodottiMenu.add(new ProdottoMenu("Margherita"));
-        prodottiMenu.add(new ProdottoMenu("Diavola"));
-        prodottiMenu.add(new ProdottoMenu("Quattro Stagioni"));
-        prodottiMenu.add(new ProdottoMenu("Primavera"));
+        String nomeSezionePizze = "Pizze";
+        List<ProdottoMenu> sezionePizze = new ArrayList<>();
 
+        sezionePizze.add(nuovoProdotto);
 
-        // Header
-        prodottiMenu.add(new SezioneMenu("Pizze Rivisitate"));
-        // State Name
-        prodottiMenu.add(new ProdottoMenu("Margherita Due Cotture"));
-        prodottiMenu.add(new ProdottoMenu("Carbonara"));
-        prodottiMenu.add(new ProdottoMenu("Capricciosa"));
-        prodottiMenu.add(new ProdottoMenu("Luigione"));
+        sezioni.add(new SezioneMenu(nomeSezionePizze, sezionePizze));
 
-        // Header
-        prodottiMenu.add(new SezioneMenu("Bibite"));
-        // State Name
-        prodottiMenu.add(new ProdottoMenu("Acqua Naturale"));
-        prodottiMenu.add(new ProdottoMenu("Acqua Frizzante"));
-        prodottiMenu.add(new ProdottoMenu("Birra"));
+        sezioni.add(new SezioneMenu(nomeSezione2));
 
-        // Header
-        prodottiMenu.add(new SezioneMenu("Dolci"));
-        // State Name
-        prodottiMenu.add(new ProdottoMenu("Tiramisù"));
-        prodottiMenu.add(new ProdottoMenu("Semifreddo"));
-        prodottiMenu.add(new ProdottoMenu("Tortino al cioccolato"));
+        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni);
+        recyclerView.setAdapter(menuRecyclerAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
+        ProdottoMenu nuovoProdotto2 = new ProdottoMenu("Capricciosa", "Prosciutto, mozzarella", 50.00);
+        sezionePizze.add(nuovoProdotto2);
 
-        final ProdottiAdapter adapter = new ProdottiAdapter(getActivity(), prodottiMenu);
-        menuAttivitaListView.setAdapter(adapter);
-        menuAttivitaListView.setTextFilterEnabled(true);
-
-
-
-        // filter on text change
-        cercaEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(adapter != null)
-                {
-                    adapter.getFilter().filter(s.toString());
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        menuRecyclerAdapter.notifyDataSetChanged();
 
         opzioniButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu opzioniMenu = new PopupMenu(getActivity(), opzioniButton);
-                // Inflating popup menu from popup_menu.xml file
+                //Inflating popup menu from popup_menu.xml file
                 opzioniMenu.getMenuInflater().inflate(R.menu.opzioni_personalizza_menu, opzioniMenu.getMenu());
                 opzioniMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        // Toast message on menu item clicked
-
+                        //Toast message on menu item clicked
 
                         int id = menuItem.getItemId();
 
@@ -170,7 +143,7 @@ public class PersonalizzaMenuFragment extends Fragment implements Serializable {
                         }else if(id == R.id.aggiungiSezione){
                             AggiungiSezioneFragment fragment = new AggiungiSezioneFragment();
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable("key", prodottiMenu);
+                            bundle.putSerializable("key", sezioni);
                             fragment.setArguments(bundle);
                             sostituisciFragment(fragment);
                             return true;
@@ -190,6 +163,7 @@ public class PersonalizzaMenuFragment extends Fragment implements Serializable {
         });
 
         return v;
+
     }
 
     public void sostituisciFragment(Fragment fragment){
@@ -197,5 +171,15 @@ public class PersonalizzaMenuFragment extends Fragment implements Serializable {
         transaction.replace(R.id.adminFragmentContainerView, fragment);
         transaction.commit();
     }
+
+    /*public void aggiungiProdotto(ProdottoMenu prodotto, int sezioneIndex) {
+        sezioni.get(sezioneIndex).addItem(prodotto);
+        prodottiAdapter.notifyDataSetChanged();
+    }*/
+
+    public MenuRecyclerAdapter getAdapter() {
+        return menuRecyclerAdapter;
+    }
+
 
 }
