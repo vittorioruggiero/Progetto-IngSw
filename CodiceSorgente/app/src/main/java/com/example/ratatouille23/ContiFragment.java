@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.List;
 public class ContiFragment extends Fragment {
 
     private View inflatedView;
+
+    private TextView totaleCifraTextView;
 
     private Spinner selezionaTavoloSpinner;
 
@@ -80,6 +83,7 @@ public class ContiFragment extends Fragment {
 
         chiudiContoButton = inflatedView.findViewById(R.id.chiudiContoButton);
         selezionaTavoloSpinner = inflatedView.findViewById(R.id.selezionaTavoloSpinner);
+        totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tavoli_array, android.R.layout.simple_spinner_item);
@@ -99,16 +103,34 @@ public class ContiFragment extends Fragment {
 
         List<SingoloOrdine> listaProdotti = new ArrayList<>();
 
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
+        setOggettiDiProva(listaProdotti);
 
         RecyclerView recyclerView = (RecyclerView) inflatedView.findViewById(R.id.contiRecyclerView);
         SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(listaProdotti);
         recyclerView.setAdapter(singoliOrdiniAdapter);
-        Log.e("Ciao", "Ciao");
 
         return inflatedView;
+    }
+
+    void setOggettiDiProva(List<SingoloOrdine> listaProdotti) {
+
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
+        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
+
+        Ordinazione ordinazione = new Ordinazione(listaProdotti);
+        double totale = ordinazione.calcolaTotale();
+        totaleCifraTextView.setText(String.valueOf(totale));
+
     }
 
     AlertDialog creaChiusuraContoAlertDialog() {

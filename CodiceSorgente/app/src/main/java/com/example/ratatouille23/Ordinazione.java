@@ -45,10 +45,12 @@ public class Ordinazione {
 
     public double calcolaTotale() {
         Iterator<SingoloOrdine> listaProdottiIterator = this.listaProdotti.iterator();
+        SingoloOrdine currentSingoloOrdine;
         double totale = 0;
 
         while(listaProdottiIterator.hasNext()) {
-            totale = totale + listaProdottiIterator.next().getProdottoMenu().getPrezzo() * listaProdottiIterator.next().getQuantitaProdotto();
+            currentSingoloOrdine = listaProdottiIterator.next();
+            totale = totale + currentSingoloOrdine.getProdottoMenu().getPrezzo() * currentSingoloOrdine.getQuantitaProdotto();
         }
 
         return totale;
