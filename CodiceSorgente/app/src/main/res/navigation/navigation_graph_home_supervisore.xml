@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeSupervisoreFragment"
-        android:name="com.example.ratatouille23.HomeSupervisoreFragment"
+        android:name="com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment"
         android:label="fragment_home_supervisore"
         tools:layout="@layout/fragment_home_supervisore" />
     <fragment
         android:id="@+id/personalizzaMenuSupervisoreFragment"
-        android:name="com.example.ratatouille23.PersonalizzaMenuFragment"
+        android:name="com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment"
         android:label="fragment_personalizza_menu"
         tools:layout="@layout/fragment_personalizza_menu" />
     <fragment
         android:id="@+id/contiFragment"
-        android:name="com.example.ratatouille23.ContiFragment"
+        android:name="com.example.ratatouille23.UI.fragment.ContiFragment"
         android:label="fragment_conti"
         tools:layout="@layout/fragment_conti" />
 </navigation>

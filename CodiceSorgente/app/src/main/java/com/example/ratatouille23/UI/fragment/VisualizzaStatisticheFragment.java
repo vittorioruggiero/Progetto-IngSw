@@ -1,17 +1,18 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.UI.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.TestLooperManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.example.ratatouille23.R;
 
 import java.util.Calendar;
 

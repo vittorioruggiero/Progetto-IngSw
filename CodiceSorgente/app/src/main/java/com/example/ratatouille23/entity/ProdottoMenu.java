@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.entity;
 
 public class ProdottoMenu{
 

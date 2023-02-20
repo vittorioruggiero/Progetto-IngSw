@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@color/DEFAULT_COLOR"
-    tools:context=".HomeAdminActivity">
+    tools:context=".UI.activity.HomeAdminActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/adminBottomNavigationView"

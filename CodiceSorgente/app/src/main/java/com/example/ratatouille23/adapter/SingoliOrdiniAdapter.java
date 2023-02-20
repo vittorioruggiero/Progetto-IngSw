@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.SingoloOrdine;
 
 import java.util.List;
 

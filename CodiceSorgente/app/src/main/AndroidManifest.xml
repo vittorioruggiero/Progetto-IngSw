@@ -15,22 +15,22 @@
             android:name=".ModificaProdottoActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeAddettoSalaActivity"
+            android:name=".UI.activity.HomeAddettoSalaActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeSupervisoreActivity"
+            android:name=".UI.activity.HomeSupervisoreActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeAdminActivity"
+            android:name=".UI.activity.HomeAdminActivity"
             android:exported="false" />
         <activity
-            android:name=".ReimpostaPasswordActivity"
+            android:name=".UI.activity.ReimpostaPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistratiActivity"
+            android:name=".UI.activity.RegistratiActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".UI.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

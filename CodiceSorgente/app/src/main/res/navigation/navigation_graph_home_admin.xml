@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/creaUtenteFragment"
-        android:name="com.example.ratatouille23.CreaUtenteFragment"
+        android:name="com.example.ratatouille23.UI.fragment.CreaUtenteFragment"
         android:label="fragment_crea_utente"
         tools:layout="@layout/fragment_crea_utente" />
     <fragment
         android:id="@+id/homeAdminFragment"
-        android:name="com.example.ratatouille23.HomeAdminFragment"
+        android:name="com.example.ratatouille23.UI.fragment.HomeAdminFragment"
         android:label="fragment_home_admin"
         tools:layout="@layout/fragment_home_admin" />
     <fragment
         android:id="@+id/visualizzaStatisticheFragment"
-        android:name="com.example.ratatouille23.VisualizzaStatisticheFragment"
+        android:name="com.example.ratatouille23.UI.fragment.VisualizzaStatisticheFragment"
         android:label="fragment_visualizza_statistiche"
         tools:layout="@layout/fragment_visualizza_statistiche" />
     <fragment
         android:id="@+id/personalizzaMenuAdminFragment"
-        android:name="com.example.ratatouille23.PersonalizzaMenuFragment"
+        android:name="com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment"
         android:label="fragment_personalizza_menu"
         tools:layout="@layout/fragment_personalizza_menu" />
 </navigation>

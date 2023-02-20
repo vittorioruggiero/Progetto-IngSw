@@ -1,4 +1,6 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.entity;
+
+import com.example.ratatouille23.entity.ProdottoMenu;
 
 import java.util.ArrayList;
 import java.util.List;

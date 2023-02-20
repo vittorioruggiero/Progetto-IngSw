@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.ProdottoMenu;
+import com.example.ratatouille23.entity.SezioneMenu;
+
 import java.util.List;
 
 public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapter.ViewHolder> {

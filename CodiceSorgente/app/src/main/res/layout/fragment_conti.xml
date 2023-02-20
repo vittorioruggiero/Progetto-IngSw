@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/DEFAULT_COLOR"
-    tools:context=".ContiFragment" >
+    tools:context=".UI.fragment.ContiFragment" >
 
     <TextView
         android:id="@+id/selezionaTavoloTextView"

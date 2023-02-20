@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.UI.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /*

@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/homeAddettoSalaFragment"
-        android:name="com.example.ratatouille23.HomeAddettoSalaFragment"
+        android:name="com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment"
         android:label="fragment_home_addetto_sala"
         tools:layout="@layout/fragment_home_addetto_sala" />
     <fragment
         android:id="@+id/ordinazioniFragment"
-        android:name="com.example.ratatouille23.OrdinazioniFragment"
+        android:name="com.example.ratatouille23.UI.fragment.OrdinazioniFragment"
         android:label="fragment_ordinazioni"
         tools:layout="@layout/fragment_ordinazioni" />
 </navigation>

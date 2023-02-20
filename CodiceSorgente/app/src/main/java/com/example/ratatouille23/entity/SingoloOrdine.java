@@ -1,4 +1,6 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.entity;
+
+import com.example.ratatouille23.entity.ProdottoMenu;
 
 public class SingoloOrdine {
 

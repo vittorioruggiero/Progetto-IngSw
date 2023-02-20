@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.UI.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.ratatouille23.R;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/DEFAULT_COLOR"
-    tools:context=".VisualizzaStatisticheFragment">
+    tools:context=".UI.fragment.VisualizzaStatisticheFragment">
 
 
     <com.google.android.material.button.MaterialButton

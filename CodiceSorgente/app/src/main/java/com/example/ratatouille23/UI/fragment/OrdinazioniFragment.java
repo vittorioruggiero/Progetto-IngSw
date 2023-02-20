@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.UI.fragment;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ratatouille23.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeAddettoSalaFragment#newInstance} factory method to
+ * Use the {@link OrdinazioniFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeAddettoSalaFragment extends Fragment {
+public class OrdinazioniFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class HomeAddettoSalaFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeAddettoSalaFragment() {
+    public OrdinazioniFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class HomeAddettoSalaFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeAddettoSalaFragment.
+     * @return A new instance of fragment OrdinazioniFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeAddettoSalaFragment newInstance(String param1, String param2) {
-        HomeAddettoSalaFragment fragment = new HomeAddettoSalaFragment();
+    public static OrdinazioniFragment newInstance(String param1, String param2) {
+        OrdinazioniFragment fragment = new OrdinazioniFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class HomeAddettoSalaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_addetto_sala, container, false);
+        return inflater.inflate(R.layout.fragment_ordinazioni, container, false);
     }
 }

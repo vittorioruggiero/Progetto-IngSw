@@ -1,4 +1,4 @@
-package com.example.ratatouille23;
+package com.example.ratatouille23.entity;
 
 import java.util.Iterator;
 import java.util.List;
