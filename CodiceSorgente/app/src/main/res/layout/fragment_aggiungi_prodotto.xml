@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AggiungiProdottoActivity"
+    tools:context=".UI.fragment.AggiungiProdottoFragment"
     android:background="@color/DEFAULT_COLOR">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +67,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:hint="@string/costoProdotto"
-            android:inputType="textPersonName" />
+            android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

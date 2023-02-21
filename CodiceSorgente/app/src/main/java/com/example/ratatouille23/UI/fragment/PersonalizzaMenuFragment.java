@@ -3,8 +3,10 @@ package com.example.ratatouille23.UI.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -22,68 +24,29 @@ import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PersonalizzaMenuFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+public class PersonalizzaMenuFragment extends Fragment {
 
-
-public class PersonalizzaMenuFragment extends Fragment implements Serializable{
-
-    public static final String TAG = "PersonalizzaMenuFragment";
+    private static final String TAG = "PersonalizzaMenuFragment";
     private ArrayList<SezioneMenu> sezioni = new ArrayList<>();
-
     private RecyclerView recyclerView;
     private MenuRecyclerAdapter menuRecyclerAdapter;
 
     private ListView menuAttivitaListView;
     private EditText cercaEditText;
     private FloatingActionButton opzioniButton;
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FragmentManager fragmentManager = getFragmentManager();
 
     public PersonalizzaMenuFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PersonalizzaMenuFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PersonalizzaMenuFragment newInstance(String param1, String param2) {
-        PersonalizzaMenuFragment fragment = new PersonalizzaMenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -91,34 +54,37 @@ public class PersonalizzaMenuFragment extends Fragment implements Serializable{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_personalizza_menu, container, false);
-
-        recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
         opzioniButton = (FloatingActionButton) v.findViewById(R.id.opzioniButton);
 
-        String nome = "Margherita";
-        String ingredienti = "salsa, pomodoro";
-        double prezzo = 50.00;
-        String nomeSezione2 = "Dolci";
+        recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
 
-        ProdottoMenu nuovoProdotto = new ProdottoMenu(nome, ingredienti, prezzo);
+        List<ProdottoMenu> prodottiSezionePizze = new ArrayList<>();
 
-        String nomeSezionePizze = "Pizze";
-        List<ProdottoMenu> sezionePizze = new ArrayList<>();
+        prodottiSezionePizze.add(new ProdottoMenu("Margherita", "Salsa, Mozzarella", 7));
+        prodottiSezionePizze.add(new ProdottoMenu("Capricciosa", "Salsa, Mozzarella, Prosciutto", 9));
+        prodottiSezionePizze.add(new ProdottoMenu("Diavola", "Salsa, Mozzarella, Salame", 8));
+        prodottiSezionePizze.add(new ProdottoMenu("Salsiccia e Patatine", "Salsiccia, Patatine, Mozzarella", 10));
 
-        sezionePizze.add(nuovoProdotto);
+        sezioni.add(new SezioneMenu("Pizze", prodottiSezionePizze));
 
-        sezioni.add(new SezioneMenu(nomeSezionePizze, sezionePizze));
+        List<ProdottoMenu> prodottiSezioneBibite = new ArrayList<>();
 
-        sezioni.add(new SezioneMenu(nomeSezione2));
+        prodottiSezioneBibite.add(new ProdottoMenu("Acqua Naturale", 3));
+        prodottiSezioneBibite.add(new ProdottoMenu("Acqua Frizzante", 3));
+        prodottiSezioneBibite.add(new ProdottoMenu("Coca-Cola", 3.5));
 
-        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni);
+        sezioni.add(new SezioneMenu("Bibite", prodottiSezioneBibite));
+
+        List<ProdottoMenu> prodottiSezioneDolci = new ArrayList<>();
+
+        prodottiSezioneDolci.add(new ProdottoMenu("Tortino Cioccolato", "Cioccolato, Latte", 15));
+        prodottiSezioneDolci.add(new ProdottoMenu("Cheesecake", "Biscotto, Latte, Fragola", 18));
+        prodottiSezioneDolci.add(new ProdottoMenu("Tiramisu", "Cioccolato, Latte, Caffe", 10));
+
+        sezioni.add(new SezioneMenu("Dolci", prodottiSezioneDolci));
+
+        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getContext());
         recyclerView.setAdapter(menuRecyclerAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        ProdottoMenu nuovoProdotto2 = new ProdottoMenu("Capricciosa", "Prosciutto, mozzarella", 50.00);
-        sezionePizze.add(nuovoProdotto2);
-
-        menuRecyclerAdapter.notifyDataSetChanged();
 
         opzioniButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,18 +130,22 @@ public class PersonalizzaMenuFragment extends Fragment implements Serializable{
     }
 
     public void sostituisciFragment(Fragment fragment){
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.adminFragmentContainerView, fragment);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        //transaction.show(getFragmentManager().findFragmentByTag("ONE"));
+        //transaction.hide(this);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    /*public void aggiungiProdotto(ProdottoMenu prodotto, int sezioneIndex) {
-        sezioni.get(sezioneIndex).addItem(prodotto);
-        prodottiAdapter.notifyDataSetChanged();
-    }*/
 
-    public MenuRecyclerAdapter getAdapter() {
-        return menuRecyclerAdapter;
+    public void aggiungiProdotto(ProdottoMenu prodotto, int sezioneIndex) {
+        sezioni.get(sezioneIndex).addItem(prodotto);
+        menuRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    public void aggiungiSezione(SezioneMenu sezione) {
+        sezioni.add(sezione);
+        menuRecyclerAdapter.notifyDataSetChanged();
     }
 
 

@@ -1,16 +1,22 @@
 package com.example.ratatouille23.adapter;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ratatouille23.UI.fragment.ModificaProdottoFragment;
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -18,11 +24,14 @@ import java.util.List;
 
 public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHolder> {
 
+    Context context;
+
     List<ProdottoMenu> prodottiMenu;
 
 
-    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu) {
+    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu, Context context) {
         this.prodottiMenu = prodottiMenu;
+        this.context = context;
     }
 
     @NonNull
@@ -41,10 +50,8 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
         holder.modificaProdottoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ModificaProdottoFragment fragment = new ModificaProdottoFragment();
-                sostituisciFragment(fragment);
-
+                Toast.makeText(context,"Hai cliccato: " + prodottiMenu.get(holder.getAdapterPosition()).getNome(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -71,13 +78,6 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
             nomeProdottoTextView = itemView.findViewById(R.id.titoloProdottoTextView);
             modificaProdottoButton = itemView.findViewById(R.id.opzioniButton);
         }
-    }
-
-    public void sostituisciFragment(Fragment fragment){
-        /*FragmentManager fragmentManager = fragment.getChildFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.adminFragmentContainerView, fragment);
-        transaction.commit();*/
     }
 
 

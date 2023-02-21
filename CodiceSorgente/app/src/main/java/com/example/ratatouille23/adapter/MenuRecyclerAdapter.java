@@ -1,9 +1,11 @@
 package com.example.ratatouille23.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +17,13 @@ import com.example.ratatouille23.entity.SezioneMenu;
 import java.util.List;
 
 public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapter.ViewHolder> {
+
+    Context context;
     List<SezioneMenu> sezioniMenu;
 
-    public MenuRecyclerAdapter(List<SezioneMenu> sezioniMenu) {
+    public MenuRecyclerAdapter(List<SezioneMenu> sezioniMenu, Context context) {
         this.sezioniMenu = sezioniMenu;
+        this.context = context;
     }
 
     @NonNull
@@ -40,7 +45,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
 
         holder.nomeSezioneTextView.setText(nomeSezione);
 
-        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu);
+        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu, context);
         holder.sezioniRecyclerView.setAdapter(prodottiAdapter);
 
 
