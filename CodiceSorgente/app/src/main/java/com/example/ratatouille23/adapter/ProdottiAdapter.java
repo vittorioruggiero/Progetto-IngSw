@@ -1,8 +1,11 @@
 package com.example.ratatouille23.adapter;
 
+import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getTagFragment;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,13 +29,19 @@ import java.util.List;
 
 public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHolder> {
 
-    Activity activity;
-    List<ProdottoMenu> prodottiMenu;
+    private Context context;
+    private int posizioneSezione;
+    private List<ProdottoMenu> prodottiMenu;
+    private static Bundle myBundle = new Bundle();
+    private ItemClickListener clickListener;
 
 
-    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu, Activity activity) {
+
+    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu, Context context, ItemClickListener clickListener, int posizioneSezione) {
         this.prodottiMenu = prodottiMenu;
-        this.activity = activity;
+        this.context = context;
+        this.clickListener = clickListener;
+        this.posizioneSezione = posizioneSezione;
     }
 
     @NonNull
@@ -50,8 +60,7 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
         holder.modificaProdottoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModificaProdottoFragment fragment = new ModificaProdottoFragment();
-                Toast.makeText(activity,"Hai cliccato: " + prodottiMenu.get(holder.getAdapterPosition()).getNome(), Toast.LENGTH_SHORT).show();
+                clickListener.onItemClick(prodottiMenu.get(holder.getAdapterPosition()), holder.getAdapterPosition(), posizioneSezione);
             }
         });
 
@@ -78,6 +87,14 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
             nomeProdottoTextView = itemView.findViewById(R.id.titoloProdottoTextView);
             modificaProdottoButton = itemView.findViewById(R.id.opzioniButton);
         }
+    }
+
+    public static Bundle getBundle(){
+        return myBundle;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione);
     }
 
 

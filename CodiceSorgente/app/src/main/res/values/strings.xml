@@ -144,4 +144,7 @@
     <string name="chiudiConto">Chiudi conto</string>
     <string name="visualizzaConto">Visualizza conto</string>
     <string name="totale">Totale</string>
+    <string name="eliminaSezione">Scegli sezione da eliminare</string>
+    <string name="eliminaSezioneButton">Elimina Sezione</string>
+    <string name="salvaModifiche">Salva Modifiche</string>
 </resources>

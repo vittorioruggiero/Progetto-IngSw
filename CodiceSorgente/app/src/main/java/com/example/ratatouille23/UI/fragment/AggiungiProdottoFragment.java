@@ -1,6 +1,7 @@
 package com.example.ratatouille23.UI.fragment;
 
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.aggiungiProdotto;
+import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.ProdottoMenu;
+import com.example.ratatouille23.entity.SezioneMenu;
+
+import java.util.ArrayList;
 
 public class AggiungiProdottoFragment extends Fragment {
 
@@ -53,30 +58,69 @@ public class AggiungiProdottoFragment extends Fragment {
         tipologiaProdottoSpinner = v.findViewById(R.id.tipologiaProdottoSpinner);
         aggiungiProdottoButton = v.findViewById(R.id.aggiungiProdottoButton);
 
+        ArrayList<SezioneMenu> sezioni = getSezioni();
+
+        ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, sezioni);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipologiaProdottoSpinner.setAdapter(adapter);
+
 
         aggiungiProdottoButton.setOnClickListener(view -> {
             String nomeProdotto = nomeProdottoEditText.getText().toString();
+            String nomeProdottoSecondaLingua = nomeProdottoSecondaLinguaEditText.getText().toString();
             String ingredienti = ingredientiProdottoEditText.getText().toString();
-            double costo = Double.parseDouble(costoProdottoEditText.getText().toString());
-
-            //aggiungi prodotto
-            ProdottoMenu nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+            String ingredientiSecondaLingua = ingredientiProdottoSecondaLinguaEditText.getText().toString();
+            double costo;
 
             try {
-                aggiungiProdotto(nuovoProdotto, 0);
-            }catch(IndexOutOfBoundsException e){
-                Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                costo = Double.parseDouble(costoProdottoEditText.getText().toString());
+            }catch(NumberFormatException e){
+                costo = 0;
             }
-            sostituisciFragment();
+            ProdottoMenu nuovoProdotto = null;
+
+            if(nomeProdotto.equals("") || ingredienti.equals("") || costo == 0){
+                if(tipologiaProdottoSpinner.getSelectedItem() != null){
+                    if(!(tipologiaProdottoSpinner.getSelectedItem().toString().equals("Bibite")))
+                        Toast.makeText(getActivity(), "Riempire i campi obbligatori ", Toast.LENGTH_SHORT).show();
+                    else{
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, costo);
+                        try {
+                            aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
+                            sostituisciFragment();
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+                    try {
+                        aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
+                        sostituisciFragment();
+                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
+                    Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
+                    try {
+                        aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
+                        sostituisciFragment();
+                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
 
         });
-
-
-        /*ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<SezioneMenu>(getActivity(),
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        tipologiaProdottoSpinner.setAdapter(adapter);*/
 
         return v;
     }

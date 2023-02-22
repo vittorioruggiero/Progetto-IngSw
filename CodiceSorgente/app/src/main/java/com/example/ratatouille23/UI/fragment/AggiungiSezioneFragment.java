@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.SezioneMenu;
@@ -39,14 +40,18 @@ public class AggiungiSezioneFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_aggiungi_sezione, container, false);
 
         nomeSezioneEditText = v.findViewById(R.id.nuovaSezioneEditText);
-        salvaSezioneButton = v.findViewById(R.id.salvaSezioneButton);
+        salvaSezioneButton = v.findViewById(R.id.eliminaSezioneButton);
 
         salvaSezioneButton.setOnClickListener(view -> {
             String nomeSezione = nomeSezioneEditText.getText().toString();
-            SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione, new ArrayList<>());
+            if(nomeSezione.equals("")){
+                Toast.makeText(getActivity(), "Inserisci il nome della sezione", Toast.LENGTH_SHORT).show();
+            }else{
+                SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione, new ArrayList<>());
+                aggiungiSezione(nuovaSezione);
+                sostituisciFragment();
+            }
 
-            aggiungiSezione(nuovaSezione);
-            sostituisciFragment();
         });
 
         return v;

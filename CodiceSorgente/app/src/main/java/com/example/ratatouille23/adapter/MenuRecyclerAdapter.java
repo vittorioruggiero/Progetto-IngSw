@@ -17,14 +17,17 @@ import com.example.ratatouille23.entity.SezioneMenu;
 
 import java.util.List;
 
-public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapter.ViewHolder> {
+public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapter.ViewHolder> implements ProdottiAdapter.ItemClickListener {
 
-    Activity activity;
-    List<SezioneMenu> sezioniMenu;
+    private Context context;
+    private List<SezioneMenu> sezioniMenu;
 
-    public MenuRecyclerAdapter(List<SezioneMenu> sezioniMenu, Activity activity) {
+    private ProdottiAdapter.ItemClickListener clickListener;
+
+    public MenuRecyclerAdapter(List<SezioneMenu> sezioniMenu, Context context, ProdottiAdapter.ItemClickListener clickListener) {
         this.sezioniMenu = sezioniMenu;
-        this.activity = activity;
+        this.context = context;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -46,7 +49,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
 
         holder.nomeSezioneTextView.setText(nomeSezione);
 
-        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu, activity);
+        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu, context, this.clickListener, position);
         holder.sezioniRecyclerView.setAdapter(prodottiAdapter);
 
 
@@ -55,6 +58,11 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
     @Override
     public int getItemCount() {
         return sezioniMenu.size();
+    }
+
+    @Override
+    public void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

@@ -46,4 +46,8 @@ public class SezioneMenu {
         prodottiMenu.add(prodottoMenu);
     }
 
+    @Override
+    public String toString() {
+        return titolo;
+    }
 }

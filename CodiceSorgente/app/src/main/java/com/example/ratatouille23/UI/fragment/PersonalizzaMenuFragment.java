@@ -1,5 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,13 +17,14 @@ import android.widget.PopupMenu;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.MenuRecyclerAdapter;
+import com.example.ratatouille23.adapter.ProdottiAdapter;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class PersonalizzaMenuFragment extends Fragment {
+public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapter.ItemClickListener {
 
     private static final String TAG = "PersonalizzaMenuFragment";
     private static ArrayList<SezioneMenu> sezioni = new ArrayList<>();
@@ -81,7 +83,7 @@ public class PersonalizzaMenuFragment extends Fragment {
         sezioni.add(new SezioneMenu("Dolci", prodottiSezioneDolci));*/
 
 
-        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity());
+        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), this);
         recyclerView.setAdapter(menuRecyclerAdapter);
 
         opzioniButton.setOnClickListener(view -> {
@@ -134,4 +136,28 @@ public class PersonalizzaMenuFragment extends Fragment {
         menuRecyclerAdapter.notifyDataSetChanged();
     }
 
+    public static void eliminaSezione (int sezione){
+        sezioni.remove(sezione);
+        menuRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    public static void eliminaProdotto(int prodottoIndex, int sezioneIndex) {
+        sezioni.get(sezioneIndex).getProdottiMenu().remove(prodottoIndex);
+        menuRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    public static ArrayList<SezioneMenu> getSezioni(){
+        return sezioni;
+    }
+
+    public static String getTagFragment(){
+        return TAG;
+    }
+
+    @Override
+    public void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
+        Fragment fragment = ModificaProdottoFragment.newInstance(prodottoMenu.getNome(), prodottoMenu.getNomeSecondaLingua(),
+                prodottoMenu.getIngredienti(), prodottoMenu.getIngredientiSecondaLingua(), prodottoMenu.getPrezzo(), posizione, posizioneSezione);
+        sostituisciFragment(fragment);
+    }
 }
