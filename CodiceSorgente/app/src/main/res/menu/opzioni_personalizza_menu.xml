@@ -11,6 +11,6 @@
 
     <item
         android:id="@+id/ordineSezioni"
-        android:title="@string/ordineSezioni"/>
+        android:title="@string/modificaSezioni"/>
 
 </menu>

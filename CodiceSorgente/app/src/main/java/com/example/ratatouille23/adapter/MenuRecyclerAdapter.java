@@ -1,5 +1,6 @@
 package com.example.ratatouille23.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,12 @@ import java.util.List;
 
 public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapter.ViewHolder> {
 
-    Context context;
+    Activity activity;
     List<SezioneMenu> sezioniMenu;
 
-    public MenuRecyclerAdapter(List<SezioneMenu> sezioniMenu, Context context) {
+    public MenuRecyclerAdapter(List<SezioneMenu> sezioniMenu, Activity activity) {
         this.sezioniMenu = sezioniMenu;
-        this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -45,7 +46,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
 
         holder.nomeSezioneTextView.setText(nomeSezione);
 
-        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu, context);
+        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu, activity);
         holder.sezioniRecyclerView.setAdapter(prodottiAdapter);
 
 

@@ -42,8 +42,8 @@ public class SezioneMenu {
         this.prodottiMenu.addAll(items);
     }
 
-    public void addItem(ProdottoMenu item) {
-        prodottiMenu.add(item);
+    public void addItem(ProdottoMenu prodottoMenu) {
+        prodottiMenu.add(prodottoMenu);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.aggiungiSezione;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,59 +16,20 @@ import android.widget.EditText;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.SezioneMenu;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AggiungiSezioneFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AggiungiSezioneFragment extends Fragment implements Serializable {
-
+public class AggiungiSezioneFragment extends Fragment {
 
     EditText nomeSezioneEditText;
     Button salvaSezioneButton;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public AggiungiSezioneFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AggiungiSezioneFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AggiungiSezioneFragment newInstance(String param1, String param2) {
-        AggiungiSezioneFragment fragment = new AggiungiSezioneFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
@@ -75,26 +38,32 @@ public class AggiungiSezioneFragment extends Fragment implements Serializable {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_aggiungi_sezione, container, false);
 
-        nomeSezioneEditText = (EditText) v.findViewById(R.id.nuovaSezioneEditText);
-        salvaSezioneButton = (Button) v.findViewById(R.id.salvaSezioneButton);
+        nomeSezioneEditText = v.findViewById(R.id.nuovaSezioneEditText);
+        salvaSezioneButton = v.findViewById(R.id.salvaSezioneButton);
 
-        ArrayList<SezioneMenu> sezioni = (ArrayList<SezioneMenu>)getArguments().getSerializable("key");
+        salvaSezioneButton.setOnClickListener(view -> {
+            String nomeSezione = nomeSezioneEditText.getText().toString();
+            SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione, new ArrayList<>());
 
-        salvaSezioneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //aggiungi sezione
-                PersonalizzaMenuFragment fragment = new PersonalizzaMenuFragment();
-                sostituisciFragment(fragment);
-            }
+            aggiungiSezione(nuovaSezione);
+            sostituisciFragment();
         });
 
         return v;
 
     }
-    public void sostituisciFragment(Fragment fragment){
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.adminFragmentContainerView, fragment);
+    public void sostituisciFragment(){
+        FragmentTransaction transaction = null;
+        if (getFragmentManager() != null) {
+            transaction = getFragmentManager().beginTransaction();
+        }
+        try {
+            transaction.remove(this);
+        }catch(NullPointerException e){
+            transaction.commit();
+        }
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.adminFragmentContainerView, PersonalizzaMenuFragment.class, null);
         transaction.commit();
     }
 }

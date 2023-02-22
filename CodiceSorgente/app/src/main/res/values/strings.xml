@@ -127,7 +127,7 @@
     <string name="titoloInserisciAvviso">Avviso</string>
     <string name="aggiungiProdotto">Aggiungi Prodotto</string>
     <string name="aggiungiSezione">Aggiungi Sezione</string>
-    <string name="ordineSezioni">Modifica l\'ordine delle sezioni</string>
+    <string name="modificaSezioni">Modifica le sezioni</string>
     <string name="nuovoProdotto">Nuovo Prodotto</string>
     <string name="nomeProdotto">Nome Prodotto</string>
     <string name="nomeProdottoSecondaLingua">Nome seconda lingua *opzionale*</string>

@@ -76,7 +76,7 @@ public class CreaUtenteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View inflatedView = inflater.inflate(R.layout.fragment_crea_utente, container, false);
+        inflatedView = inflater.inflate(R.layout.fragment_crea_utente, container, false);
 
         nuovoUtenteNomeTextInputEditText = inflatedView.findViewById(R.id.nuovoUtenteNomeTextInputEditText);
         nuovoUtenteNomeTextInputEditText.setSaveEnabled(false);

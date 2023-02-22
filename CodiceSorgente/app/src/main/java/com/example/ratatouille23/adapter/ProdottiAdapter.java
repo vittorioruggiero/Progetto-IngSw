@@ -1,5 +1,6 @@
 package com.example.ratatouille23.adapter;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,14 +25,13 @@ import java.util.List;
 
 public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHolder> {
 
-    Context context;
-
+    Activity activity;
     List<ProdottoMenu> prodottiMenu;
 
 
-    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu, Context context) {
+    public ProdottiAdapter(List<ProdottoMenu> prodottiMenu, Activity activity) {
         this.prodottiMenu = prodottiMenu;
-        this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -51,7 +51,7 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 ModificaProdottoFragment fragment = new ModificaProdottoFragment();
-                Toast.makeText(context,"Hai cliccato: " + prodottiMenu.get(holder.getAdapterPosition()).getNome(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"Hai cliccato: " + prodottiMenu.get(holder.getAdapterPosition()).getNome(), Toast.LENGTH_SHORT).show();
             }
         });
 
