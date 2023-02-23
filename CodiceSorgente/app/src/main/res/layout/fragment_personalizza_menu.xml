@@ -7,15 +7,16 @@
     android:background="@color/DEFAULT_COLOR"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/cercaEditText"
-        android:layout_width="305dp"
+    <SearchView
+        android:id="@+id/personalizzaMenuSearchView"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/edit_text_bordi_arrotondati"
-        android:gravity="center_vertical"
-        android:hint="Search..."
-        android:padding="10dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toStartOf="@+id/opzioniButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,14 +24,12 @@
         android:id="@+id/opzioniButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
         android:clickable="true"
         android:contentDescription="@string/modificaButton"
         android:src="@drawable/settings_icon"
         app:backgroundTint="@color/DEFAULT_COLOR"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cercaEditText"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -44,14 +43,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/menuAttivitaRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/layout_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:spanCount="3"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            tools:listitem="@layout/layout_item" />
 
     </LinearLayout>
 

@@ -11,7 +11,7 @@
         android:id="@+id/eliminaSezioneTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="60dp"
         android:text="@string/eliminaSezione"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_width="300dp"
         android:layout_height="57dp"
         android:layout_marginStart="55dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="56dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,14 +34,15 @@
         <Spinner
             android:id="@+id/sezioniSpinner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:contentDescription="@string/eliminaSezione" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/eliminaSezioneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="35dp"
         android:backgroundTint="@color/YELLOW_LOGO"
         android:text="@string/eliminaSezioneButton"
         app:layout_constraintEnd_toEndOf="parent"

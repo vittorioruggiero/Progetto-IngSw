@@ -147,4 +147,9 @@
     <string name="eliminaSezione">Scegli sezione da eliminare</string>
     <string name="eliminaSezioneButton">Elimina Sezione</string>
     <string name="salvaModifiche">Salva Modifiche</string>
+    <string name="eliminaProdotto">Elimina Prodotto</string>
+    <string name="scegliIntervallo">Scegli Intervallo</string>
+    <string name="ordinaSezioni">Ordina le sezioni in ordine:</string>
+    <string name="ordineCrescente">Crescente</string>
+    <string name="ordineDecrescente">Decrescente</string>
 </resources>

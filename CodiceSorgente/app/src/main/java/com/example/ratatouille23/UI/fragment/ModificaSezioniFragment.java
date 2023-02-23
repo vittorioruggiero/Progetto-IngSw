@@ -20,6 +20,8 @@ import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.SezioneMenu;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ModificaSezioniFragment extends Fragment {
 

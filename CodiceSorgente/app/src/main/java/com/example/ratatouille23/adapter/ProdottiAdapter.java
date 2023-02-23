@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,9 @@ import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHolder> {
 
@@ -57,12 +60,9 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.nomeProdottoTextView.setText(prodottiMenu.get(position).getNome());
-        holder.modificaProdottoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onItemClick(prodottiMenu.get(holder.getAdapterPosition()), holder.getAdapterPosition(), posizioneSezione);
-            }
-        });
+        holder.modificaProdottoButton.setOnClickListener(view ->
+                clickListener.onItemClick(prodottiMenu.get(holder.getAdapterPosition()), holder.getAdapterPosition(), posizioneSezione)
+        );
 
     }
 
@@ -76,7 +76,7 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView nomeProdottoTextView;
         FloatingActionButton modificaProdottoButton;
@@ -97,5 +97,9 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
         void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione);
     }
 
+    public void filterList(List<ProdottoMenu> filterlist) {
+        prodottiMenu = filterlist;
+        notifyDataSetChanged();
+    }
 
 }

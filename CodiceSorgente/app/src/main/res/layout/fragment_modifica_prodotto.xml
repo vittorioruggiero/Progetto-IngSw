@@ -138,6 +138,7 @@
         app:layout_constraintTop_toBottomOf="@+id/prezzoModificaLayout" />
 
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="300dp"
         android:layout_height="57dp"
         android:layout_marginTop="20dp"
@@ -153,5 +154,16 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/seleziona_tipologia_di_prodotto_text" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/eliminaProdottoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/eliminaProdotto"
+        app:layout_constraintBottom_toTopOf="@+id/salvaModificheButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

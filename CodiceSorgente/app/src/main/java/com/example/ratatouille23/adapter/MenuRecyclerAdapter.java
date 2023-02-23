@@ -21,6 +21,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
 
     private Context context;
     private List<SezioneMenu> sezioniMenu;
+    private ProdottiAdapter prodottiAdapter;
 
     private ProdottiAdapter.ItemClickListener clickListener;
 
@@ -49,7 +50,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
 
         holder.nomeSezioneTextView.setText(nomeSezione);
 
-        ProdottiAdapter prodottiAdapter = new ProdottiAdapter(prodottiMenu, context, this.clickListener, position);
+        prodottiAdapter = new ProdottiAdapter(prodottiMenu, context, this.clickListener, position);
         holder.sezioniRecyclerView.setAdapter(prodottiAdapter);
 
 
@@ -77,6 +78,10 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
             sezioniRecyclerView = itemView.findViewById(R.id.recyclerViewSezione);
 
         }
+    }
+
+    public ProdottiAdapter getProdottoAdapter(){
+        return prodottiAdapter;
     }
 
 

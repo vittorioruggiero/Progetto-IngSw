@@ -14,18 +14,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="Scegli Intervallo"
-        android:textSize="20dp"
+        android:text="@string/scegliIntervallo"
+        android:textSize="14sp"
+        app:backgroundTint="@color/YELLOW_LOGO"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView5"
         android:name="com.example.ratatouille23.UI.fragment.GraficoStatisticaFragment"
-        android:layout_width="412dp"
-        android:layout_height="543dp"
+        android:layout_width="391dp"
+        android:layout_height="528dp"
         android:layout_marginTop="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

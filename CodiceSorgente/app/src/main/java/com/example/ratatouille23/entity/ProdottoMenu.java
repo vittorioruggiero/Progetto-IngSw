@@ -22,6 +22,13 @@ public class ProdottoMenu{
         this.prezzo = prezzo;
     }
 
+    public ProdottoMenu(String nome, double prezzo, String nomeSecondaLingua) {
+        this.nome = nome;
+        this.nomeSecondaLingua = nomeSecondaLingua;
+        this.prezzo = prezzo;
+    }
+
+
     public ProdottoMenu(String nome, double prezzo) {
         this.nome = nome;
         this.prezzo = prezzo;

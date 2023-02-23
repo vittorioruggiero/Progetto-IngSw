@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.ProdottiAdapter;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 
 public class ModificaProdottoFragment extends Fragment {
 
-    private Button salvaModificheButton;
+    private Button salvaModificheButton, eliminaProdottoButton;
     private EditText nomeProdottoEditText;
     private EditText nomeProdottoSecondaLinguaEditText;
     private EditText ingredientiEditText;
@@ -98,6 +99,7 @@ public class ModificaProdottoFragment extends Fragment {
         ingredientiSecondaLinguaEditText = v.findViewById(R.id.ingredientiSecondaLinguaModificaEditText);
         costoEditText = v.findViewById(R.id.prezzoModificaEditText);
         tipologiaProdottoModificaSpinner = v.findViewById(R.id.tipologiaProdottoModificaSpinner);
+        eliminaProdottoButton = v.findViewById(R.id.eliminaProdottoButton);
 
         nomeProdottoEditText.setText(nomeProdotto);
         if(nomeProdottoSecondaLingua != null)
@@ -119,10 +121,84 @@ public class ModificaProdottoFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                eliminaProdotto(posizione, posizioneSezione);
-                aggiungiProdotto(new ProdottoMenu(nomeProdottoEditText.getText().toString(), ingredientiEditText.getText().toString(),
-                        Double.parseDouble(costoEditText.getText().toString())), tipologiaProdottoModificaSpinner.getSelectedItemPosition());
+                String nomeProdotto = nomeProdottoEditText.getText().toString();
+                String nomeProdottoSecondaLingua = nomeProdottoSecondaLinguaEditText.getText().toString();
+                String ingredienti = ingredientiEditText.getText().toString();
+                String ingredientiSecondaLingua = ingredientiSecondaLinguaEditText.getText().toString();
+                double costo;
 
+                try {
+                    costo = Double.parseDouble(costoEditText.getText().toString());
+                }catch(NumberFormatException e){
+                    costo = 0;
+                }
+                ProdottoMenu nuovoProdotto = null;
+
+
+
+                if(nomeProdotto.equals("") || ingredienti.equals("") || costo == 0){
+                    if(tipologiaProdottoModificaSpinner.getSelectedItem() != null){
+                        if(!(tipologiaProdottoModificaSpinner.getSelectedItem().toString().equals("Bibite")))
+                            Toast.makeText(getActivity(), "Riempire i campi obbligatori ", Toast.LENGTH_SHORT).show();
+                        else{
+                            if(nomeProdottoSecondaLingua.equals("")){
+                                nuovoProdotto = new ProdottoMenu(nomeProdotto, costo);
+                                try {
+                                    eliminaProdotto(posizione, posizioneSezione);
+                                    aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
+                                    sostituisciFragment();
+                                }catch(IndexOutOfBoundsException e){
+                                    Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                                }
+                            }else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
+                                nuovoProdotto = new ProdottoMenu(nomeProdotto, costo, nomeProdottoSecondaLingua);
+                                try {
+                                    eliminaProdotto(posizione, posizioneSezione);
+                                    aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
+                                    sostituisciFragment();
+                                }catch(IndexOutOfBoundsException e){
+                                    Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    }else{
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+                        try {
+                            eliminaProdotto(posizione, posizioneSezione);
+                            aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
+                            sostituisciFragment();
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
+                        Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
+                        try {
+                            eliminaProdotto(posizione, posizioneSezione);
+                            aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
+                            sostituisciFragment();
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+
+        });
+
+        eliminaProdottoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eliminaProdotto(posizione, posizioneSezione);
                 sostituisciFragment();
             }
         });
