@@ -203,7 +203,6 @@ public class ModificaProdottoFragment extends Fragment {
             }
         });
 
-
         return v;
     }
 
@@ -218,7 +217,12 @@ public class ModificaProdottoFragment extends Fragment {
             transaction.commit();
         }
         transaction.addToBackStack(null);
-        transaction.replace(R.id.adminFragmentContainerView, PersonalizzaMenuFragment.class, null);
+        if(getActivity().toString().contains("Admin")){
+            transaction.replace(R.id.adminFragmentContainerView, PersonalizzaMenuFragment.class, null);
+        }
+        else if(getActivity().toString().contains("Supervisore")){
+            transaction.replace(R.id.supervisoreFragmentContainerView, PersonalizzaMenuFragment.class, null);
+        }
         transaction.commit();
     }
 }

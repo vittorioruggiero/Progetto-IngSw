@@ -63,7 +63,6 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
             opzioniMenu.getMenuInflater().inflate(R.menu.opzioni_personalizza_menu, opzioniMenu.getMenu());
             opzioniMenu.setOnMenuItemClickListener(menuItem -> {
                 //Toast message on menu item clicked
-
                 int id = menuItem.getItemId();
 
                 if(id == R.id.aggiungiProdotto){
@@ -103,7 +102,12 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
 
     public void sostituisciFragment(Fragment fragment){
         transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.adminFragmentContainerView, fragment);
+        if(getActivity().toString().contains("Admin")){
+            transaction.add(R.id.adminFragmentContainerView, fragment);
+        }
+        else if(getActivity().toString().contains("Supervisore")){
+            transaction.add(R.id.supervisoreFragmentContainerView, fragment);
+        }
         transaction.hide(this);
         transaction.addToBackStack(null);
         transaction.commit();

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
+import com.example.ratatouille23.entity.Attivita;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /*
@@ -36,15 +37,6 @@ public class HomeAdminFragment extends Fragment {
     private AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
     private Button creaAvvisoButton;
     private boolean isEditing = false;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public HomeAdminFragment() {
         // Required empty public constructor
@@ -62,8 +54,8 @@ public class HomeAdminFragment extends Fragment {
     public static HomeAdminFragment newInstance(String param1, String param2) {
         HomeAdminFragment fragment = new HomeAdminFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +64,8 @@ public class HomeAdminFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            //mParam1 = getArguments().getString(ARG_PARAM1);
+            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -106,15 +98,39 @@ public class HomeAdminFragment extends Fragment {
         modificaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String nomeAttivita;
+                String indirizzoAttivita;
+                String telefonoAttivita;
+                int capienzaAttivita;
+                Attivita attivita;
+
+                nomeAttivita = nomeAttivitaEditText.getText().toString();
+                indirizzoAttivita = luogoAttivitaEditText.getText().toString();
+                telefonoAttivita = telefonoAttivitaEditText.getText().toString();
+                try {
+                    capienzaAttivita = Integer.parseInt(capienzaAttivitaEditText.getText().toString());
+                }catch(NumberFormatException e){
+                    capienzaAttivita = 0;
+                }
+                attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
+
                 if(nomeAttivitaEditText.isFocusable()){
                     nomeAttivitaEditText.setFocusableInTouchMode(false);
                     nomeAttivitaEditText.setFocusable(false);
+                    nomeAttivitaEditText.setText("");
+                    nomeAttivitaEditText.setText(attivita.getNome());
                     luogoAttivitaEditText.setFocusable(false);
                     luogoAttivitaEditText.setFocusableInTouchMode(false);
+                    luogoAttivitaEditText.setText("");
+                    luogoAttivitaEditText.setText(attivita.getIndirizzo());
                     capienzaAttivitaEditText.setFocusable(false);
                     capienzaAttivitaEditText.setFocusableInTouchMode(false);
+                    capienzaAttivitaEditText.setText("");
+                    capienzaAttivitaEditText.setText(String.valueOf(attivita.getCapienza()));
                     telefonoAttivitaEditText.setFocusable(false);
                     telefonoAttivitaEditText.setFocusableInTouchMode(false);
+                    telefonoAttivitaEditText.setText("");
+                    telefonoAttivitaEditText.setText(attivita.getTelefono());
                     selezionaFotoButton.setVisibility(View.INVISIBLE);
                 }else{
                     nomeAttivitaEditText.setFocusableInTouchMode(true);
