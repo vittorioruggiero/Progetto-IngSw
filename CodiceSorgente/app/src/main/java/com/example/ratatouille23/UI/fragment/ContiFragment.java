@@ -1,19 +1,40 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
+import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
@@ -21,6 +42,9 @@ import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +57,13 @@ public class ContiFragment extends Fragment {
 
     private View inflatedView;
 
-    private TextView totaleCifraTextView;
+    private FragmentTransaction transaction;
+
+    private TextView numeroCommensaliCifraTextView, totaleCifraTextView;
 
     private Spinner selezionaTavoloSpinner;
 
-    private Button chiudiContoButton;
+    private Button visualizzaContoButton, chiudiContoButton;
 
     private AlertDialog chiusuraContoAlertDialog;
 
@@ -86,8 +112,10 @@ public class ContiFragment extends Fragment {
                              Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_conti, container, false);
 
+        visualizzaContoButton = inflatedView.findViewById(R.id.visualizzaContoButton);
         chiudiContoButton = inflatedView.findViewById(R.id.chiudiContoButton);
         selezionaTavoloSpinner = inflatedView.findViewById(R.id.selezionaTavoloSpinner);
+        numeroCommensaliCifraTextView = inflatedView.findViewById(R.id.numeroCommensaliCifraTextView);
         totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -98,6 +126,14 @@ public class ContiFragment extends Fragment {
         selezionaTavoloSpinner.setSelection(adapter.getPosition("Tavolo 1"));
 
         chiusuraContoAlertDialog = creaChiusuraContoAlertDialog();
+
+        visualizzaContoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                creaPDF();
+                sostituisciFragment(new VisualizzaContoPDFFragment());
+            }
+        });
 
         chiudiContoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,5 +197,17 @@ public class ContiFragment extends Fragment {
                 });
 
         return chiusuraContoAlertDialogBuilder.create();
+    }
+
+    public void sostituisciFragment(Fragment fragment){
+        Bundle result = new Bundle();
+        result.putString("numeroCommensali", String.valueOf(numeroCommensaliCifraTextView.getText()));
+        fragment.setArguments(result);
+
+        transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.supervisoreFragmentContainerView, fragment);
+        transaction.hide(this);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
