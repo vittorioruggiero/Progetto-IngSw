@@ -92,8 +92,8 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
 
             @Override
             public boolean onQueryTextChange(String s) {
-                filter(s);
-                return false;
+                menuRecyclerAdapter.getFilter().filter(s);
+                return true;
             }
         });
 
@@ -143,40 +143,6 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         Fragment fragment = ModificaProdottoFragment.newInstance(prodottoMenu.getNome(), prodottoMenu.getNomeSecondaLingua(),
                 prodottoMenu.getIngredienti(), prodottoMenu.getIngredientiSecondaLingua(), prodottoMenu.getPrezzo(), posizione, posizioneSezione);
         sostituisciFragment(fragment);
-    }
-
-    private void filter(String text) {
-        // creating a new array list to filter our data.
-        List<ProdottoMenu> filteredlist = new ArrayList<>();
-
-        // running a for loop to compare elements.
-        /*for (SezioneMenu item : sezioni) {
-            for(ProdottoMenu prodotto : item.getProdottiMenu()){
-                if (prodotto.getNome().toLowerCase().contains(text.toLowerCase())) {
-                    // if the item is matched we are
-                    // adding it to our filtered list.
-                    filteredlist.add(prodotto);
-                }
-            }
-        }*/
-
-        for(int i = 0; i < sezioni.size(); i++){
-
-            for(int j = 0; j < sezioni.get(i).getProdottiMenu().size(); j++){
-                if(sezioni.get(i).getProdottiMenu().get(j).getNome().toLowerCase().contains(text.toLowerCase())){
-                    filteredlist.add(sezioni.get(i).getProdottiMenu().get(j));
-                }
-            }
-        }
-        if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
-            Toast.makeText(getActivity(), "No Data Found..", Toast.LENGTH_SHORT).show();
-        } else {
-            // at last we are passing that filtered
-            // list to our adapter class.
-            menuRecyclerAdapter.getProdottoAdapter().filterList(filteredlist);
-        }
     }
 
 }

@@ -1,34 +1,20 @@
 package com.example.ratatouille23.adapter;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getTagFragment;
-
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ratatouille23.UI.fragment.ModificaProdottoFragment;
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHolder> {
 
@@ -95,11 +81,6 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
 
     public interface ItemClickListener {
         void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione);
-    }
-
-    public void filterList(List<ProdottoMenu> filterlist) {
-        prodottiMenu = filterlist;
-        notifyDataSetChanged();
     }
 
 }

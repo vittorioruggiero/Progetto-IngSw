@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,12 +16,15 @@ import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapter.ViewHolder> implements ProdottiAdapter.ItemClickListener {
 
     private Context context;
     private List<SezioneMenu> sezioniMenu;
+    private List<SezioneMenu> sezioniMenuFull;
     private ProdottiAdapter prodottiAdapter;
 
     private ProdottiAdapter.ItemClickListener clickListener;
@@ -29,6 +33,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
         this.sezioniMenu = sezioniMenu;
         this.context = context;
         this.clickListener = clickListener;
+        this.sezioniMenuFull = new ArrayList<>(sezioniMenu);
     }
 
     @NonNull
@@ -44,7 +49,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        SezioneMenu sezione = sezioniMenu.get(position);
+        SezioneMenu sezione = sezioniMenuFull.get(position);
         String nomeSezione = sezione.getTitolo();
         List<ProdottoMenu> prodottiMenu = sezione.getProdottiMenu();
 
@@ -58,7 +63,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return sezioniMenu.size();
+        return sezioniMenuFull.size();
     }
 
     @Override
@@ -80,9 +85,39 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<MenuRecyclerAdapte
         }
     }
 
-    public ProdottiAdapter getProdottoAdapter(){
-        return prodottiAdapter;
-    }
+    public Filter getFilter(){
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String query = charSequence.toString();
+                List<SezioneMenu> filteredList = new ArrayList<>();
+                if(query.isEmpty()){
+                    filteredList.addAll(sezioniMenu);
+                }else{
+                    for(SezioneMenu sezione : sezioniMenu){
+                        List<ProdottoMenu> prodottiFiltrati = new ArrayList<>();
+                        for(ProdottoMenu prodotto : sezione.getProdottiMenu()){
+                            if(prodotto.getNome().toLowerCase().contains(query.toLowerCase())){
+                                prodottiFiltrati.add(prodotto);
+                            }
+                        }
+                        if(!prodottiFiltrati.isEmpty()){
+                            filteredList.add(new SezioneMenu(sezione.getTitolo(), prodottiFiltrati));
+                        }
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
+            }
 
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                sezioniMenuFull.clear();
+                sezioniMenuFull.addAll((List<SezioneMenu>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
 
 }
