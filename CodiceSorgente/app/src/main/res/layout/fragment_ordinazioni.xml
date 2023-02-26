@@ -1,14 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/DEFAULT_COLOR"
     tools:context=".UI.fragment.OrdinazioniFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/fragmentOrdinazioniText" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/selezionaTavoloOrdinazioneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="274dp"
+        android:text="@string/selezionaTavolo"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ordinazioneSpinnerRelativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.879" />
+
+    <RelativeLayout
+        android:id="@+id/ordinazioneSpinnerRelativeLayout"
+        android:layout_width="248dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/numeroCommensaliOrdinazioneTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Spinner
+            android:id="@+id/selezionaTavoloOrdinazioneSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/selezionaTavolo" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/numeroCommensaliOrdinazioneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="259dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/numeroCommensali"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/numeroCommensaliCifraOrdinazioneEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/numeroCommensaliCifraOrdinazioneEditText"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="339dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/editTextBackground"
+        android:fallbackLineSpacing="false"
+        android:gravity="center"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/aggiungiProdottoButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/prodottiSelezionatiOrdinazioneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="266dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/prodottiSelezionati"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/contiRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contiRecyclerView"
+        android:layout_width="368dp"
+        android:layout_height="225dp"
+        android:layout_marginBottom="80dp"
+        android:fadeScrollbars="false"
+        android:scrollIndicators="top|bottom"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/salvaOrdinazioneButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <Button
+        android:id="@+id/aggiungiProdottoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/aggiungiProdotto"
+        app:layout_constraintBottom_toTopOf="@+id/contiRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/salvaOrdinazioneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="68dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/salvaOrdinazione"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

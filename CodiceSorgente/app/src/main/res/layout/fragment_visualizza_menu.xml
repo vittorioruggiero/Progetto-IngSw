@@ -8,59 +8,45 @@
     android:orientation="vertical">
 
     <SearchView
-        android:id="@+id/personalizzaMenuSearchView"
+        android:id="@+id/visualizzaMenuSearchView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="53dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="3dp"
-        android:background="@drawable/edit_text_bordi_arrotondati"
-        app:layout_constraintBottom_toTopOf="@+id/personalizzaMenuLinearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/opzioniButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/opzioniButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:clickable="true"
-        android:contentDescription="@string/modificaButton"
-        android:src="@drawable/settings_icon"
-        app:backgroundTint="@color/DEFAULT_COLOR"
-        app:layout_constraintBottom_toTopOf="@+id/personalizzaMenuLinearLayout"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/edit_text_bordi_arrotondati"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visualizzaMenuTextView" />
 
     <LinearLayout
-        android:id="@+id/personalizzaMenuLinearLayout"
+        android:id="@+id/visualizzaMenuLinearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
         android:background="@color/DEFAULT_COLOR"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/visualizzaMenuSearchView">
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/menuAttivitaRecyclerView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/visualizzaMenuRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:spanCount="3"
-            tools:listitem="@layout/layout_item" />
+            tools:listitem="@layout/layout_item_visual" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/menuTextView"
+        android:id="@+id/visualizzaMenuTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="@string/menu"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -69,5 +55,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/indietroButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/indietro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visualizzaMenuLinearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

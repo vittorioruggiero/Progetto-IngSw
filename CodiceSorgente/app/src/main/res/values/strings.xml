@@ -152,4 +152,8 @@
     <string name="ordinaSezioni">Ordina le sezioni in ordine:</string>
     <string name="ordineCrescente">Crescente</string>
     <string name="ordineDecrescente">Decrescente</string>
+    <string name="menu">Menù</string>
+    <string name="salvaOrdinazione">Salva Ordinazione</string>
+    <string name="indietro">Indietro</string>
+    <string name="quantita">Quantità</string>
 </resources>

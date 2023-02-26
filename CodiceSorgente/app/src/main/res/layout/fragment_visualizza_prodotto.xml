@@ -9,32 +9,30 @@
 
 
     <Button
-        android:id="@+id/salvaModificheButton"
+        android:id="@+id/aggiungiProdottoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/YELLOW_LOGO"
-        android:text="@string/salvaModifiche"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/aggiungiProdotto"
+        app:layout_constraintBottom_toTopOf="@+id/indietroButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nomeProdottoModificaLayout"
-        android:layout_width="0dp"
+        android:id="@+id/nomeProdottoVisualizzaLayout"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/nomeProdottoSecondaLinguaModificaLayout"
+        app:layout_constraintBottom_toTopOf="@+id/nomeProdottoSecondaLinguaVisualizzaLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nomeProdottoModificaEditText"
+            android:id="@+id/nomeProdottoVisualizzaEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -43,19 +41,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nomeProdottoSecondaLinguaModificaLayout"
-        android:layout_width="0dp"
+        android:id="@+id/nomeProdottoSecondaLinguaVisualizzaLayout"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/ingredientiModificaLayout"
+        app:layout_constraintBottom_toTopOf="@+id/ingredientiVisualizzaLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nomeProdottoSecondaLinguaModificaEditText"
+            android:id="@+id/nomeProdottoSecondaLinguaVisualizzaEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -64,19 +59,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ingredientiModificaLayout"
-        android:layout_width="0dp"
+        android:id="@+id/ingredientiVisualizzaLayout"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/ingredientiSecondaLinguaModificaLayout"
+        app:layout_constraintBottom_toTopOf="@+id/ingredientiSecondaLinguaVisualizzaLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ingredientiModificaEditText"
+            android:id="@+id/ingredientiVisualizzaEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -85,19 +77,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ingredientiSecondaLinguaModificaLayout"
-        android:layout_width="0dp"
+        android:id="@+id/ingredientiSecondaLinguaVisualizzaLayout"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/prezzoModificaLayout"
+        app:layout_constraintBottom_toTopOf="@+id/prezzoVisualizzaLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ingredientiSecondaLinguaModificaEditText"
+            android:id="@+id/ingredientiSecondaLinguaVisualizzaEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -106,19 +95,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/prezzoModificaLayout"
-        android:layout_width="0dp"
+        android:id="@+id/prezzoVisualizzaLayout"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="212dp"
-        app:layout_constraintBottom_toTopOf="@+id/salvaModificheButton"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/quantitaVisualizzaLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/prezzoModificaEditText"
+            android:id="@+id/prezzoVisualizzaEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -126,46 +112,34 @@
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tipologiaProdottoModificaTextView"
+    <Button
+        android:id="@+id/indietroButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="200dp"
-        android:text="@string/selezionaTipologiaProdotto"
-        android:textColor="@color/black"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/indietro"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prezzoModificaLayout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="300dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
-        android:background="@color/white"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/quantitaVisualizzaLayout"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="115dp"
+        app:layout_constraintBottom_toTopOf="@+id/aggiungiProdottoButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tipologiaProdottoModificaTextView">
+        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <Spinner
-            android:id="@+id/tipologiaProdottoModificaSpinner"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/quantitaVisualizzaEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/seleziona_tipologia_di_prodotto_text" />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/eliminaProdottoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/YELLOW_LOGO"
-        android:text="@string/eliminaProdotto"
-        app:layout_constraintBottom_toTopOf="@+id/salvaModificheButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+            android:background="@color/white"
+            android:hint="@string/quantita"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

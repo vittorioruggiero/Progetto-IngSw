@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/prodottoCardView"
+        android:layout_width="415dp"
+        android:layout_height="53dp"
+        app:cardBackgroundColor="@color/DEFAULT_COLOR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titoloProdottoOrdinazioneTextView"
+            android:layout_width="242dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/edit_text_bordi_arrotondati"
+            android:padding="15dp"
+            android:text="Item"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/quantitaProdottoOrdinazioneTextView"
+            android:layout_width="111dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/edit_text_bordi_arrotondati"
+            android:foregroundGravity="right"
+            android:padding="15dp"
+            android:text="Qt"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/quantitaOrdinazioneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="20dp"
+            android:text="Qt."
+            android:textColor="@color/black" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/eliminaProdottoOrdinazioneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="190dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/delete_icon" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
