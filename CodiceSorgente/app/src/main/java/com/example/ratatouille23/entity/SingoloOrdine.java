@@ -27,4 +27,8 @@ public class SingoloOrdine {
     public void setQuantitaProdotto(int quantitaProdotto) {
         this.quantitaProdotto = quantitaProdotto;
     }
+
+    public double calcolaTotale() {
+        return this.prodottoMenu.getPrezzo() * this.quantitaProdotto;
+    }
 }

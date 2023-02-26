@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import android.os.ParcelFileDescriptor;
+import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.SingoloOrdine;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,6 +143,26 @@ public class VisualizzaContoPDFFragment extends Fragment {
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         canvas.drawText(getArguments().getString("numeroCommensali"), 50, 400, textPaint);
 
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("Prodotti acquistati:", 50, 500, textPaint);
+
+        //Inserisce il testo dei prodotti
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        Iterator<String> listaNomiProdotti = getArguments().getStringArrayList("listaNomiProdotti").iterator();
+        Iterator<String> listaQuantitaProdotti = getArguments().getStringArrayList("listaQuantitaProdotti").iterator();
+        int currentY = 600;
+        while(listaNomiProdotti.hasNext()) {
+            canvas.drawText(listaNomiProdotti.next(), 50, currentY, textPaint);
+            canvas.drawText("Qt. " + listaQuantitaProdotti.next(), 700, currentY, textPaint);
+            currentY +=100;
+        }
+
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("Totale:", 50, 2600, textPaint);
+
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        canvas.drawText(getArguments().getString("totale"), 50, 2700, textPaint);
+
         pdfDocument.finishPage(myPage);
 
         //Crea la cartella "Conti" nei documenti della memoria esterna e il file "Conto.pdf"
@@ -166,6 +190,7 @@ public class VisualizzaContoPDFFragment extends Fragment {
                 page.close();
                 renderer.close();
             } catch (IOException e) {
+                Toast.makeText(getActivity(), "Errore nella creazione del file PDF", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         } else if (contiDirectory == null || !contiDirectory.mkdirs()) {

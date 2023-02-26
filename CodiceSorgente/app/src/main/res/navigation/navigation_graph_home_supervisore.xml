@@ -9,7 +9,14 @@
         android:id="@+id/homeSupervisoreFragment"
         android:name="com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment"
         android:label="fragment_home_supervisore"
-        tools:layout="@layout/fragment_home_supervisore" />
+        tools:layout="@layout/fragment_home_supervisore" >
+        <action
+            android:id="@+id/action_homeSupervisoreFragment_to_personalizzaMenuSupervisoreFragment"
+            app:destination="@id/personalizzaMenuSupervisoreFragment" />
+        <action
+            android:id="@+id/action_homeSupervisoreFragment_to_contiFragment"
+            app:destination="@id/contiFragment" />
+    </fragment>
     <fragment
         android:id="@+id/personalizzaMenuSupervisoreFragment"
         android:name="com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment"
@@ -19,5 +26,14 @@
         android:id="@+id/contiFragment"
         android:name="com.example.ratatouille23.UI.fragment.ContiFragment"
         android:label="fragment_conti"
-        tools:layout="@layout/fragment_conti" />
+        tools:layout="@layout/fragment_conti" >
+        <action
+            android:id="@+id/action_contiFragment_to_visualizzaContoPDFFragment"
+            app:destination="@id/visualizzaContoPDFFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visualizzaContoPDFFragment"
+        android:name="com.example.ratatouille23.UI.fragment.VisualizzaContoPDFFragment"
+        android:label="fragment_visualizza_conto_pdf"
+        tools:layout="@layout/fragment_visualizza_conto_pdf" />
 </navigation>

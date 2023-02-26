@@ -50,7 +50,7 @@ public class Ordinazione {
 
         while(listaProdottiIterator.hasNext()) {
             currentSingoloOrdine = listaProdottiIterator.next();
-            totale = totale + currentSingoloOrdine.getProdottoMenu().getPrezzo() * currentSingoloOrdine.getQuantitaProdotto();
+            totale = totale + currentSingoloOrdine.calcolaTotale();
         }
 
         return totale;

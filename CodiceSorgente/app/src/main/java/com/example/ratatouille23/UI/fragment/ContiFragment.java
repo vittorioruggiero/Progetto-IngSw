@@ -20,10 +20,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,11 +43,13 @@ import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
 import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -112,11 +116,15 @@ public class ContiFragment extends Fragment {
                              Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_conti, container, false);
 
+        //findViewById
+
         visualizzaContoButton = inflatedView.findViewById(R.id.visualizzaContoButton);
         chiudiContoButton = inflatedView.findViewById(R.id.chiudiContoButton);
         selezionaTavoloSpinner = inflatedView.findViewById(R.id.selezionaTavoloSpinner);
         numeroCommensaliCifraTextView = inflatedView.findViewById(R.id.numeroCommensaliCifraTextView);
         totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
+
+        //set selezionaTavoloSpinner
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tavoli_array, android.R.layout.simple_spinner_item);
@@ -125,13 +133,26 @@ public class ContiFragment extends Fragment {
 
         selezionaTavoloSpinner.setSelection(adapter.getPosition("Tavolo 1"));
 
-        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog();
+        //set RecyclerView
+
+        List<SingoloOrdine> listaProdotti = new ArrayList<>();
+
+        setOggettiDiProva(listaProdotti);
+
+        RecyclerView recyclerView = (RecyclerView) inflatedView.findViewById(R.id.contiRecyclerView);
+        SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(listaProdotti);
+        recyclerView.setAdapter(singoliOrdiniAdapter);
+
+
+
+        //set Listener e AlertDialog
+
+        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(listaProdotti, singoliOrdiniAdapter);
 
         visualizzaContoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                creaPDF();
-                sostituisciFragment(new VisualizzaContoPDFFragment());
+                sostituisciFragment(preparaBundle(listaProdotti));
             }
         });
 
@@ -141,14 +162,6 @@ public class ContiFragment extends Fragment {
                 chiusuraContoAlertDialog.show();
             }
         });
-
-        List<SingoloOrdine> listaProdotti = new ArrayList<>();
-
-        setOggettiDiProva(listaProdotti);
-
-        RecyclerView recyclerView = (RecyclerView) inflatedView.findViewById(R.id.contiRecyclerView);
-        SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(listaProdotti);
-        recyclerView.setAdapter(singoliOrdiniAdapter);
 
         return inflatedView;
     }
@@ -170,11 +183,11 @@ public class ContiFragment extends Fragment {
 
         Ordinazione ordinazione = new Ordinazione(listaProdotti);
         double totale = ordinazione.calcolaTotale();
-        totaleCifraTextView.setText(String.valueOf(totale));
+        totaleCifraTextView.setText("€" + String.valueOf(totale));
 
     }
 
-    AlertDialog creaChiusuraContoAlertDialog() {
+    AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti, SingoliOrdiniAdapter singoliOrdiniAdapter) {
 
         AlertDialog.Builder chiusuraContoAlertDialogBuilder = new AlertDialog.Builder(getContext());
         chiusuraContoAlertDialogBuilder.setMessage("Sei sicuro di voler chiudere il conto?");
@@ -184,6 +197,11 @@ public class ContiFragment extends Fragment {
                 "Conferma",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        sostituisciFragment(preparaBundle(listaProdotti));
+                        numeroCommensaliCifraTextView.setText("0");
+                        totaleCifraTextView.setText("€0,00");
+                        listaProdotti.clear();
+                        singoliOrdiniAdapter.notifyDataSetChanged();
                         dialog.cancel();
                     }
                 });
@@ -199,15 +217,28 @@ public class ContiFragment extends Fragment {
         return chiusuraContoAlertDialogBuilder.create();
     }
 
-    public void sostituisciFragment(Fragment fragment){
-        Bundle result = new Bundle();
-        result.putString("numeroCommensali", String.valueOf(numeroCommensaliCifraTextView.getText()));
-        fragment.setArguments(result);
+    public Bundle preparaBundle(List<SingoloOrdine> listaProdotti) {
+        Bundle bundle = new Bundle();
+        Iterator<SingoloOrdine> listaProdottiIterator = listaProdotti.iterator();
+        ArrayList<String> listaNomiProdotti = new ArrayList<>();
+        ArrayList<String> listaQuantitaProdotti = new ArrayList<>();
+        SingoloOrdine currentSingoloOrdine;
 
-        transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.supervisoreFragmentContainerView, fragment);
-        transaction.hide(this);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        while(listaProdottiIterator.hasNext()) {
+            currentSingoloOrdine = listaProdottiIterator.next();
+            listaNomiProdotti.add(currentSingoloOrdine.getProdottoMenu().getNome());
+            listaQuantitaProdotti.add(String.valueOf(currentSingoloOrdine.getQuantitaProdotto()));
+        }
+
+        bundle.putString("numeroCommensali", String.valueOf(numeroCommensaliCifraTextView.getText()));
+        bundle.putStringArrayList("listaNomiProdotti", listaNomiProdotti);
+        bundle.putStringArrayList("listaQuantitaProdotti", listaQuantitaProdotti);
+        bundle.putString("totale", String.valueOf(totaleCifraTextView.getText()));
+
+        return bundle;
+    }
+
+    public void sostituisciFragment(Bundle bundle){
+        Navigation.findNavController(inflatedView).navigate(R.id.visualizzaContoPDFFragment, bundle);
     }
 }

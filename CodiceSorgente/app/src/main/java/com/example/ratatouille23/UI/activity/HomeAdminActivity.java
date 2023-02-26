@@ -2,8 +2,11 @@ package com.example.ratatouille23.UI.activity;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.fragment.CreaUtenteFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -56,6 +60,16 @@ public class HomeAdminActivity extends AppCompatActivity {
             }
         });
 
+//        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+//            @Override
+//            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+//                if(navController.getCurrentDestination().getId() == R.id.creaUtenteFragment) {
+//                    CreaUtenteFragment fragment = new CreaUtenteFragment();
+//
+//                }
+//            }
+//        });
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -63,6 +77,7 @@ public class HomeAdminActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
 

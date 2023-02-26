@@ -9,12 +9,32 @@
         android:id="@+id/creaUtenteFragment"
         android:name="com.example.ratatouille23.UI.fragment.CreaUtenteFragment"
         android:label="fragment_crea_utente"
-        tools:layout="@layout/fragment_crea_utente" />
+        tools:layout="@layout/fragment_crea_utente" >
+        <action
+            android:id="@+id/action_creaUtenteFragment_to_visualizzaStatisticheFragment"
+            app:destination="@id/visualizzaStatisticheFragment" />
+        <action
+            android:id="@+id/action_creaUtenteFragment_to_personalizzaMenuAdminFragment"
+            app:destination="@id/personalizzaMenuAdminFragment" />
+        <action
+            android:id="@+id/action_creaUtenteFragment_to_homeAdminFragment"
+            app:destination="@id/homeAdminFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeAdminFragment"
         android:name="com.example.ratatouille23.UI.fragment.HomeAdminFragment"
         android:label="fragment_home_admin"
-        tools:layout="@layout/fragment_home_admin" />
+        tools:layout="@layout/fragment_home_admin" >
+        <action
+            android:id="@+id/action_homeAdminFragment_to_creaUtenteFragment2"
+            app:destination="@id/creaUtenteFragment" />
+        <action
+            android:id="@+id/action_homeAdminFragment_to_visualizzaStatisticheFragment"
+            app:destination="@id/visualizzaStatisticheFragment" />
+        <action
+            android:id="@+id/action_homeAdminFragment_to_personalizzaMenuAdminFragment"
+            app:destination="@id/personalizzaMenuAdminFragment" />
+    </fragment>
     <fragment
         android:id="@+id/visualizzaStatisticheFragment"
         android:name="com.example.ratatouille23.UI.fragment.VisualizzaStatisticheFragment"
