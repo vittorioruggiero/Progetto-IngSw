@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.SezioneMenu;
@@ -109,10 +110,15 @@ public class VisualizzaProdottoFragment extends Fragment {
         aggiungiProdottoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                quantita = Integer.parseInt(quantitaEditText.getText().toString());
-                singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), quantita);
-                aggiungiProdottoOrdinazione(singoloOrdine);
-                sostituisciFragment();
+                try {
+                    quantita = Integer.parseInt(quantitaEditText.getText().toString());
+                    singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), quantita);
+                    aggiungiProdottoOrdinazione(singoloOrdine);
+                    sostituisciFragment();
+                }catch(NumberFormatException e){
+                    Toast.makeText(getActivity(), "Inserire una quantità valida", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

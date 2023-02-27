@@ -86,7 +86,6 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
 
         }
 
-
         prodottiOrdinazioneAdapter = new ProdottiOrdinazioneAdapter(prodottiOrdine, getActivity(), this);
         recyclerView.setAdapter(prodottiOrdinazioneAdapter);
 
@@ -97,17 +96,15 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
                 sostituisciFragment(fragment);
             }
         });
-
         salvaOrdinazioneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ordinazione != null){
+                if(selezionaTavoloSpinner.getSelectedItem() != null){
                     ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
                     Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

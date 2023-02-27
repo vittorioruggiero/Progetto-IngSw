@@ -85,12 +85,22 @@ public class AggiungiProdottoFragment extends Fragment {
                     if(!(tipologiaProdottoSpinner.getSelectedItem().toString().equals("Bibite")))
                         Toast.makeText(getActivity(), "Riempire i campi obbligatori ", Toast.LENGTH_SHORT).show();
                     else{
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, costo);
-                        try {
-                            aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
-                            sostituisciFragment();
-                        }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                        if((nomeProdottoSecondaLingua.equals(""))){
+                            nuovoProdotto = new ProdottoMenu(nomeProdotto, costo);
+                            try {
+                                aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
+                                sostituisciFragment();
+                            }catch(IndexOutOfBoundsException e){
+                                Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            nuovoProdotto = new ProdottoMenu(nomeProdotto, costo, nomeProdottoSecondaLingua);
+                            try {
+                                aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
+                                sostituisciFragment();
+                            }catch(IndexOutOfBoundsException e){
+                                Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }else{
