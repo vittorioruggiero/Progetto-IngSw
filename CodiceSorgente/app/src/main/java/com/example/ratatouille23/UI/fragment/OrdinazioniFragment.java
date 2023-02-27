@@ -75,15 +75,16 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         tavoli = new ArrayList<>();
         attivita = getAttivita();
 
-        for(int i = 1; i <= attivita.getCapienza(); i++){
-            tavoli.add(i);
+        if(attivita != null){
+            for(int i = 1; i <= attivita.getCapienza(); i++){
+                tavoli.add(i);
+            }
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_item, tavoli);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selezionaTavoloSpinner.setAdapter(adapter);
+
         }
-
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, tavoli);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        selezionaTavoloSpinner.setAdapter(adapter);
-
 
 
         prodottiOrdinazioneAdapter = new ProdottiOrdinazioneAdapter(prodottiOrdine, getActivity(), this);
@@ -100,8 +101,13 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         salvaOrdinazioneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
-                Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
+                if(ordinazione != null){
+                    ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
+                    Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

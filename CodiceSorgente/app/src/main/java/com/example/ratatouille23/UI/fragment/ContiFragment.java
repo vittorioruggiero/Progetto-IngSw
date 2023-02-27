@@ -134,20 +134,24 @@ public class ContiFragment extends Fragment {
 
         //set selezionaTavoloSpinner
 
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, tavoli);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        selezionaTavoloSpinner.setAdapter(adapter);
+        if(tavoli != null){
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_item, tavoli);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selezionaTavoloSpinner.setAdapter(adapter);
+        }
+
         SingoliOrdiniAdapter singoliOrdiniAdapter;
         RecyclerView recyclerView;
 
-        numeroCommensaliCifraTextView.setText(String.valueOf(ordinazione.getNumeroCommensali()));
-        totaleCifraTextView.setText(String.valueOf(ordinazione.calcolaTotale()));
-        recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
-        singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
-        recyclerView.setAdapter(singoliOrdiniAdapter);
-        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
-
+        if(ordinazione != null){
+            numeroCommensaliCifraTextView.setText(String.valueOf(ordinazione.getNumeroCommensali()));
+            totaleCifraTextView.setText(String.valueOf(ordinazione.calcolaTotale()));
+            recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
+            singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
+            recyclerView.setAdapter(singoliOrdiniAdapter);
+            chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
+        }
         //set RecyclerView
 
         //List<SingoloOrdine> listaProdotti = new ArrayList<>();
@@ -161,39 +165,26 @@ public class ContiFragment extends Fragment {
         visualizzaContoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sostituisciFragment(preparaBundle(ordinazione.getListaProdotti()));
+                if(ordinazione != null){
+                    sostituisciFragment(preparaBundle(ordinazione.getListaProdotti()));
+                }else{
+                    Toast.makeText(getActivity(), "Nessuna ordinazione!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         chiudiContoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chiusuraContoAlertDialog.show();
+                if(ordinazione != null){
+                    chiusuraContoAlertDialog.show();
+                }else{
+                    Toast.makeText(getActivity(), "Nessuna ordinazione!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return inflatedView;
-    }
-
-    void setOggettiDiProva(List<SingoloOrdine> listaProdotti) {
-
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 1", 5), 3));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 2", 3), 2));
-        listaProdotti.add(new SingoloOrdine(new ProdottoMenu("Prodotto 3", 2), 1));
-
-        Ordinazione ordinazione = new Ordinazione(listaProdotti);
-        double totale = ordinazione.calcolaTotale();
-        totaleCifraTextView.setText("€" + String.valueOf(totale));
-
     }
 
     AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti, SingoliOrdiniAdapter singoliOrdiniAdapter) {
@@ -207,8 +198,8 @@ public class ContiFragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         sostituisciFragment(preparaBundle(listaProdotti));
-                        numeroCommensaliCifraTextView.setText("0");
-                        totaleCifraTextView.setText("€0,00");
+                        ordinazione.setNumeroCommensali(0);
+                        ordinazione.setNumeroTavolo(0);
                         listaProdotti.clear();
                         singoliOrdiniAdapter.notifyDataSetChanged();
                         dialog.cancel();
