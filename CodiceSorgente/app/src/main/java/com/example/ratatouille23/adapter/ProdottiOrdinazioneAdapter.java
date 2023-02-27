@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,8 +45,12 @@ public class ProdottiOrdinazioneAdapter extends RecyclerView.Adapter<ProdottiOrd
     @Override
     public void onBindViewHolder(@NonNull ProdottiOrdinazioneAdapter.ViewHolder holder, int position) {
 
-        holder.nomeProdottoTextView.setText(prodotti.get(position).getProdottoMenu().getNome());
-        holder.quantitaProdottoTextView.setText(prodotti.get(position).getQuantitaProdotto());
+        ProdottoMenu prodotto = prodotti.get(position).getProdottoMenu();
+        String nomeProdotto = prodotto.getNome();
+        String quantita = String.valueOf(prodotti.get(position).getQuantitaProdotto());
+
+        holder.nomeProdottoTextView.setText(nomeProdotto);
+        holder.quantitaProdottoTextView.setText(quantita);
         holder.rimuoviProdottoButton.setOnClickListener(view ->
                 clickListener.onItemClickOrdinazione(holder.getAdapterPosition())
         );
@@ -71,7 +76,7 @@ public class ProdottiOrdinazioneAdapter extends RecyclerView.Adapter<ProdottiOrd
             super(itemView);
 
             nomeProdottoTextView = itemView.findViewById(R.id.titoloProdottoOrdinazioneTextView);
-            quantitaProdottoTextView = itemView.findViewById(R.id.quantitaOrdinazioneTextView);
+            quantitaProdottoTextView = itemView.findViewById(R.id.quantitaProdottoOrdinazioneTextView);
             rimuoviProdottoButton = itemView.findViewById(R.id.eliminaProdottoOrdinazioneButton);
         }
     }

@@ -3,6 +3,9 @@ package com.example.ratatouille23.UI.fragment;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.getOrdinazione;
+import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.getTavoli;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,6 +69,8 @@ public class ContiFragment extends Fragment {
     private TextView numeroCommensaliCifraTextView, totaleCifraTextView;
 
     private Spinner selezionaTavoloSpinner;
+    private Ordinazione ordinazione;
+    private ArrayList<Integer> tavoli;
 
     private Button visualizzaContoButton, chiudiContoButton;
 
@@ -124,35 +129,36 @@ public class ContiFragment extends Fragment {
         numeroCommensaliCifraTextView = inflatedView.findViewById(R.id.numeroCommensaliCifraTextView);
         totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
 
+        ordinazione = getOrdinazione();
+        tavoli = getTavoli();
+
         //set selezionaTavoloSpinner
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.tavoli_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, tavoli);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selezionaTavoloSpinner.setAdapter(adapter);
 
-        selezionaTavoloSpinner.setSelection(adapter.getPosition("Tavolo 1"));
-
         //set RecyclerView
 
-        List<SingoloOrdine> listaProdotti = new ArrayList<>();
+        //List<SingoloOrdine> listaProdotti = new ArrayList<>();
 
-        setOggettiDiProva(listaProdotti);
+        //setOggettiDiProva(listaProdotti);
 
         RecyclerView recyclerView = (RecyclerView) inflatedView.findViewById(R.id.contiRecyclerView);
-        SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(listaProdotti);
+        SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
         recyclerView.setAdapter(singoliOrdiniAdapter);
 
 
 
         //set Listener e AlertDialog
 
-        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(listaProdotti, singoliOrdiniAdapter);
+        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
 
         visualizzaContoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sostituisciFragment(preparaBundle(listaProdotti));
+                sostituisciFragment(preparaBundle(ordinazione.getListaProdotti()));
             }
         });
 

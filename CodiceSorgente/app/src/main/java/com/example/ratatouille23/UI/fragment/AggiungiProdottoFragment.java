@@ -144,4 +144,5 @@ public class AggiungiProdottoFragment extends Fragment {
         }
         transaction.commit();
     }
+
 }

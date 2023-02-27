@@ -134,8 +134,6 @@ public class ModificaProdottoFragment extends Fragment {
                 }
                 ProdottoMenu nuovoProdotto = null;
 
-
-
                 if(nomeProdotto.equals("") || ingredienti.equals("") || costo == 0){
                     if(tipologiaProdottoModificaSpinner.getSelectedItem() != null){
                         if(!(tipologiaProdottoModificaSpinner.getSelectedItem().toString().equals("Bibite")))
@@ -192,7 +190,6 @@ public class ModificaProdottoFragment extends Fragment {
                 }
             }
 
-
         });
 
         eliminaProdottoButton.setOnClickListener(new View.OnClickListener() {
@@ -223,6 +220,7 @@ public class ModificaProdottoFragment extends Fragment {
         else if(getActivity().toString().contains("Supervisore")){
             transaction.replace(R.id.supervisoreFragmentContainerView, PersonalizzaMenuFragment.class, null);
         }
+        transaction.setReorderingAllowed(true);
         transaction.commit();
     }
 }

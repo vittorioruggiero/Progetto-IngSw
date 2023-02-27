@@ -8,7 +8,11 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.Attivita;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeAddettoSalaActivity extends AppCompatActivity {
 
@@ -21,5 +25,6 @@ public class HomeAddettoSalaActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
         BottomNavigationView bottomNavigationView = findViewById(R.id.addettoSalaBottomNavigationView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
     }
 }

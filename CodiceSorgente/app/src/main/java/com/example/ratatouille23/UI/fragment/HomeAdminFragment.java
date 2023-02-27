@@ -25,6 +25,8 @@ import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Attivita;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 /*
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeAdminFragment#newInstance} factory method to
@@ -36,6 +38,8 @@ public class HomeAdminFragment extends Fragment {
     private EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
     private AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
     private Button creaAvvisoButton;
+    private static Attivita attivita;
+    private static ArrayList<Integer> tavoli = new ArrayList<>();
     private boolean isEditing = false;
 
     public HomeAdminFragment() {
@@ -102,36 +106,27 @@ public class HomeAdminFragment extends Fragment {
                 String indirizzoAttivita;
                 String telefonoAttivita;
                 int capienzaAttivita;
-                Attivita attivita;
 
-                nomeAttivita = nomeAttivitaEditText.getText().toString();
-                indirizzoAttivita = luogoAttivitaEditText.getText().toString();
-                telefonoAttivita = telefonoAttivitaEditText.getText().toString();
-                try {
-                    capienzaAttivita = Integer.parseInt(capienzaAttivitaEditText.getText().toString());
-                }catch(NumberFormatException e){
-                    capienzaAttivita = 0;
-                }
-                attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
 
                 if(nomeAttivitaEditText.isFocusable()){
                     nomeAttivitaEditText.setFocusableInTouchMode(false);
                     nomeAttivitaEditText.setFocusable(false);
-                    nomeAttivitaEditText.setText("");
-                    nomeAttivitaEditText.setText(attivita.getNome());
                     luogoAttivitaEditText.setFocusable(false);
                     luogoAttivitaEditText.setFocusableInTouchMode(false);
-                    luogoAttivitaEditText.setText("");
-                    luogoAttivitaEditText.setText(attivita.getIndirizzo());
                     capienzaAttivitaEditText.setFocusable(false);
                     capienzaAttivitaEditText.setFocusableInTouchMode(false);
-                    capienzaAttivitaEditText.setText("");
-                    capienzaAttivitaEditText.setText(String.valueOf(attivita.getCapienza()));
                     telefonoAttivitaEditText.setFocusable(false);
                     telefonoAttivitaEditText.setFocusableInTouchMode(false);
-                    telefonoAttivitaEditText.setText("");
-                    telefonoAttivitaEditText.setText(attivita.getTelefono());
                     selezionaFotoButton.setVisibility(View.INVISIBLE);
+                    nomeAttivita = nomeAttivitaEditText.getText().toString();
+                    indirizzoAttivita = luogoAttivitaEditText.getText().toString();
+                    telefonoAttivita = telefonoAttivitaEditText.getText().toString();
+                    try {
+                        capienzaAttivita = Integer.parseInt(capienzaAttivitaEditText.getText().toString());
+                    }catch(NumberFormatException e){
+                        capienzaAttivita = 0;
+                    }
+                    attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
                 }else{
                     nomeAttivitaEditText.setFocusableInTouchMode(true);
                     nomeAttivitaEditText.setFocusable(true);
@@ -247,6 +242,9 @@ public class HomeAdminFragment extends Fragment {
                 });
 
         return creazioneAvvisoAlertDialogBuilder.create();
+    }
+    public static Attivita getAttivita(){
+        return attivita;
     }
 
 }

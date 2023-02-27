@@ -112,7 +112,7 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
 
 
     public void sostituisciFragment(){
-        FragmentTransaction transaction = null;
+        transaction = null;
         if (getFragmentManager() != null) {
             transaction = getFragmentManager().beginTransaction();
         }
@@ -129,12 +129,7 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
 
     public void sostituisciFragmentSecond(Fragment fragment){
         transaction = getFragmentManager().beginTransaction();
-        if(getActivity().toString().contains("Admin")){
-            transaction.add(R.id.adminFragmentContainerView, fragment);
-        }
-        else if(getActivity().toString().contains("Supervisore")){
-            transaction.add(R.id.supervisoreFragmentContainerView, fragment);
-        }
+        transaction.replace(R.id.addettoSalaFragmentContainerView, fragment, null);
         transaction.hide(this);
         transaction.addToBackStack(null);
         transaction.commit();

@@ -1,5 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.aggiungiProdottoOrdinazione;
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.os.Bundle;
@@ -110,6 +111,8 @@ public class VisualizzaProdottoFragment extends Fragment {
             public void onClick(View view) {
                 quantita = Integer.parseInt(quantitaEditText.getText().toString());
                 singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), quantita);
+                aggiungiProdottoOrdinazione(singoloOrdine);
+                sostituisciFragment();
             }
         });
 
