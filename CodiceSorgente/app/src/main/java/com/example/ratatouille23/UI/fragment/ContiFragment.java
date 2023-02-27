@@ -138,6 +138,15 @@ public class ContiFragment extends Fragment {
                 android.R.layout.simple_spinner_item, tavoli);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selezionaTavoloSpinner.setAdapter(adapter);
+        SingoliOrdiniAdapter singoliOrdiniAdapter;
+        RecyclerView recyclerView;
+
+        numeroCommensaliCifraTextView.setText(String.valueOf(ordinazione.getNumeroCommensali()));
+        totaleCifraTextView.setText(String.valueOf(ordinazione.calcolaTotale()));
+        recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
+        singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
+        recyclerView.setAdapter(singoliOrdiniAdapter);
+        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
 
         //set RecyclerView
 
@@ -145,15 +154,9 @@ public class ContiFragment extends Fragment {
 
         //setOggettiDiProva(listaProdotti);
 
-        RecyclerView recyclerView = (RecyclerView) inflatedView.findViewById(R.id.contiRecyclerView);
-        SingoliOrdiniAdapter singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
-        recyclerView.setAdapter(singoliOrdiniAdapter);
-
-
-
         //set Listener e AlertDialog
 
-        chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
+
 
         visualizzaContoButton.setOnClickListener(new View.OnClickListener() {
             @Override

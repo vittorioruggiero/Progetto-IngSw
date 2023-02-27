@@ -99,8 +99,6 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
         });
 
 
-
-
         return v;
     }
 
@@ -130,7 +128,6 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     public void sostituisciFragmentSecond(Fragment fragment){
         transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.addettoSalaFragmentContainerView, fragment, null);
-        transaction.hide(this);
         transaction.addToBackStack(null);
         transaction.commit();
     }

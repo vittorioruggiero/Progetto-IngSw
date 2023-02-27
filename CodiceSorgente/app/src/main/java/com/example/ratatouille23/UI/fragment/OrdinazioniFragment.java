@@ -84,7 +84,7 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selezionaTavoloSpinner.setAdapter(adapter);
 
-        ordinazione = new Ordinazione(prodottiOrdine);
+
 
         prodottiOrdinazioneAdapter = new ProdottiOrdinazioneAdapter(prodottiOrdine, getActivity(), this);
         recyclerView.setAdapter(prodottiOrdinazioneAdapter);
@@ -100,10 +100,7 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         salvaOrdinazioneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int numeroTavoloSelezionato = Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString());
-                int numeroCommensali = Integer.parseInt(numeroCommensaliEditText.getText().toString());
-                ordinazione.setNumeroTavolo(numeroTavoloSelezionato);
-                ordinazione.setNumeroCommensali(numeroCommensali);
+                ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
                 Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
             }
         });

@@ -158,10 +158,11 @@ public class VisualizzaContoPDFFragment extends Fragment {
         }
 
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("Totale:", 50, 2600, textPaint);
+        canvas.drawText("Totale:", 50, 1000, textPaint);
 
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-        canvas.drawText(getArguments().getString("totale"), 50, 2700, textPaint);
+        canvas.drawText(getArguments().getString("totale"), 50, 1100, textPaint);
+
 
         pdfDocument.finishPage(myPage);
 
