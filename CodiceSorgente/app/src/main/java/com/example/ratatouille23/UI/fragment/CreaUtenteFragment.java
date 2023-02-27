@@ -109,6 +109,7 @@ public class CreaUtenteFragment extends Fragment {
             }
         });
 
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

@@ -1,7 +1,9 @@
 package com.example.ratatouille23.UI.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +63,21 @@ public class HomeSupervisoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_supervisore, container, false);
+
+        View inflatedView = inflater.inflate(R.layout.fragment_home_supervisore, container, false);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Provvisorio: fatto per non dover riavviare l'applicazione per tornare alla LoginActivity
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                HomeSupervisoreFragment.this.startActivity(intent);
+                //Esce dall'applicazione come il bottone centrale di Android
+//                getActivity().moveTaskToBack(true);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+        return inflatedView;
     }
 }
