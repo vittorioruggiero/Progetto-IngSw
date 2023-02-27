@@ -9,7 +9,11 @@
         android:id="@+id/homeAddettoSalaFragment"
         android:name="com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment"
         android:label="fragment_home_addetto_sala"
-        tools:layout="@layout/fragment_home_addetto_sala" />
+        tools:layout="@layout/fragment_home_addetto_sala" >
+        <action
+            android:id="@+id/action_homeAddettoSalaFragment_to_ordinazioniFragment"
+            app:destination="@id/ordinazioniFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ordinazioniFragment"
         android:name="com.example.ratatouille23.UI.fragment.OrdinazioniFragment"
