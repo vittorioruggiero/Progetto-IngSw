@@ -21,7 +21,17 @@
         android:id="@+id/personalizzaMenuSupervisoreFragment"
         android:name="com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment"
         android:label="fragment_personalizza_menu"
-        tools:layout="@layout/fragment_personalizza_menu" />
+        tools:layout="@layout/fragment_personalizza_menu" >
+        <action
+            android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_aggiungiProdottoFragment"
+            app:destination="@id/aggiungiProdottoFragment" />
+        <action
+            android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_aggiungiSezioneFragment"
+            app:destination="@id/aggiungiSezioneFragment" />
+        <action
+            android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_modificaSezioniFragment"
+            app:destination="@id/modificaSezioniFragment" />
+    </fragment>
     <fragment
         android:id="@+id/contiFragment"
         android:name="com.example.ratatouille23.UI.fragment.ContiFragment"
@@ -36,4 +46,19 @@
         android:name="com.example.ratatouille23.UI.fragment.VisualizzaContoPDFFragment"
         android:label="fragment_visualizza_conto_pdf"
         tools:layout="@layout/fragment_visualizza_conto_pdf" />
+    <fragment
+        android:id="@+id/aggiungiProdottoFragment"
+        android:name="com.example.ratatouille23.UI.fragment.AggiungiProdottoFragment"
+        android:label="fragment_aggiungi_prodotto"
+        tools:layout="@layout/fragment_aggiungi_prodotto" />
+    <fragment
+        android:id="@+id/aggiungiSezioneFragment"
+        android:name="com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment"
+        android:label="fragment_aggiungi_sezione"
+        tools:layout="@layout/fragment_aggiungi_sezione" />
+    <fragment
+        android:id="@+id/modificaSezioniFragment"
+        android:name="com.example.ratatouille23.UI.fragment.ModificaSezioniFragment"
+        android:label="fragment_modifica_sezioni"
+        tools:layout="@layout/fragment_modifica_sezioni" />
 </navigation>

@@ -60,16 +60,6 @@ public class HomeAdminActivity extends AppCompatActivity {
             }
         });
 
-//        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-//            @Override
-//            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-//                if(navController.getCurrentDestination().getId() == R.id.creaUtenteFragment) {
-//                    CreaUtenteFragment fragment = new CreaUtenteFragment();
-//
-//                }
-//            }
-//        });
-
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
