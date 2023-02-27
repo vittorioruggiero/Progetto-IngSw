@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_modificaSezioniFragment"
             app:destination="@id/modificaSezioniFragment" />
+        <action
+            android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_modificaProdottoFragment"
+            app:destination="@id/modificaProdottoFragment" />
     </fragment>
     <fragment
         android:id="@+id/contiFragment"
@@ -61,4 +64,9 @@
         android:name="com.example.ratatouille23.UI.fragment.ModificaSezioniFragment"
         android:label="fragment_modifica_sezioni"
         tools:layout="@layout/fragment_modifica_sezioni" />
+    <fragment
+        android:id="@+id/modificaProdottoFragment"
+        android:name="com.example.ratatouille23.UI.fragment.ModificaProdottoFragment"
+        android:label="ModificaProdottoFragment"
+        tools:layout="@layout/fragment_modifica_prodotto" />
 </navigation>
