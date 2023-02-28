@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,41 +14,29 @@ import android.view.ViewGroup;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
+import com.example.ratatouille23.adapter.AvvisiAdapter;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeAddettoSalaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeAddettoSalaFragment extends Fragment {
+public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.ItemClickListenerAvvisi {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final ArrayList<String> avvisiAddettoSala = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private AvvisiAdapter avvisiAddettoSalaAdapter;
 
     public HomeAddettoSalaFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeAddettoSalaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeAddettoSalaFragment newInstance(String param1, String param2) {
         HomeAddettoSalaFragment fragment = new HomeAddettoSalaFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,10 +44,8 @@ public class HomeAddettoSalaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
     }
 
     @Override
@@ -65,6 +53,12 @@ public class HomeAddettoSalaFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View inflatedView = inflater.inflate(R.layout.fragment_home_addetto_sala, container, false);
+
+        recyclerView = inflatedView.findViewById(R.id.avvisiAddettoSalaRecyclerView);
+        avvisiAddettoSalaAdapter = new AvvisiAdapter(avvisiAddettoSala, getContext(), this);
+        recyclerView.setAdapter(avvisiAddettoSalaAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -79,5 +73,16 @@ public class HomeAddettoSalaFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return inflatedView;
+    }
+
+    @Override
+    public void onItemClickAvviso(int posizione) {
+        //avvisiAddettoSala.get(posizione);
+        avvisiAddettoSala.remove(posizione);
+        avvisiAddettoSalaAdapter.notifyDataSetChanged();
+    }
+
+    public static ArrayList<String> getAvvisiAddettoSala(){
+        return avvisiAddettoSala;
     }
 }

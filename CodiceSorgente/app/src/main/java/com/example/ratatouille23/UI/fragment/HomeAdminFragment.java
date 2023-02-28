@@ -1,5 +1,8 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment.getAvvisiAddettoSala;
+import static com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment.getAvvisiSupervisore;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -39,7 +42,6 @@ public class HomeAdminFragment extends Fragment {
     private AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
     private Button creaAvvisoButton;
     private static Attivita attivita;
-    private static ArrayList<Integer> tavoli = new ArrayList<>();
     private boolean isEditing = false;
 
     public HomeAdminFragment() {
@@ -195,7 +197,7 @@ public class HomeAdminFragment extends Fragment {
         inserisciAvvisoAlertDialogBuilder.setTitle("Avviso");
         inserisciAvvisoAlertDialogBuilder.setMessage("Inserisci testo");
 
-        confermaCreazioneAvvisoAlertDialog = creaCreazioneAvvisoAlertDialog();
+        //confermaCreazioneAvvisoAlertDialog = creaCreazioneAvvisoAlertDialog();
 
         final EditText testoAvvisoEditText = new EditText(getActivity());
         inserisciAvvisoAlertDialogBuilder.setView(testoAvvisoEditText);
@@ -204,7 +206,9 @@ public class HomeAdminFragment extends Fragment {
                 "Conferma",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        confermaCreazioneAvvisoAlertDialog.show();
+                        String avviso = testoAvvisoEditText.getText().toString();
+                        sendAvvisi(avviso);
+                        testoAvvisoEditText.setText("");
                         dialog.cancel();
                     }
                 });
@@ -220,7 +224,7 @@ public class HomeAdminFragment extends Fragment {
         return inserisciAvvisoAlertDialogBuilder.create();
     }
 
-    AlertDialog creaCreazioneAvvisoAlertDialog() {
+    /*AlertDialog creaCreazioneAvvisoAlertDialog() {
 
         AlertDialog.Builder creazioneAvvisoAlertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
         creazioneAvvisoAlertDialogBuilder.setMessage("Sei sicuro di voler creare l'avviso?");
@@ -242,9 +246,14 @@ public class HomeAdminFragment extends Fragment {
                 });
 
         return creazioneAvvisoAlertDialogBuilder.create();
-    }
+    }*/
     public static Attivita getAttivita(){
         return attivita;
+    }
+
+    private void sendAvvisi(String avviso){
+        getAvvisiAddettoSala().add(avviso);
+        getAvvisiSupervisore().add(avviso);
     }
 
 }
