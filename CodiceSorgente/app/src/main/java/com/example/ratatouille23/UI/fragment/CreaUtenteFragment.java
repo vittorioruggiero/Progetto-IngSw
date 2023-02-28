@@ -15,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.AddettoSala;
+import com.example.ratatouille23.entity.Supervisore;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -105,6 +108,9 @@ public class CreaUtenteFragment extends Fragment {
         creaUtenteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 creazioneUtenteAlertDialog.show();
             }
         });
@@ -131,6 +137,19 @@ public class CreaUtenteFragment extends Fragment {
                 "Conferma",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        try{
+                            String nomeUtente = nuovoUtenteNomeTextInputEditText.getText().toString();
+                            String email = nuovoUtenteEmailTextInputEditText.getText().toString();
+                            String password = nuovoUtentePasswordTextInputEditText.getText().toString();
+                            String tipologiaUtente = tipologiaUtenteSpinner.getSelectedItem().toString();
+                            if(tipologiaUtente.equals("Supervisore")){
+                                Supervisore supervisore = new Supervisore(email, nomeUtente, password);
+                            }else if(tipologiaUtente.equals("Addetto alla sala")){
+                                AddettoSala addettoSala = new AddettoSala(email, nomeUtente, password);
+                            }
+                        }catch(NullPointerException e){
+                            Toast.makeText(getActivity(), "Inserisci tutti i campi", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.cancel();
                     }
                 });

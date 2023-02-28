@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.Amministratore;
 
 public class RegistratiActivity extends AppCompatActivity {
 
@@ -42,6 +43,10 @@ public class RegistratiActivity extends AppCompatActivity {
                         || confermaPasswordEditText.getText().toString().equals("") || emailEditText.getText().toString().equals("")){
                     campiNonCompilatiTextView.setVisibility(View.VISIBLE);
                 }else if(passwordEditText.getText().toString().equals(confermaPasswordEditText.getText().toString())){
+                    String nomeUtente = nomeUtenteEditText.getText().toString();
+                    String email = emailEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+                    Amministratore amministratore = new Amministratore(email, nomeUtente, password);
                     Toast.makeText(RegistratiActivity.this, "Registrazione effettuata con successo", Toast.LENGTH_SHORT).show();
                     campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                 }else{
