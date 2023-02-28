@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.adapter.AvvisiAdapter;
+import com.example.ratatouille23.entity.Avviso;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.ItemClickListenerAvvisi{
 
-    private static final ArrayList<String> avvisiSupervisore = new ArrayList<>();
+    private static final ArrayList<Avviso> avvisiSupervisore = new ArrayList<>();
     private RecyclerView recyclerView;
     private AvvisiAdapter avvisiSupervisoreAdapter;
 
@@ -76,7 +77,7 @@ public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.I
         avvisiSupervisoreAdapter.notifyDataSetChanged();
     }
 
-    public static ArrayList<String> getAvvisiSupervisore(){
-        return avvisiSupervisore;
+    public static void addAvvisoSupervisore(Avviso avviso){
+        avvisiSupervisore.add(avviso);
     }
 }

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.Avviso;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -18,13 +19,13 @@ import java.util.List;
 public class AvvisiAdapter extends RecyclerView.Adapter<AvvisiAdapter.ViewHolder> {
 
     private Context context;
-    private List<String> avvisi;
+    private List<Avviso> avvisi;
     private static Bundle myBundle = new Bundle();
     private AvvisiAdapter.ItemClickListenerAvvisi clickListener;
 
 
 
-    public AvvisiAdapter(List<String> avvisi, Context context, AvvisiAdapter.ItemClickListenerAvvisi clickListener) {
+    public AvvisiAdapter(List<Avviso> avvisi, Context context, AvvisiAdapter.ItemClickListenerAvvisi clickListener) {
         this.avvisi = avvisi;
         this.context = context;
         this.clickListener = clickListener;
@@ -42,7 +43,7 @@ public class AvvisiAdapter extends RecyclerView.Adapter<AvvisiAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull AvvisiAdapter.ViewHolder holder, int position) {
 
-        String avviso = avvisi.get(position).toString();
+        String avviso = avvisi.get(position).getAvviso();
 
         holder.avvisoTextView.setText(avviso);
         holder.avvisoVisualizzatoButton.setOnClickListener(view ->

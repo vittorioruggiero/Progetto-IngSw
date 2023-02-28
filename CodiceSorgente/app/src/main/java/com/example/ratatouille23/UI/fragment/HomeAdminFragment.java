@@ -1,7 +1,7 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment.getAvvisiAddettoSala;
-import static com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment.getAvvisiSupervisore;
+import static com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment.addAvvisiAddettoSala;
+import static com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment.addAvvisoSupervisore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,20 +26,13 @@ import android.widget.ImageView;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Attivita;
+import com.example.ratatouille23.entity.Avviso;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-
-/*
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeAdminFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeAdminFragment extends Fragment {
     private FloatingActionButton modificaButton, selezionaFotoButton;
     private ImageView foto;
     private EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
-    private AlertDialog inserisciAvvisoAlertDialog, confermaCreazioneAvvisoAlertDialog;
+    private AlertDialog inserisciAvvisoAlertDialog;
     private Button creaAvvisoButton;
     private static Attivita attivita;
     private boolean isEditing = false;
@@ -47,16 +40,6 @@ public class HomeAdminFragment extends Fragment {
     public HomeAdminFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeAdminFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeAdminFragment newInstance(String param1, String param2) {
         HomeAdminFragment fragment = new HomeAdminFragment();
         Bundle args = new Bundle();
@@ -206,7 +189,7 @@ public class HomeAdminFragment extends Fragment {
                 "Conferma",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String avviso = testoAvvisoEditText.getText().toString();
+                        Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString());
                         sendAvvisi(avviso);
                         testoAvvisoEditText.setText("");
                         dialog.cancel();
@@ -251,9 +234,9 @@ public class HomeAdminFragment extends Fragment {
         return attivita;
     }
 
-    private void sendAvvisi(String avviso){
-        getAvvisiAddettoSala().add(avviso);
-        getAvvisiSupervisore().add(avviso);
+    private void sendAvvisi(Avviso avviso){
+        addAvvisiAddettoSala(avviso);
+        addAvvisoSupervisore(avviso);
     }
 
 }

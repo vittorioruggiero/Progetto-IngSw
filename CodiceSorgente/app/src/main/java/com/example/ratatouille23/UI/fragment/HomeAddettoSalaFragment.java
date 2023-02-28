@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.adapter.AvvisiAdapter;
+import com.example.ratatouille23.entity.Avviso;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  */
 public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.ItemClickListenerAvvisi {
 
-    private static final ArrayList<String> avvisiAddettoSala = new ArrayList<>();
+    private static final ArrayList<Avviso> avvisiAddettoSala = new ArrayList<>();
     private RecyclerView recyclerView;
     private AvvisiAdapter avvisiAddettoSalaAdapter;
 
@@ -82,7 +83,7 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
         avvisiAddettoSalaAdapter.notifyDataSetChanged();
     }
 
-    public static ArrayList<String> getAvvisiAddettoSala(){
-        return avvisiAddettoSala;
+    public static void addAvvisiAddettoSala(Avviso avviso){
+        avvisiAddettoSala.add(avviso);
     }
 }
