@@ -2,32 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.2
--- Dumped by pg_dump version 15.2
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
 
--- Started on 2023-03-01 13:10:42
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-DROP DATABASE "Ratatouille23";
---
--- TOC entry 3423 (class 1262 OID 24590)
--- Name: Ratatouille23; Type: DATABASE; Schema: -; Owner: -
---
-
-CREATE DATABASE "Ratatouille23" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'Italian_Italy.1252';
-
-
-\connect "Ratatouille23"
+-- Started on 2023-03-03 16:14:28
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -43,7 +21,7 @@ SET row_security = off;
 SET default_table_access_method = heap;
 
 --
--- TOC entry 214 (class 1259 OID 24591)
+-- TOC entry 200 (class 1259 OID 17886)
 -- Name: addettosala; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -58,7 +36,7 @@ CREATE TABLE public.addettosala (
 
 
 --
--- TOC entry 215 (class 1259 OID 24595)
+-- TOC entry 201 (class 1259 OID 17890)
 -- Name: amministratore; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -73,7 +51,7 @@ CREATE TABLE public.amministratore (
 
 
 --
--- TOC entry 216 (class 1259 OID 24599)
+-- TOC entry 202 (class 1259 OID 17894)
 -- Name: attivita; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -87,7 +65,7 @@ CREATE TABLE public.attivita (
 
 
 --
--- TOC entry 217 (class 1259 OID 24602)
+-- TOC entry 203 (class 1259 OID 17897)
 -- Name: sequence_avviso; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -100,18 +78,20 @@ CREATE SEQUENCE public.sequence_avviso
 
 
 --
--- TOC entry 218 (class 1259 OID 24603)
+-- TOC entry 204 (class 1259 OID 17899)
 -- Name: avviso; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.avviso (
     testo character varying(200) NOT NULL,
-    id_avviso integer DEFAULT nextval('public.sequence_avviso'::regclass) NOT NULL
+    id_avviso integer DEFAULT nextval('public.sequence_avviso'::regclass) NOT NULL,
+    attivita character varying(50) NOT NULL,
+    indirizzo_attivita character varying(100) NOT NULL
 );
 
 
 --
--- TOC entry 229 (class 1259 OID 24723)
+-- TOC entry 205 (class 1259 OID 17903)
 -- Name: sequence_conto; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -124,17 +104,20 @@ CREATE SEQUENCE public.sequence_conto
 
 
 --
--- TOC entry 228 (class 1259 OID 24713)
+-- TOC entry 206 (class 1259 OID 17905)
 -- Name: conto; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.conto (
-    id_conto integer DEFAULT nextval('public.sequence_conto'::regclass) NOT NULL
+    id_conto integer DEFAULT nextval('public.sequence_conto'::regclass) NOT NULL,
+    data date NOT NULL,
+    importo double precision NOT NULL,
+    stato boolean NOT NULL
 );
 
 
 --
--- TOC entry 227 (class 1259 OID 24711)
+-- TOC entry 207 (class 1259 OID 17909)
 -- Name: sequence_ordinazione; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -147,7 +130,7 @@ CREATE SEQUENCE public.sequence_ordinazione
 
 
 --
--- TOC entry 226 (class 1259 OID 24704)
+-- TOC entry 208 (class 1259 OID 17911)
 -- Name: ordinazione; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -161,7 +144,23 @@ CREATE TABLE public.ordinazione (
 
 
 --
--- TOC entry 222 (class 1259 OID 24670)
+-- TOC entry 210 (class 1259 OID 17920)
+-- Name: prodottomenu; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.prodottomenu (
+    nome character varying(30) NOT NULL,
+    descrizione character varying(100) NOT NULL,
+    costo double precision NOT NULL,
+    nome_seconda_lingua character varying(30),
+    descrizione_seconda_lingua character varying(100),
+    allergeni character varying(100)[] NOT NULL,
+    sezione character varying(30) NOT NULL
+);
+
+
+--
+-- TOC entry 209 (class 1259 OID 17918)
 -- Name: sequence_prodotto; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -174,24 +173,7 @@ CREATE SEQUENCE public.sequence_prodotto
 
 
 --
--- TOC entry 223 (class 1259 OID 24673)
--- Name: prodottomenu; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.prodottomenu (
-    id_prodotto integer DEFAULT nextval('public.sequence_prodotto'::regclass) NOT NULL,
-    nome character varying(30) NOT NULL,
-    descrizione character varying(100) NOT NULL,
-    costo double precision NOT NULL,
-    nome_seconda_lingua character varying(30),
-    descrizione_seconda_lingua character varying(100),
-    allergeni character varying(100)[] NOT NULL,
-    id_sezione integer NOT NULL
-);
-
-
---
--- TOC entry 220 (class 1259 OID 24654)
+-- TOC entry 211 (class 1259 OID 17927)
 -- Name: sequence_sezione; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -204,7 +186,7 @@ CREATE SEQUENCE public.sequence_sezione
 
 
 --
--- TOC entry 224 (class 1259 OID 24692)
+-- TOC entry 212 (class 1259 OID 17929)
 -- Name: sequence_singolo_ordine; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -217,31 +199,31 @@ CREATE SEQUENCE public.sequence_singolo_ordine
 
 
 --
--- TOC entry 221 (class 1259 OID 24661)
+-- TOC entry 213 (class 1259 OID 17931)
 -- Name: sezionemenu; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.sezionemenu (
-    id_sezione integer DEFAULT nextval('public.sequence_sezione'::regclass) NOT NULL,
     nome character varying(30) NOT NULL,
-    id_prodotti integer[]
+    attivita character varying(50) NOT NULL,
+    indirizzo_attivita character varying(100) NOT NULL
 );
 
 
 --
--- TOC entry 225 (class 1259 OID 24693)
+-- TOC entry 214 (class 1259 OID 17938)
 -- Name: singolo_ordine; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.singolo_ordine (
-    id_prodotto integer NOT NULL,
     quantita_prodotto integer NOT NULL,
-    id_singolo_ordine integer DEFAULT nextval('public.sequence_singolo_ordine'::regclass) NOT NULL
+    id_singolo_ordine integer DEFAULT nextval('public.sequence_singolo_ordine'::regclass) NOT NULL,
+    prodotto character varying(30) NOT NULL
 );
 
 
 --
--- TOC entry 219 (class 1259 OID 24607)
+-- TOC entry 215 (class 1259 OID 17942)
 -- Name: supervisore; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -256,8 +238,8 @@ CREATE TABLE public.supervisore (
 
 
 --
--- TOC entry 3402 (class 0 OID 24591)
--- Dependencies: 214
+-- TOC entry 3072 (class 0 OID 17886)
+-- Dependencies: 200
 -- Data for Name: addettosala; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -266,8 +248,8 @@ INSERT INTO public.addettosala (email, nomeutente, password, attivita, indirizzo
 
 
 --
--- TOC entry 3403 (class 0 OID 24595)
--- Dependencies: 215
+-- TOC entry 3073 (class 0 OID 17890)
+-- Dependencies: 201
 -- Data for Name: amministratore; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -276,8 +258,8 @@ INSERT INTO public.amministratore (email, nomeutente, password, attivita, indiri
 
 
 --
--- TOC entry 3404 (class 0 OID 24599)
--- Dependencies: 216
+-- TOC entry 3074 (class 0 OID 17894)
+-- Dependencies: 202
 -- Data for Name: attivita; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -285,58 +267,58 @@ INSERT INTO public.attivita (nome, indirizzo, telefono, citta, capienza) VALUES 
 
 
 --
--- TOC entry 3406 (class 0 OID 24603)
--- Dependencies: 218
+-- TOC entry 3076 (class 0 OID 17899)
+-- Dependencies: 204
 -- Data for Name: avviso; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.avviso (testo, id_avviso) VALUES ('Ciao', 1);
-INSERT INTO public.avviso (testo, id_avviso) VALUES ('Ciao ciao', 2);
+INSERT INTO public.avviso (testo, id_avviso, attivita, indirizzo_attivita) VALUES ('Ciao', 1, 'Pizzeria da Luigi', 'Via Roma 63');
+INSERT INTO public.avviso (testo, id_avviso, attivita, indirizzo_attivita) VALUES ('Ciao ciao', 2, 'Pizzeria da Luigi', 'Via Roma 63');
 
 
 --
--- TOC entry 3416 (class 0 OID 24713)
--- Dependencies: 228
+-- TOC entry 3078 (class 0 OID 17905)
+-- Dependencies: 206
 -- Data for Name: conto; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3414 (class 0 OID 24704)
--- Dependencies: 226
+-- TOC entry 3080 (class 0 OID 17911)
+-- Dependencies: 208
 -- Data for Name: ordinazione; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3411 (class 0 OID 24673)
--- Dependencies: 223
+-- TOC entry 3082 (class 0 OID 17920)
+-- Dependencies: 210
 -- Data for Name: prodottomenu; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3409 (class 0 OID 24661)
--- Dependencies: 221
+-- TOC entry 3085 (class 0 OID 17931)
+-- Dependencies: 213
 -- Data for Name: sezionemenu; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3413 (class 0 OID 24693)
--- Dependencies: 225
+-- TOC entry 3086 (class 0 OID 17938)
+-- Dependencies: 214
 -- Data for Name: singolo_ordine; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3407 (class 0 OID 24607)
--- Dependencies: 219
+-- TOC entry 3087 (class 0 OID 17942)
+-- Dependencies: 215
 -- Data for Name: supervisore; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -345,8 +327,8 @@ INSERT INTO public.supervisore (email, nomeutente, password, attivita, indirizzo
 
 
 --
--- TOC entry 3424 (class 0 OID 0)
--- Dependencies: 217
+-- TOC entry 3093 (class 0 OID 0)
+-- Dependencies: 203
 -- Name: sequence_avviso; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -354,8 +336,8 @@ SELECT pg_catalog.setval('public.sequence_avviso', 2, true);
 
 
 --
--- TOC entry 3425 (class 0 OID 0)
--- Dependencies: 229
+-- TOC entry 3094 (class 0 OID 0)
+-- Dependencies: 205
 -- Name: sequence_conto; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -363,8 +345,8 @@ SELECT pg_catalog.setval('public.sequence_conto', 1, false);
 
 
 --
--- TOC entry 3426 (class 0 OID 0)
--- Dependencies: 227
+-- TOC entry 3095 (class 0 OID 0)
+-- Dependencies: 207
 -- Name: sequence_ordinazione; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -372,8 +354,8 @@ SELECT pg_catalog.setval('public.sequence_ordinazione', 1, false);
 
 
 --
--- TOC entry 3427 (class 0 OID 0)
--- Dependencies: 222
+-- TOC entry 3096 (class 0 OID 0)
+-- Dependencies: 209
 -- Name: sequence_prodotto; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -381,8 +363,8 @@ SELECT pg_catalog.setval('public.sequence_prodotto', 1, false);
 
 
 --
--- TOC entry 3428 (class 0 OID 0)
--- Dependencies: 220
+-- TOC entry 3097 (class 0 OID 0)
+-- Dependencies: 211
 -- Name: sequence_sezione; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -390,8 +372,8 @@ SELECT pg_catalog.setval('public.sequence_sezione', 1, false);
 
 
 --
--- TOC entry 3429 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3098 (class 0 OID 0)
+-- Dependencies: 212
 -- Name: sequence_singolo_ordine; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -399,7 +381,7 @@ SELECT pg_catalog.setval('public.sequence_singolo_ordine', 1, false);
 
 
 --
--- TOC entry 3224 (class 2606 OID 24612)
+-- TOC entry 2907 (class 2606 OID 17947)
 -- Name: addettosala addettosala_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -408,7 +390,7 @@ ALTER TABLE ONLY public.addettosala
 
 
 --
--- TOC entry 3228 (class 2606 OID 24614)
+-- TOC entry 2911 (class 2606 OID 17949)
 -- Name: amministratore amministratore_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -417,16 +399,16 @@ ALTER TABLE ONLY public.amministratore
 
 
 --
--- TOC entry 3232 (class 2606 OID 24616)
--- Name: attivita attivita_primary_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2915 (class 2606 OID 17951)
+-- Name: attivita attivita_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.attivita
-    ADD CONSTRAINT attivita_primary_key PRIMARY KEY (nome, indirizzo);
+    ADD CONSTRAINT attivita_pkey PRIMARY KEY (nome, indirizzo);
 
 
 --
--- TOC entry 3234 (class 2606 OID 24618)
+-- TOC entry 2917 (class 2606 OID 17953)
 -- Name: avviso avviso_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -435,7 +417,7 @@ ALTER TABLE ONLY public.avviso
 
 
 --
--- TOC entry 3254 (class 2606 OID 24717)
+-- TOC entry 2919 (class 2606 OID 17955)
 -- Name: conto conto_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -444,7 +426,7 @@ ALTER TABLE ONLY public.conto
 
 
 --
--- TOC entry 3252 (class 2606 OID 24710)
+-- TOC entry 2921 (class 2606 OID 17957)
 -- Name: ordinazione ordinazione_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -453,25 +435,25 @@ ALTER TABLE ONLY public.ordinazione
 
 
 --
--- TOC entry 3244 (class 2606 OID 24679)
--- Name: prodottomenu prodotto_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2923 (class 2606 OID 18006)
+-- Name: prodottomenu prodottomenu_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.prodottomenu
-    ADD CONSTRAINT prodotto_pkey PRIMARY KEY (id_prodotto);
+    ADD CONSTRAINT prodottomenu_pkey PRIMARY KEY (nome);
 
 
 --
--- TOC entry 3240 (class 2606 OID 24667)
--- Name: sezionemenu sezione_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2927 (class 2606 OID 18004)
+-- Name: sezionemenu sezionemenu_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sezionemenu
-    ADD CONSTRAINT sezione_pkey PRIMARY KEY (id_sezione);
+    ADD CONSTRAINT sezionemenu_pkey PRIMARY KEY (nome);
 
 
 --
--- TOC entry 3250 (class 2606 OID 24697)
+-- TOC entry 2929 (class 2606 OID 17963)
 -- Name: singolo_ordine singoloordine_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -480,7 +462,7 @@ ALTER TABLE ONLY public.singolo_ordine
 
 
 --
--- TOC entry 3236 (class 2606 OID 24620)
+-- TOC entry 2931 (class 2606 OID 17965)
 -- Name: supervisore supervisore_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -489,16 +471,7 @@ ALTER TABLE ONLY public.supervisore
 
 
 --
--- TOC entry 3246 (class 2606 OID 24681)
--- Name: prodottomenu unique_nome; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.prodottomenu
-    ADD CONSTRAINT unique_nome UNIQUE (nome);
-
-
---
--- TOC entry 3248 (class 2606 OID 24683)
+-- TOC entry 2925 (class 2606 OID 17969)
 -- Name: prodottomenu unique_nome_seconda_lingua; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -507,16 +480,7 @@ ALTER TABLE ONLY public.prodottomenu
 
 
 --
--- TOC entry 3242 (class 2606 OID 24686)
--- Name: sezionemenu unique_nome_sezione; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sezionemenu
-    ADD CONSTRAINT unique_nome_sezione UNIQUE (nome);
-
-
---
--- TOC entry 3226 (class 2606 OID 24622)
+-- TOC entry 2909 (class 2606 OID 17973)
 -- Name: addettosala unique_nomeutente_addettosala; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -525,7 +489,7 @@ ALTER TABLE ONLY public.addettosala
 
 
 --
--- TOC entry 3230 (class 2606 OID 24624)
+-- TOC entry 2913 (class 2606 OID 17975)
 -- Name: amministratore unique_nomeutente_amministratore; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -534,7 +498,7 @@ ALTER TABLE ONLY public.amministratore
 
 
 --
--- TOC entry 3238 (class 2606 OID 24626)
+-- TOC entry 2933 (class 2606 OID 17977)
 -- Name: supervisore unique_nomeutente_supervisore; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -543,51 +507,78 @@ ALTER TABLE ONLY public.supervisore
 
 
 --
--- TOC entry 3256 (class 2606 OID 24627)
--- Name: amministratore attivita_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2935 (class 2606 OID 17978)
+-- Name: amministratore attivita_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.amministratore
-    ADD CONSTRAINT attivita_fk FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
+    ADD CONSTRAINT attivita_fkey FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
 
 
 --
--- TOC entry 3257 (class 2606 OID 24632)
--- Name: supervisore attivita_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2941 (class 2606 OID 17983)
+-- Name: supervisore attivita_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.supervisore
-    ADD CONSTRAINT attivita_fk FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
+    ADD CONSTRAINT attivita_fkey FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
 
 
 --
--- TOC entry 3255 (class 2606 OID 24637)
--- Name: addettosala attivita_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2934 (class 2606 OID 17988)
+-- Name: addettosala attivita_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.addettosala
-    ADD CONSTRAINT attivita_fk FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
+    ADD CONSTRAINT attivita_fkey FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
 
 
 --
--- TOC entry 3259 (class 2606 OID 24718)
--- Name: ordinazione conto_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2939 (class 2606 OID 18012)
+-- Name: sezionemenu attivita_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sezionemenu
+    ADD CONSTRAINT attivita_fkey FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
+
+
+--
+-- TOC entry 2936 (class 2606 OID 18027)
+-- Name: avviso attivita_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.avviso
+    ADD CONSTRAINT attivita_fkey FOREIGN KEY (attivita, indirizzo_attivita) REFERENCES public.attivita(nome, indirizzo);
+
+
+--
+-- TOC entry 2937 (class 2606 OID 17993)
+-- Name: ordinazione conto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ordinazione
-    ADD CONSTRAINT conto_fk FOREIGN KEY (id_conto) REFERENCES public.conto(id_conto) NOT VALID;
+    ADD CONSTRAINT conto_fkey FOREIGN KEY (id_conto) REFERENCES public.conto(id_conto) NOT VALID;
 
 
 --
--- TOC entry 3258 (class 2606 OID 24687)
--- Name: prodottomenu sezione_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- TOC entry 2940 (class 2606 OID 18017)
+-- Name: singolo_ordine prodotto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.singolo_ordine
+    ADD CONSTRAINT prodotto_fkey FOREIGN KEY (prodotto) REFERENCES public.prodottomenu(nome);
+
+
+--
+-- TOC entry 2938 (class 2606 OID 18007)
+-- Name: prodottomenu sezionemenu_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.prodottomenu
-    ADD CONSTRAINT sezione_fk FOREIGN KEY (id_sezione) REFERENCES public.sezionemenu(id_sezione) NOT VALID;
+    ADD CONSTRAINT sezionemenu_fkey FOREIGN KEY (sezione) REFERENCES public.sezionemenu(nome);
 
 
--- Completed on 2023-03-01 13:10:42
+-- Completed on 2023-03-03 16:14:28
 
 --
 -- PostgreSQL database dump complete
