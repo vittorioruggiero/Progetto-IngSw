@@ -8,6 +8,7 @@ import static com.example.ratatouille23.adapter.ProdottiAdapter.getBundle;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -199,6 +200,14 @@ public class ModificaProdottoFragment extends Fragment {
                 sostituisciFragment();
             }
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                sostituisciFragment();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
     }

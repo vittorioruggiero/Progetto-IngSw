@@ -4,27 +4,20 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.fragment.CreaUtenteFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.navigation.NavigationView;
 
 public class HomeAdminActivity extends AppCompatActivity {
 
@@ -32,7 +25,7 @@ public class HomeAdminActivity extends AppCompatActivity {
 
     private NavController navController;
 
-    private BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
 
     private AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
@@ -59,6 +52,18 @@ public class HomeAdminActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+//        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+//            @Override
+//            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+//                if(navDestination.getId() == R.id.aggiungiSezioneFragment
+//                        || navDestination.getId() == R.id.modificaSezioniFragment
+//                        || navDestination.getId() == R.id.aggiungiProdottoFragment
+//                        || navDestination.getId() == R.id.modificaProdottoFragment)
+//                    bottomNavigationView.setVisibility(View.GONE);
+//                else if(bottomNavigationView.getVisibility() == View.GONE) bottomNavigationView.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override

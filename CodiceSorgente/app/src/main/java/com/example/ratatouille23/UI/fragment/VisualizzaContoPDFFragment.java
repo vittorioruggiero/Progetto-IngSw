@@ -8,10 +8,12 @@ import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.navigation.Navigation;
 
 import android.os.ParcelFileDescriptor;
 import android.os.Parcelable;
@@ -100,6 +102,14 @@ public class VisualizzaContoPDFFragment extends Fragment {
         contoPDFImageView = inflatedView.findViewById(R.id.contoPDFImageView);
 
         creaPDF(savedInstanceState);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(inflatedView).navigate(R.id.contiFragment);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return inflatedView;
     }

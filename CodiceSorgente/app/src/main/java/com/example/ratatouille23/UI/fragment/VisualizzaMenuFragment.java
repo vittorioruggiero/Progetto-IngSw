@@ -4,6 +4,7 @@ import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.get
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -98,6 +99,13 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
             }
         });
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                sostituisciFragment();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
     }

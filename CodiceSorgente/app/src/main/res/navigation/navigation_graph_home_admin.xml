@@ -9,17 +9,7 @@
         android:id="@+id/creaUtenteFragment"
         android:name="com.example.ratatouille23.UI.fragment.CreaUtenteFragment"
         android:label="fragment_crea_utente"
-        tools:layout="@layout/fragment_crea_utente" >
-        <action
-            android:id="@+id/action_creaUtenteFragment_to_visualizzaStatisticheFragment"
-            app:destination="@id/visualizzaStatisticheFragment" />
-        <action
-            android:id="@+id/action_creaUtenteFragment_to_personalizzaMenuAdminFragment"
-            app:destination="@id/personalizzaMenuAdminFragment" />
-        <action
-            android:id="@+id/action_creaUtenteFragment_to_homeAdminFragment"
-            app:destination="@id/homeAdminFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_crea_utente" />
     <fragment
         android:id="@+id/homeAdminFragment"
         android:name="com.example.ratatouille23.UI.fragment.HomeAdminFragment"
@@ -44,5 +34,38 @@
         android:id="@+id/personalizzaMenuAdminFragment"
         android:name="com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment"
         android:label="fragment_personalizza_menu"
-        tools:layout="@layout/fragment_personalizza_menu" />
+        tools:layout="@layout/fragment_personalizza_menu" >
+        <action
+            android:id="@+id/action_personalizzaMenuAdminFragment_to_aggiungiProdottoFragment2"
+            app:destination="@id/aggiungiProdottoFragment" />
+        <action
+            android:id="@+id/action_personalizzaMenuAdminFragment_to_modificaSezioniFragment2"
+            app:destination="@id/modificaSezioniFragment" />
+        <action
+            android:id="@+id/action_personalizzaMenuAdminFragment_to_modificaProdottoFragment"
+            app:destination="@id/modificaProdottoFragment" />
+        <action
+            android:id="@+id/action_personalizzaMenuAdminFragment_to_aggiungiSezioneFragment"
+            app:destination="@id/aggiungiSezioneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aggiungiProdottoFragment"
+        android:name="com.example.ratatouille23.UI.fragment.AggiungiProdottoFragment"
+        android:label="fragment_aggiungi_prodotto"
+        tools:layout="@layout/fragment_aggiungi_prodotto" />
+    <fragment
+        android:id="@+id/modificaSezioniFragment"
+        android:name="com.example.ratatouille23.UI.fragment.ModificaSezioniFragment"
+        android:label="fragment_modifica_sezioni"
+        tools:layout="@layout/fragment_modifica_sezioni" />
+    <fragment
+        android:id="@+id/modificaProdottoFragment"
+        android:name="com.example.ratatouille23.UI.fragment.ModificaProdottoFragment"
+        android:label="ModificaProdottoFragment"
+        tools:layout="@layout/fragment_modifica_prodotto" />
+    <fragment
+        android:id="@+id/aggiungiSezioneFragment"
+        android:name="com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment"
+        android:label="fragment_aggiungi_sezione"
+        tools:layout="@layout/fragment_aggiungi_sezione" />
 </navigation>

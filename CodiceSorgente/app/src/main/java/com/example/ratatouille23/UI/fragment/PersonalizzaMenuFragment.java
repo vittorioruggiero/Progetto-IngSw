@@ -4,17 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.MenuRecyclerAdapter;
@@ -24,7 +21,6 @@ import com.example.ratatouille23.entity.SezioneMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapter.ItemClickListener {
 
@@ -53,6 +49,8 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         opzioniButton = v.findViewById(R.id.opzioniButton);
         recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
         cercaProdottiSearchView = v.findViewById(R.id.personalizzaMenuSearchView);
+
+
 
         menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), this);
         recyclerView.setAdapter(menuRecyclerAdapter);

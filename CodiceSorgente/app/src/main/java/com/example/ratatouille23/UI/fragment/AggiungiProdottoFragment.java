@@ -3,8 +3,10 @@ package com.example.ratatouille23.UI.fragment;
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.aggiungiProdotto;
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
 
@@ -131,6 +134,14 @@ public class AggiungiProdottoFragment extends Fragment {
             }
 
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                sostituisciFragment();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
     }

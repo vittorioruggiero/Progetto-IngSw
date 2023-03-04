@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeSupervisoreFragment_to_contiFragment"
             app:destination="@id/contiFragment" />
+        <action
+            android:id="@+id/action_homeSupervisoreFragment_to_aggiungiSezioneFragment"
+            app:destination="@id/aggiungiSezioneFragment" />
     </fragment>
     <fragment
         android:id="@+id/personalizzaMenuSupervisoreFragment"
@@ -25,9 +28,6 @@
         <action
             android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_aggiungiProdottoFragment"
             app:destination="@id/aggiungiProdottoFragment" />
-        <action
-            android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_aggiungiSezioneFragment"
-            app:destination="@id/aggiungiSezioneFragment" />
         <action
             android:id="@+id/action_personalizzaMenuSupervisoreFragment_to_modificaSezioniFragment"
             app:destination="@id/modificaSezioniFragment" />
@@ -55,11 +55,6 @@
         android:label="fragment_aggiungi_prodotto"
         tools:layout="@layout/fragment_aggiungi_prodotto" />
     <fragment
-        android:id="@+id/aggiungiSezioneFragment"
-        android:name="com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment"
-        android:label="fragment_aggiungi_sezione"
-        tools:layout="@layout/fragment_aggiungi_sezione" />
-    <fragment
         android:id="@+id/modificaSezioniFragment"
         android:name="com.example.ratatouille23.UI.fragment.ModificaSezioniFragment"
         android:label="fragment_modifica_sezioni"
@@ -69,4 +64,9 @@
         android:name="com.example.ratatouille23.UI.fragment.ModificaProdottoFragment"
         android:label="ModificaProdottoFragment"
         tools:layout="@layout/fragment_modifica_prodotto" />
+    <fragment
+        android:id="@+id/aggiungiSezioneFragment"
+        android:name="com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment"
+        android:label="fragment_aggiungi_sezione"
+        tools:layout="@layout/fragment_aggiungi_sezione" />
 </navigation>

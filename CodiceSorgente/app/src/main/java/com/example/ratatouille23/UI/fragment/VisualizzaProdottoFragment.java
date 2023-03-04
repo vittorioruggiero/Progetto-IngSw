@@ -5,6 +5,7 @@ import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.get
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -129,6 +130,14 @@ public class VisualizzaProdottoFragment extends Fragment {
             }
         });
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                sostituisciFragment();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
         return v;
     }
 
@@ -143,7 +152,7 @@ public class VisualizzaProdottoFragment extends Fragment {
             transaction.commit();
         }
         transaction.addToBackStack(null);
-        transaction.replace(R.id.addettoSalaFragmentContainerView, OrdinazioniFragment.class, null);
+        transaction.replace(R.id.addettoSalaFragmentContainerView, VisualizzaMenuFragment.class, null);
         transaction.commit();
     }
 }
