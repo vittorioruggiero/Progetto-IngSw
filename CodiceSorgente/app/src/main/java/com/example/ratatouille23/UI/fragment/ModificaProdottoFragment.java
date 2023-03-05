@@ -25,6 +25,7 @@ import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.ProdottiAdapter;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ public class ModificaProdottoFragment extends Fragment {
     private EditText ingredientiSecondaLinguaEditText;
     private EditText costoEditText;
     private Spinner tipologiaProdottoModificaSpinner;
+    private BottomNavigationView bottomNavigationView;
     private static final String NOME_PRODOTTO = "nomeProdotto";
     private static final String NOME_PRODOTTO_SECONDA_LINGUA = "nomeProdottoSecondaLingua";
     private static final String INGREDIENTI = "ingredienti";
@@ -101,6 +103,12 @@ public class ModificaProdottoFragment extends Fragment {
         costoEditText = v.findViewById(R.id.prezzoModificaEditText);
         tipologiaProdottoModificaSpinner = v.findViewById(R.id.tipologiaProdottoModificaSpinner);
         eliminaProdottoButton = v.findViewById(R.id.eliminaProdottoButton);
+
+        if(getActivity().toString().contains("Admin"))
+            bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
+        else {
+            bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+        }
 
         nomeProdottoEditText.setText(nomeProdotto);
         if(nomeProdottoSecondaLingua != null)
@@ -231,5 +239,7 @@ public class ModificaProdottoFragment extends Fragment {
         }
         transaction.setReorderingAllowed(true);
         transaction.commit();
+
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 }

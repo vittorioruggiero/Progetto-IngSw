@@ -18,6 +18,7 @@ import com.example.ratatouille23.adapter.MenuRecyclerAdapter;
 import com.example.ratatouille23.adapter.ProdottiAdapter;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
     private SearchView cercaProdottiSearchView;
     private static MenuRecyclerAdapter menuRecyclerAdapter;
     private FloatingActionButton opzioniButton;
+    private BottomNavigationView bottomNavigationView;
 
     public PersonalizzaMenuFragment() {
         // Required empty public constructor
@@ -50,6 +52,11 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
         cercaProdottiSearchView = v.findViewById(R.id.personalizzaMenuSearchView);
 
+        if(getActivity().toString().contains("Admin"))
+            bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
+        else {
+            bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+        }
 
 
         menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), this);
@@ -109,6 +116,8 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         transaction.hide(this);
         transaction.addToBackStack(null);
         transaction.commit();
+
+        bottomNavigationView.setVisibility(View.INVISIBLE);
     }
 
 

@@ -18,5 +18,21 @@
         android:id="@+id/ordinazioniFragment"
         android:name="com.example.ratatouille23.UI.fragment.OrdinazioniFragment"
         android:label="fragment_ordinazioni"
-        tools:layout="@layout/fragment_ordinazioni" />
+        tools:layout="@layout/fragment_ordinazioni" >
+        <action
+            android:id="@+id/action_ordinazioniFragment_to_visualizzaMenuFragment"
+            app:destination="@id/visualizzaMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visualizzaMenuFragment"
+        android:name="com.example.ratatouille23.UI.fragment.VisualizzaMenuFragment"
+        android:label="VisualizzaMenuFragment" >
+        <action
+            android:id="@+id/action_visualizzaMenuFragment_to_visualizzaProdottoFragment"
+            app:destination="@id/visualizzaProdottoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visualizzaProdottoFragment"
+        android:name="com.example.ratatouille23.UI.fragment.VisualizzaProdottoFragment"
+        android:label="VisualizzaProdottoFragment" />
 </navigation>

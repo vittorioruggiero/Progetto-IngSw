@@ -20,6 +20,7 @@ import com.example.ratatouille23.adapter.ProdottiVisualizzaMenuAdapter;
 import com.example.ratatouille23.adapter.VisualizzaMenuAdapter;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,9 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
         cercaProdottoSearchView = v.findViewById(R.id.visualizzaMenuSearchView);
         indietroButton = v.findViewById(R.id.indietroButton);
 
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.addettoSalaBottomNavigationView);
+        bottomNavigationView.setVisibility(View.GONE);
+
         ArrayList<SezioneMenu> sezioni = getSezioni();
 
 
@@ -96,6 +100,7 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
             @Override
             public void onClick(View view) {
                 sostituisciFragment();
+                bottomNavigationView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -103,6 +108,7 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
             @Override
             public void handleOnBackPressed() {
                 sostituisciFragment();
+                bottomNavigationView.setVisibility(View.VISIBLE);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

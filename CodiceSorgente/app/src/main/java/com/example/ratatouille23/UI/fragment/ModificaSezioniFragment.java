@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class ModificaSezioniFragment extends Fragment {
 
     private Spinner sezioniSpinner;
     private Button eliminaSezioneButtom;
+    private BottomNavigationView bottomNavigationView;
 
     public ModificaSezioniFragment() {
         // Required empty public constructor
@@ -46,6 +48,12 @@ public class ModificaSezioniFragment extends Fragment {
 
         sezioniSpinner = v.findViewById(R.id.sezioniSpinner);
         eliminaSezioneButtom = v.findViewById(R.id.eliminaSezioneButton);
+
+        if(getActivity().toString().contains("Admin"))
+            bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
+        else {
+            bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+        }
 
         ArrayList<SezioneMenu> sezioni = getSezioni();
 
@@ -92,5 +100,7 @@ public class ModificaSezioniFragment extends Fragment {
             transaction.replace(R.id.supervisoreFragmentContainerView, PersonalizzaMenuFragment.class, null);
         }
         transaction.commit();
+
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 }

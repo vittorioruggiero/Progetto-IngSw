@@ -24,8 +24,9 @@ import java.util.ArrayList;
 
 public class AggiungiSezioneFragment extends Fragment {
 
-    EditText nomeSezioneEditText;
-    Button salvaSezioneButton;
+    private EditText nomeSezioneEditText;
+    private Button salvaSezioneButton;
+    private BottomNavigationView bottomNavigationView;
 
     public AggiungiSezioneFragment() {
         // Required empty public constructor
@@ -44,6 +45,12 @@ public class AggiungiSezioneFragment extends Fragment {
 
         nomeSezioneEditText = v.findViewById(R.id.nuovaSezioneEditText);
         salvaSezioneButton = v.findViewById(R.id.eliminaSezioneButton);
+
+        if(getActivity().toString().contains("Admin"))
+            bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
+        else {
+            bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+        }
 
         salvaSezioneButton.setOnClickListener(view -> {
             String nomeSezione = nomeSezioneEditText.getText().toString();
@@ -86,5 +93,7 @@ public class AggiungiSezioneFragment extends Fragment {
             transaction.replace(R.id.supervisoreFragmentContainerView, PersonalizzaMenuFragment.class, null);
         }
         transaction.commit();
+
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 }

@@ -24,6 +24,7 @@ import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class AggiungiProdottoFragment extends Fragment {
     private EditText ingredientiProdottoEditText;
     private EditText ingredientiProdottoSecondaLinguaEditText;
     private Button aggiungiProdottoButton;
+    private BottomNavigationView bottomNavigationView;
 
     public AggiungiProdottoFragment() {
         // Required empty public constructor
@@ -60,6 +62,12 @@ public class AggiungiProdottoFragment extends Fragment {
         ingredientiProdottoSecondaLinguaEditText = v.findViewById(R.id.ingredientiProdottoSecondaLinguaEditText);
         tipologiaProdottoSpinner = v.findViewById(R.id.tipologiaProdottoSpinner);
         aggiungiProdottoButton = v.findViewById(R.id.aggiungiProdottoButton);
+
+        if(getActivity().toString().contains("Admin"))
+            bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
+        else {
+            bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+        }
 
         ArrayList<SezioneMenu> sezioni = getSezioni();
 
@@ -164,6 +172,8 @@ public class AggiungiProdottoFragment extends Fragment {
             transaction.replace(R.id.supervisoreFragmentContainerView, PersonalizzaMenuFragment.class, null);
         }
         transaction.commit();
+
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
 }
