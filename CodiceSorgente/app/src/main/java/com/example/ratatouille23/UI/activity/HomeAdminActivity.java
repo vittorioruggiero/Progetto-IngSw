@@ -33,6 +33,12 @@ public class HomeAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_admin);
 
+        start();
+
+    }
+
+    private void start(){
+
         uscitaCreazioneUtenteAlertDialog = creaUscitaCreazioneUtenteAlertDialog();
 
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.adminFragmentContainerView);
@@ -74,7 +80,6 @@ public class HomeAdminActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
-
 
     AlertDialog creaUscitaCreazioneUtenteAlertDialog() {
 

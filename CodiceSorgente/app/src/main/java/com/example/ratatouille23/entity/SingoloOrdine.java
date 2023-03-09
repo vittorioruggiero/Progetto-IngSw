@@ -4,6 +4,7 @@ import com.example.ratatouille23.entity.ProdottoMenu;
 
 public class SingoloOrdine {
 
+    private int id;
     private ProdottoMenu prodottoMenu;
     private int quantitaProdotto;
 
@@ -26,6 +27,14 @@ public class SingoloOrdine {
 
     public void setQuantitaProdotto(int quantitaProdotto) {
         this.quantitaProdotto = quantitaProdotto;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double calcolaTotale() {

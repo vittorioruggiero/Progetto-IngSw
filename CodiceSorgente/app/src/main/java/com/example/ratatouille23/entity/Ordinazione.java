@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Ordinazione {
 
+    private int id;
     private List<SingoloOrdine> listaProdotti;
     private int numeroTavolo;
     private int numeroCommensali;
@@ -41,6 +42,14 @@ public class Ordinazione {
 
     public void setNumeroCommensali(int numeroCommensali) {
         this.numeroCommensali = numeroCommensali;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double calcolaTotale() {

@@ -22,12 +22,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Avviso;
+import com.example.ratatouille23.retrofit.AttivitaAPI;
+import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class HomeAdminFragment extends Fragment {
     private FloatingActionButton modificaButton, selezionaFotoButton;
     private ImageView foto;
@@ -73,6 +86,8 @@ public class HomeAdminFragment extends Fragment {
         luogoAttivitaEditText = (EditText) v.findViewById(R.id.indirizzoAttivitaEditText);
         telefonoAttivitaEditText = (EditText) v.findViewById(R.id.telefonoAttivitaEditText);
         capienzaAttivitaEditText = (EditText) v.findViewById(R.id.capienzaAttivitaEditText);
+        RetrofitService retrofitService = new RetrofitService();
+        AttivitaAPI attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
 
         inserisciAvvisoAlertDialog = creaInserisciAvvisoAlertDialog();
         creaAvvisoButton = (Button) v.findViewById(R.id.creaAvvisoButton);
@@ -111,7 +126,21 @@ public class HomeAdminFragment extends Fragment {
                     }catch(NumberFormatException e){
                         capienzaAttivita = 0;
                     }
-                    attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
+                    Attivita attivitaNuova = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
+                    attivitaAPI.save(attivitaNuova)
+                            .enqueue(new Callback<Attivita>() {
+                                @Override
+                                public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                                    Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Attivita> call, Throwable t) {
+                                    Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
+                                    Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
+                                }
+                            });
+
                 }else{
                     nomeAttivitaEditText.setFocusableInTouchMode(true);
                     nomeAttivitaEditText.setFocusable(true);
