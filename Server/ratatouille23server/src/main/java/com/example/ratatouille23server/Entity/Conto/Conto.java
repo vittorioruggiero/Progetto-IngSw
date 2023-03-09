@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @Entity
 public class Conto {
@@ -12,7 +13,7 @@ public class Conto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_conto;
-    private Date data;
+    private LocalDateTime data;
     private Double importo;
     private Boolean stato;
 
@@ -24,11 +25,11 @@ public class Conto {
         this.id_conto = id_conto;
     }
 
-    public Date getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 

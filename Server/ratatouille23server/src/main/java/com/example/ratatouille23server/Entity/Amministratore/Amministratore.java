@@ -4,7 +4,7 @@ import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "amministratore", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente", columnNames = "nomeUtente"))
+@Table(name = "amministratore", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente_admin", columnNames = "nomeUtente"))
 public class Amministratore {
 
     @Id

@@ -11,23 +11,19 @@ import java.util.List;
 public class ProdottoMenu {
 
     @Id
-    private String nome;
+    private String nomeProdotto;
     private String descrizione;
     private double costo;
     private String nomeSecondaLingua;
     private String descrizioneSecondaLingua;
     private String allergeni;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nome", referencedColumnName = "id_singolo_ordine", foreignKey = @ForeignKey(name = "singolo_ordine_fkey"))
-    private List<SingoloOrdine> singoloOrdine;
-
     public String getNome() {
-        return nome;
+        return nomeProdotto;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nomeProdotto = nome;
     }
 
     public String getDescrizione() {
@@ -73,7 +69,7 @@ public class ProdottoMenu {
     @Override
     public String toString() {
         return "ProdottoMenu{" +
-                "nome='" + nome + '\'' +
+                "nome='" + nomeProdotto + '\'' +
                 ", descrizione='" + descrizione + '\'' +
                 ", costo=" + costo +
                 ", nomeSecondaLingua='" + nomeSecondaLingua + '\'' +

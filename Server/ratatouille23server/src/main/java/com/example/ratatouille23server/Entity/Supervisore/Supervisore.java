@@ -2,6 +2,7 @@ package com.example.ratatouille23server.Entity.Supervisore;
 
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Check;
 
 @Entity
 @Table(name = "supervisore", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente", columnNames = "nomeUtente"))
@@ -11,6 +12,7 @@ public class Supervisore {
     private String email;
     private String nomeUtente;
     private String password;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "attivita_fkey"))
