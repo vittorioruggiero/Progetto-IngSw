@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AttivitaDAO {
@@ -13,8 +14,8 @@ public class AttivitaDAO {
     @Autowired
     private AttivitaRepository repository;
 
-    public void save(Attivita attivita){
-        repository.save(attivita);
+    public Attivita save(Attivita attivita){
+        return repository.save(attivita);
     }
 
     public List<Attivita> getAll(){
@@ -29,9 +30,12 @@ public class AttivitaDAO {
         repository.delete(attivita);
     }
 
-    public void deleteById(AttivitaPkey attivitapkey){
-        repository.deleteById(attivitapkey);
+    public void deleteById(AttivitaPkey attivitaPkey){
+        repository.deleteById(attivitaPkey);
     }
 
+    public Optional<Attivita> getById(AttivitaPkey attivitaPkey){
+        return repository.findById(attivitaPkey);
+    }
 
 }

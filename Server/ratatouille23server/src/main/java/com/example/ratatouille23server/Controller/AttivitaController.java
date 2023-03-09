@@ -22,8 +22,8 @@ public class AttivitaController {
     }
 
     @PostMapping("/attivita/save")
-    public void save(@RequestBody Attivita attivita){
-        attivitaDAO.save(attivita);
+    public Attivita save(@RequestBody Attivita attivita){
+        return attivitaDAO.save(attivita);
     }
 
 }

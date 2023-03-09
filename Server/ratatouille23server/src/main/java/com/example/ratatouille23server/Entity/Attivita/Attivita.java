@@ -1,6 +1,7 @@
 package com.example.ratatouille23server.Entity.Attivita;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
