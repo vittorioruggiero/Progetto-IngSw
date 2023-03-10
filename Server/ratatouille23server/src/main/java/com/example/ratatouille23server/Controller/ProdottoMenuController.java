@@ -19,7 +19,7 @@ public class ProdottoMenuController {
     private ProdottoMenuDAO prodottoMenuDAO;
 
     @GetMapping("/prodottoMenu/get-all")
-    public List<ProdottoMenu> getAllAttivita(){
+    public List<ProdottoMenu> getAllProdottoMenu(){
         return prodottoMenuDAO.getAll();
     }
 

@@ -19,7 +19,7 @@ public class SezioneMenuController {
     private SezioneMenuDAO sezioneMenuDAO;
 
     @GetMapping("/sezioneMenu/get-all")
-    public List<SezioneMenu> getAllAttivita(){
+    public List<SezioneMenu> getAllSezioneMenu(){
         return sezioneMenuDAO.getAll();
     }
 

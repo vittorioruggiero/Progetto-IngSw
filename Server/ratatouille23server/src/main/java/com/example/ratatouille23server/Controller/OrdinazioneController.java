@@ -19,7 +19,7 @@ public class OrdinazioneController {
     private OrdinazioneDAO ordinazioneDAO;
 
     @GetMapping("/ordinazione/get-all")
-    public List<Ordinazione> getAllAttivita(){
+    public List<Ordinazione> getAllOrdinazione(){
         return ordinazioneDAO.getAll();
     }
 

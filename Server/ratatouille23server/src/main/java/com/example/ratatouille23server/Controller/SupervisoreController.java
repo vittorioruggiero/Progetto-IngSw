@@ -19,7 +19,7 @@ public class SupervisoreController {
     private SupervisoreDAO supervisoreDAO;
 
     @GetMapping("/supervisore/get-all")
-    public List<Supervisore> getAllAttivita(){
+    public List<Supervisore> getAllSupervisore(){
         return supervisoreDAO.getAll();
     }
 

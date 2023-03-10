@@ -19,7 +19,7 @@ public class ContoController {
     private ContoDAO contoDAO;
 
     @GetMapping("/conto/get-all")
-    public List<Conto> getAllAddettoSala(){
+    public List<Conto> getAllConto(){
         return contoDAO.getAll();
     }
 

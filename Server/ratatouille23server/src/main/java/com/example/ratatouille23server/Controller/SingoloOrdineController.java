@@ -19,7 +19,7 @@ public class SingoloOrdineController {
     private SingoloOrdineDAO singoloOrdineDAO;
 
     @GetMapping("/singoloOrdine/get-all")
-    public List<SingoloOrdine> getAllAttivita(){
+    public List<SingoloOrdine> getAllSingoloOrdine(){
         return singoloOrdineDAO.getAll();
     }
 

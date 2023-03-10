@@ -19,7 +19,7 @@ public class AmministratoreController {
     private AmministratoreDAO amministratoreDAO;
 
     @GetMapping("/amministratore/get-all")
-    public List<Amministratore> getAllAddettoSala(){
+    public List<Amministratore> getAllAmministratore(){
         return amministratoreDAO.getAll();
     }
 
