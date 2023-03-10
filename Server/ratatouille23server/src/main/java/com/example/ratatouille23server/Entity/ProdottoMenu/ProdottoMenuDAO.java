@@ -1,8 +1,5 @@
 package com.example.ratatouille23server.Entity.ProdottoMenu;
 
-import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
-import com.example.ratatouille23server.Entity.Amministratore.AmministratoreRepository;
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package com.example.ratatouille23server.Entity.ProdottoMenu;
 
-import com.example.ratatouille23server.Entity.Ordinazione.Ordinazione;
-import com.example.ratatouille23server.Entity.SingoloOrdine.SingoloOrdine;
+import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenu;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,6 +16,10 @@ public class ProdottoMenu {
     private String nomeSecondaLingua;
     private String descrizioneSecondaLingua;
     private String allergeni;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nome_sezione", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "sezione_fkey"))
+    private SezioneMenu sezioneMenu;
 
     public String getNome() {
         return nomeProdotto;
