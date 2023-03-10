@@ -1,4 +1,4 @@
-package com.example.ratatouille23.retrofit;
+package com.example.ratatouille23.retrofit.API;
 
 import com.example.ratatouille23.entity.Avviso;
 
