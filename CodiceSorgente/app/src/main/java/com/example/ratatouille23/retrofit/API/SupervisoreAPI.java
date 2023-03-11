@@ -8,6 +8,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 
 public interface SupervisoreAPI {
@@ -15,7 +16,7 @@ public interface SupervisoreAPI {
     @GET("/supervisore/get-all")
     Call<List<Supervisore>> getAllSupervisore();
 
-    @POST("/supervisore/save")
-    Call<Supervisore> save(@Body Supervisore supervisore);
+    @POST("/supervisore/salvataggio-supervisore")
+    Call<Supervisore> salvataggioSupervisore(@Body Supervisore supervisore);
 
 }

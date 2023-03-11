@@ -45,7 +45,7 @@ public class ProdottiAdapter extends RecyclerView.Adapter<ProdottiAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.nomeProdottoTextView.setText(prodottiMenu.get(position).getNome());
+        holder.nomeProdottoTextView.setText(prodottiMenu.get(position).getNomeProdotto());
         holder.modificaProdottoButton.setOnClickListener(view ->
                 clickListener.onItemClick(prodottiMenu.get(holder.getAdapterPosition()), holder.getAdapterPosition(), posizioneSezione)
         );

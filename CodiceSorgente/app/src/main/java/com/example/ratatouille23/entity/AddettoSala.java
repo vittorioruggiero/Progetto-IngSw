@@ -2,37 +2,37 @@ package com.example.ratatouille23.entity;
 
 public class AddettoSala {
 
-    private String emailAddettoSala;
-    private String nomeUtenteAddettoSala;
-    private String passwordAddettoSala;
+    private String email;
+    private String nomeUtente;
+    private String password;
 
     public AddettoSala(String emailAddettoSala, String nomeUtenteAddettoSala, String passwordAddettoSala) {
-        this.emailAddettoSala = emailAddettoSala;
-        this.nomeUtenteAddettoSala = nomeUtenteAddettoSala;
-        this.passwordAddettoSala = passwordAddettoSala;
+        this.email = emailAddettoSala;
+        this.nomeUtente = nomeUtenteAddettoSala;
+        this.password = passwordAddettoSala;
     }
 
     public String getEmailAddettoSala() {
-        return emailAddettoSala;
+        return email;
     }
 
     public void setEmailAddettoSala(String emailAddettoSala) {
-        this.emailAddettoSala = emailAddettoSala;
+        this.email = emailAddettoSala;
     }
 
     public String getNomeUtenteAddettoSala() {
-        return nomeUtenteAddettoSala;
+        return nomeUtente;
     }
 
     public void setNomeUtenteAddettoSala(String nomeUtenteAddettoSala) {
-        this.nomeUtenteAddettoSala = nomeUtenteAddettoSala;
+        this.nomeUtente = nomeUtenteAddettoSala;
     }
 
     public String getPasswordAddettoSala() {
-        return passwordAddettoSala;
+        return password;
     }
 
     public void setPasswordAddettoSala(String passwordAddettoSala) {
-        this.passwordAddettoSala = passwordAddettoSala;
+        this.password = passwordAddettoSala;
     }
 }

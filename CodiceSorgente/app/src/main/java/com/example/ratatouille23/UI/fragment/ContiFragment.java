@@ -226,7 +226,7 @@ public class ContiFragment extends Fragment {
 
         while(listaProdottiIterator.hasNext()) {
             currentSingoloOrdine = listaProdottiIterator.next();
-            listaNomiProdotti.add(currentSingoloOrdine.getProdottoMenu().getNome());
+            listaNomiProdotti.add(currentSingoloOrdine.getProdottoMenu().getNomeProdotto());
             listaQuantitaProdotti.add(String.valueOf(currentSingoloOrdine.getQuantitaProdotto()));
         }
 

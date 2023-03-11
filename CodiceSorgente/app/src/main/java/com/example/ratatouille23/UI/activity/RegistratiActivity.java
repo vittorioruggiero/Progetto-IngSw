@@ -11,12 +11,29 @@ import android.widget.Toast;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.Amministratore;
+import com.example.ratatouille23.entity.Supervisore;
+import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
+import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
+import com.example.ratatouille23.retrofit.RetrofitService;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistratiActivity extends AppCompatActivity {
 
-    EditText emailEditText, nomeUtenteEditText, passwordEditText, confermaPasswordEditText;
-    TextView campiNonCompilatiTextView;
-    Button registratiButton;
+    private EditText emailEditText, nomeUtenteEditText, passwordEditText, confermaPasswordEditText;
+    private TextView campiNonCompilatiTextView;
+    private Button registratiButton;
+    private SupervisoreAPI supervisoreAPI;
+    private AmministratoreAPI amministratoreAPI;
+    private Supervisore supervisore = new Supervisore();
+    private Amministratore admin = new Amministratore();
+
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +52,10 @@ public class RegistratiActivity extends AppCompatActivity {
         campiNonCompilatiTextView = (TextView) findViewById(R.id.campiNonCompilatiTextView);
         registratiButton = (Button) findViewById(R.id.registratiButton);
 
+        retrofitService = new RetrofitService();
+        supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
+        amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
+
         registratiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,8 +67,17 @@ public class RegistratiActivity extends AppCompatActivity {
                     String nomeUtente = nomeUtenteEditText.getText().toString();
                     String email = emailEditText.getText().toString();
                     String password = passwordEditText.getText().toString();
-                    Amministratore amministratore = new Amministratore(email, nomeUtente, password);
-                    Toast.makeText(RegistratiActivity.this, "Registrazione effettuata con successo", Toast.LENGTH_SHORT).show();
+
+                    /*supervisore.setNomeUtenteSupervisore(nomeUtente);
+                    supervisore.setEmailSupervisore(email);
+                    supervisore.setPasswordSupervisore(password);*/
+                    admin.setNomeAttivita("Pizzeria");
+                    admin.setIndirizzoAttivita("Traversa");
+                    admin.setNomeUtenteAmministratore(nomeUtente);
+                    admin.setEmailAmministratore(email);
+                    admin.setPasswordAmministratore(password);
+                    //salvaSupervisore(supervisore);
+                    salvaAdmin(admin);
                     campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                 }else{
                     Toast.makeText(RegistratiActivity.this, "Le password non corrispondono", Toast.LENGTH_SHORT).show();
@@ -56,6 +86,49 @@ public class RegistratiActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void salvaAdmin(Amministratore admin) {
+        amministratoreAPI.salvataggioAdmin(admin)
+                .enqueue(new Callback<Amministratore>() {
+                    @Override
+                    public void onResponse(Call<Amministratore> call, Response<Amministratore> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Amministratore> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void salvaSupervisore(Supervisore supervisore) {
+
+        supervisoreAPI.salvataggioSupervisore(supervisore)
+                .enqueue(new Callback<Supervisore>() {
+                    @Override
+                    public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
+                        if(response.body() != null){
+                            Toast.makeText(RegistratiActivity.this, "Registrazione effettuata con successo " + response.body(), Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Supervisore> call, Throwable t) {
+
+                    }
+                });
 
     }
 }

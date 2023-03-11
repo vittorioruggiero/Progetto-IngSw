@@ -94,7 +94,7 @@ public class VisualizzaMenuAdapter extends RecyclerView.Adapter<VisualizzaMenuAd
                     for(SezioneMenu sezione : sezioniMenu){
                         List<ProdottoMenu> prodottiFiltrati = new ArrayList<>();
                         for(ProdottoMenu prodotto : sezione.getProdottiMenu()){
-                            if(prodotto.getNome().toLowerCase().contains(query.toLowerCase())){
+                            if(prodotto.getNomeProdotto().toLowerCase().contains(query.toLowerCase())){
                                 prodottiFiltrati.add(prodotto);
                             }
                         }

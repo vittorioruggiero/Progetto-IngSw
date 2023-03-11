@@ -117,8 +117,8 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     }
 
     public void onItemClickVisual(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
-        Fragment fragment = VisualizzaProdottoFragment.newInstance(prodottoMenu.getNome(), prodottoMenu.getNomeSecondaLingua(),
-                prodottoMenu.getIngredienti(), prodottoMenu.getIngredientiSecondaLingua(), prodottoMenu.getPrezzo(), posizione, posizioneSezione);
+        Fragment fragment = VisualizzaProdottoFragment.newInstance(prodottoMenu.getNomeProdotto(), prodottoMenu.getNomeSecondaLingua(),
+                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(), prodottoMenu.getCosto(), posizione, posizioneSezione);
         sostituisciFragmentSecond(fragment);
     }
 

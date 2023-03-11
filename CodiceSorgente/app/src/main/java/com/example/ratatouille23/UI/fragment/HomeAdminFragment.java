@@ -28,11 +28,13 @@ import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Attivita;
+import com.example.ratatouille23.entity.AttivitaPkey;
 import com.example.ratatouille23.entity.Avviso;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,9 +46,14 @@ public class HomeAdminFragment extends Fragment {
     private FloatingActionButton modificaButton, selezionaFotoButton;
     private ImageView foto;
     private EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
+    private AttivitaAPI attivitaAPI;
+    private RetrofitService retrofitService;
     private AlertDialog inserisciAvvisoAlertDialog;
+    private Attivita attivitaEsistente;
     private Button creaAvvisoButton;
     private static Attivita attivita;
+    private Attivita nuovaAttivita;
+
     private boolean isEditing = false;
 
     public HomeAdminFragment() {
@@ -85,8 +92,17 @@ public class HomeAdminFragment extends Fragment {
         luogoAttivitaEditText = (EditText) v.findViewById(R.id.indirizzoAttivitaEditText);
         telefonoAttivitaEditText = (EditText) v.findViewById(R.id.telefonoAttivitaEditText);
         capienzaAttivitaEditText = (EditText) v.findViewById(R.id.capienzaAttivitaEditText);
-        RetrofitService retrofitService = new RetrofitService();
-        AttivitaAPI attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
+
+        retrofitService = new RetrofitService();
+        attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
+        try{
+            nomeAttivitaEditText.setText(attivita.getNome());
+            luogoAttivitaEditText.setText(attivita.getIndirizzo());
+            capienzaAttivitaEditText.setText(String.valueOf(attivita.getCapienza()));
+            telefonoAttivitaEditText.setText(attivita.getTelefono());
+        }catch (NullPointerException e){
+            Toast.makeText(getActivity(), "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
+        }
 
         inserisciAvvisoAlertDialog = creaInserisciAvvisoAlertDialog();
         creaAvvisoButton = (Button) v.findViewById(R.id.creaAvvisoButton);
@@ -125,21 +141,8 @@ public class HomeAdminFragment extends Fragment {
                     }catch(NumberFormatException e){
                         capienzaAttivita = 0;
                     }
-                    Attivita attivitaNuova = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
-                    attivitaAPI.save(attivitaNuova)
-                            .enqueue(new Callback<Attivita>() {
-                                @Override
-                                public void onResponse(Call<Attivita> call, Response<Attivita> response) {
-                                    Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onFailure(Call<Attivita> call, Throwable t) {
-                                    Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
-                                    Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
-                                }
-                            });
-
+                    attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
+                    salvaAttivita(attivita);
                 }else{
                     nomeAttivitaEditText.setFocusableInTouchMode(true);
                     nomeAttivitaEditText.setFocusable(true);
@@ -180,6 +183,61 @@ public class HomeAdminFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
+    }
+
+    private void salvaAttivita(Attivita nuovaAttivita) {
+
+        AttivitaPkey attivitaPkey = new AttivitaPkey();
+        attivitaPkey.setNome(nuovaAttivita.getNome());
+        attivitaPkey.setIndirizzo(nuovaAttivita.getIndirizzo());
+
+        attivitaAPI.getAttivitaById(attivitaPkey)
+                .enqueue(new Callback<Attivita>() {
+                    @Override
+                    public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                        setAttivitaEsistente(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Attivita> call, Throwable t) {
+
+                    }
+                });
+        if(attivitaEsistente == null){
+            attivitaAPI.save(nuovaAttivita)
+                    .enqueue(new Callback<Attivita>() {
+                        @Override
+                        public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                            Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Attivita> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
+                        }
+                    });
+        }else{
+            attivitaAPI.delete(attivitaEsistente);
+            attivitaAPI.save(nuovaAttivita)
+                    .enqueue(new Callback<Attivita>() {
+                        @Override
+                        public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                            Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Attivita> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
+                        }
+                    });
+        }
+
+    }
+
+    private void setAttivitaEsistente(Attivita attivitaResponse) {
+        attivitaEsistente = attivitaResponse;
     }
 
     private void scegliImmagine()

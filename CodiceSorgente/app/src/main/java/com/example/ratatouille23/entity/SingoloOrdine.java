@@ -38,6 +38,6 @@ public class SingoloOrdine {
     }
 
     public double calcolaTotale() {
-        return this.prodottoMenu.getPrezzo() * this.quantitaProdotto;
+        return this.prodottoMenu.getCosto() * this.quantitaProdotto;
     }
 }

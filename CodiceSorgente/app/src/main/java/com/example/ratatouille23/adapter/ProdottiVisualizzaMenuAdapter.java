@@ -44,7 +44,7 @@ public class ProdottiVisualizzaMenuAdapter extends RecyclerView.Adapter<Prodotti
     @Override
     public void onBindViewHolder(@NonNull ProdottiVisualizzaMenuAdapter.ViewHolder holder, int position) {
 
-        holder.nomeProdottoTextView.setText(prodottiVisualizzaMenu.get(position).getNome());
+        holder.nomeProdottoTextView.setText(prodottiVisualizzaMenu.get(position).getNomeProdotto());
         if(prodottiVisualizzaMenu.get(position).getNomeSecondaLingua() != null){
             holder.nomeProdottoSecondaLinguaTextView.setText(prodottiVisualizzaMenu.get(position).getNomeSecondaLingua());
         }else{

@@ -2,44 +2,45 @@ package com.example.ratatouille23.entity;
 
 public class ProdottoMenu{
 
-    private String nome;
+    private String nomeProdotto;
     private String nomeSecondaLingua;
-    private String ingredienti;
-    private String ingredientiSecondaLingua;
-    private double prezzo;
+    private String descrizione;
+    private String descrizioneSecondaLingua;
+    private double costo;
+    private String allergeni;
 
     public ProdottoMenu(String nome, String nomeSecondaLingua, String ingredienti, String ingredientiSecondaLingua, double prezzo) {
-        this.nome = nome;
+        this.nomeProdotto = nome;
         this.nomeSecondaLingua = nomeSecondaLingua;
-        this.ingredienti = ingredienti;
-        this.ingredientiSecondaLingua = ingredientiSecondaLingua;
-        this.prezzo = prezzo;
+        this.descrizione = ingredienti;
+        this.descrizioneSecondaLingua = ingredientiSecondaLingua;
+        this.costo = prezzo;
     }
 
     public ProdottoMenu(String nome, String ingredienti, double prezzo) {
-        this.nome = nome;
-        this.ingredienti = ingredienti;
-        this.prezzo = prezzo;
+        this.nomeProdotto = nome;
+        this.descrizione = ingredienti;
+        this.costo = prezzo;
     }
 
     public ProdottoMenu(String nome, double prezzo, String nomeSecondaLingua) {
-        this.nome = nome;
+        this.nomeProdotto = nome;
         this.nomeSecondaLingua = nomeSecondaLingua;
-        this.prezzo = prezzo;
+        this.costo = prezzo;
     }
 
 
     public ProdottoMenu(String nome, double prezzo) {
-        this.nome = nome;
-        this.prezzo = prezzo;
+        this.nomeProdotto = nome;
+        this.costo = prezzo;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeProdotto() {
+        return nomeProdotto;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeProdotto(String nomeProdotto) {
+        this.nomeProdotto = nomeProdotto;
     }
 
     public String getNomeSecondaLingua() {
@@ -50,27 +51,35 @@ public class ProdottoMenu{
         this.nomeSecondaLingua = nomeSecondaLingua;
     }
 
-    public String getIngredienti() {
-        return ingredienti;
+    public String getDescrizione() {
+        return descrizione;
     }
 
-    public void setIngredienti(String ingredienti) {
-        this.ingredienti = ingredienti;
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 
-    public String getIngredientiSecondaLingua() {
-        return ingredientiSecondaLingua;
+    public String getDescrizioneSecondaLingua() {
+        return descrizioneSecondaLingua;
     }
 
-    public void setIngredientiSecondaLingua(String ingredientiSecondaLingua) {
-        this.ingredientiSecondaLingua = ingredientiSecondaLingua;
+    public void setDescrizioneSecondaLingua(String descrizioneSecondaLingua) {
+        this.descrizioneSecondaLingua = descrizioneSecondaLingua;
     }
 
-    public double getPrezzo() {
-        return prezzo;
+    public double getCosto() {
+        return costo;
     }
 
-    public void setPrezzo(double prezzo) {
-        this.prezzo = prezzo;
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public String getAllergeni() {
+        return allergeni;
+    }
+
+    public void setAllergeni(String allergeni) {
+        this.allergeni = allergeni;
     }
 }

@@ -46,7 +46,7 @@ public class ProdottiOrdinazioneAdapter extends RecyclerView.Adapter<ProdottiOrd
     public void onBindViewHolder(@NonNull ProdottiOrdinazioneAdapter.ViewHolder holder, int position) {
 
         ProdottoMenu prodotto = prodotti.get(position).getProdottoMenu();
-        String nomeProdotto = prodotto.getNome();
+        String nomeProdotto = prodotto.getNomeProdotto();
         String quantita = String.valueOf(prodotti.get(position).getQuantitaProdotto());
 
         holder.nomeProdottoTextView.setText(nomeProdotto);
