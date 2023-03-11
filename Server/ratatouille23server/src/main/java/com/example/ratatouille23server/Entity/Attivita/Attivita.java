@@ -1,10 +1,14 @@
 package com.example.ratatouille23server.Entity.Attivita;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import com.example.ratatouille23server.Entity.AddettoSala.AddettoSala;
+import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
+import com.example.ratatouille23server.Entity.Avviso.Avviso;
+import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenu;
+import com.example.ratatouille23server.Entity.Supervisore.Supervisore;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @IdClass(AttivitaPkey.class)
@@ -16,6 +20,21 @@ public class Attivita {
     private String indirizzo;
     private String telefono;
     private int capienza;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaAdmin")
+    private List<Amministratore> amministratori;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaAvviso")
+    private List<Avviso> avvisi;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaSezione")
+    private List<SezioneMenu> sezioni;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaAddettoSala")
+    private List<AddettoSala> addettiSala;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaSupervisore")
+    private List<Supervisore> supervisori;
 
     public String getNome() {
         return nome;

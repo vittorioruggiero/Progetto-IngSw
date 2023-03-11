@@ -14,11 +14,11 @@ public class SingoloOrdine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ordinazione", referencedColumnName = "id_ordinazione", foreignKey = @ForeignKey(name = "ordinazione_fkey"))
-    private Ordinazione ordinazione;
+    private Ordinazione ordinazioneSingoloOrdine;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nomeProdotto", referencedColumnName = "nomeProdotto", foreignKey = @ForeignKey(name = "prodotto_fkey"))
-    private ProdottoMenu prodottoMenu;
+    private ProdottoMenu prodottoMenuSingoloOrdine;
 
 
     public int getId_singolo_ordine() {

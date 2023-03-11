@@ -23,9 +23,9 @@ public class SupervisoreController {
         return supervisoreDAO.getAll();
     }
 
-    @PostMapping("/supervisore/save")
-    public Supervisore save(@RequestBody Supervisore supervisore){
-        return supervisoreDAO.save(supervisore);
+    @PostMapping("/supervisore/salvataggio-supervisore")
+    public Supervisore salvataggioSupervisore(@RequestBody Supervisore supervisore){
+        return supervisoreDAO.salvataggioSupervisore(supervisore);
     }
 
 }

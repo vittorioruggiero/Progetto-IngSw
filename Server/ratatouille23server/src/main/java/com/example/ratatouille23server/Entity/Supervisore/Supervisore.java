@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Check;
 
 @Entity
-@Table(name = "supervisore", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente", columnNames = "nomeUtente"))
+@Table(name = "supervisore", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente_supervisore", columnNames = "nomeUtente"))
 public class Supervisore {
 
     @Id
@@ -15,9 +15,13 @@ public class Supervisore {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "attivita_fkey"))
-    @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", foreignKey = @ForeignKey(name = "attivita_fkey"))
-    private Attivita attivita;
+    @JoinColumns({
+            @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
+                    foreignKey = @ForeignKey(name = "supervisore_attivita_fkey")),
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
+                    foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"))
+    })
+    private Attivita attivitaSupervisore;
 
     public String getEmail() {
         return email;

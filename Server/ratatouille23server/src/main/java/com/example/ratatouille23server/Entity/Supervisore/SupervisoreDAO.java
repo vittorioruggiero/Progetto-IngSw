@@ -16,7 +16,7 @@ public class SupervisoreDAO {
     @Autowired
     private SupervisoreRepository repository;
 
-    public Supervisore save(Supervisore supervisore){
+    public Supervisore salvataggioSupervisore(Supervisore supervisore){
         return repository.save(supervisore);
     }
 

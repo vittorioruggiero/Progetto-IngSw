@@ -3,12 +3,17 @@ package com.example.ratatouille23server.Entity.Amministratore;
 import com.example.ratatouille23server.Entity.AddettoSala.AddettoSala;
 import com.example.ratatouille23server.Entity.AddettoSala.AddettoSalaRepository;
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
+import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -17,7 +22,7 @@ public class AmministratoreDAO {
     @Autowired
     private AmministratoreRepository repository;
 
-    public Amministratore save(Amministratore amministratore){
+    public Amministratore salvataggioAdmin(Amministratore amministratore){
         return repository.save(amministratore);
     }
 
@@ -32,13 +37,23 @@ public class AmministratoreDAO {
         return amministratoriList;
     }
 
-
-    public void deleteById(String amministratorePkey){
-        repository.deleteById(amministratorePkey);
+    public Optional<Amministratore> getById(String email){
+        return repository.findById(email);
     }
 
-    public Optional<Amministratore> getById(String amministratorePkey){
-        return repository.findById(amministratorePkey);
+
+    public ResponseEntity<Amministratore> getByNomeUtente(String nomeUtente){
+        Amministratore amministratore = new Amministratore();
+
+        try{
+            amministratore.setNomeUtente(repository.findByNomeUtente(nomeUtente).getNomeUtente());
+            amministratore.setEmail(repository.findByNomeUtente(nomeUtente).getEmail());
+            amministratore.setPassword(repository.findByNomeUtente(nomeUtente).getPassword());
+            return new ResponseEntity<>(amministratore, HttpStatus.OK);
+        }
+        catch(NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
 }

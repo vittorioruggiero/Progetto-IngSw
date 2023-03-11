@@ -1,9 +1,7 @@
 package com.example.ratatouille23server.Entity.Conto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.ratatouille23server.Entity.Ordinazione.Ordinazione;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -16,6 +14,9 @@ public class Conto {
     private LocalDateTime data;
     private Double importo;
     private Boolean stato;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "conto")
+    private Ordinazione ordinazione;
 
     public int getId_conto() {
         return id_conto;

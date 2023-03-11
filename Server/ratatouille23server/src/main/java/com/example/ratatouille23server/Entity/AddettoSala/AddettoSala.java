@@ -13,9 +13,13 @@ public class AddettoSala {
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "attivita_fkey"))
-    @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", foreignKey = @ForeignKey(name = "attivita_fkey"))
-    private Attivita attivita;
+    @JoinColumns({
+            @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
+                    foreignKey = @ForeignKey(name = "addetto_sala_attivita_fkey")),
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
+                    foreignKey = @ForeignKey(name = "addetto_sala_attivita_fkey"))
+    })
+    private Attivita attivitaAddettoSala;
 
     public String getEmail() {
         return email;

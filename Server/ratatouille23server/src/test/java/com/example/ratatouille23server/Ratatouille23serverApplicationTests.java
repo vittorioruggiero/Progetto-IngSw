@@ -1,5 +1,7 @@
 package com.example.ratatouille23server;
 
+import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
+import com.example.ratatouille23server.Entity.Amministratore.AmministratoreDAO;
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
@@ -18,8 +20,10 @@ class Ratatouille23serverApplicationTests {
 	private AttivitaDAO attivitaDAO;
 	@Autowired
 	private AvvisoDAO avvisoDAO;
+	@Autowired
+	private AmministratoreDAO amministratoreDAO;
 
-	@Test
+	//@Test
 	void addAttivitaTest() {
 		Attivita attivita = new Attivita();
 		attivita.setNome("GDDFD");
@@ -48,8 +52,17 @@ class Ratatouille23serverApplicationTests {
 		for (Attivita attivita : attivitaList) {
 			attivitaDAO.delete(attivita);
 		}
-
 	}
+
+	@Test
+	void addAdmin() {
+		Amministratore admin = new Amministratore();
+		admin.setEmail("123");
+		admin.setPassword("123");
+		admin.setNomeUtente("123");
+		amministratoreDAO.save(admin);
+	}
+
 
 	//@Test
 	void deleteById(){

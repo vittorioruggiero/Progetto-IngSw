@@ -1,6 +1,7 @@
 package com.example.ratatouille23server.Entity.ProdottoMenu;
 
 import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenu;
+import com.example.ratatouille23server.Entity.SingoloOrdine.SingoloOrdine;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class ProdottoMenu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nome_sezione", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "sezione_fkey"))
     private SezioneMenu sezioneMenu;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "prodottoMenuSingoloOrdine")
+    List<SingoloOrdine> singoliOrdiniProdotti;
 
     public String getNome() {
         return nomeProdotto;

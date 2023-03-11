@@ -12,9 +12,11 @@ public class Avviso {
     private int id;
     private String avviso;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "attivita_fkey"))
-    @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", foreignKey = @ForeignKey(name = "attivita_fkey"))
-    private Attivita attivita;
+    @JoinColumns({
+            @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "avviso_attivita_fkey")),
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", foreignKey = @ForeignKey(name = "avviso_attivita_fkey"))
+    })
+    private Attivita attivitaAvviso;
 
 
     public int getId() {
