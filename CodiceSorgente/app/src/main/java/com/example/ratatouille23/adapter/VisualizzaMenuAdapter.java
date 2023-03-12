@@ -47,7 +47,7 @@ public class VisualizzaMenuAdapter extends RecyclerView.Adapter<VisualizzaMenuAd
     public void onBindViewHolder(@NonNull VisualizzaMenuAdapter.ViewHolder holder, int position) {
 
         SezioneMenu sezione = sezioniMenuFull.get(position);
-        String nomeSezione = sezione.getTitolo();
+        String nomeSezione = sezione.getNome();
         List<ProdottoMenu> prodottiMenu = sezione.getProdottiMenu();
 
         holder.nomeSezioneTextView.setText(nomeSezione);
@@ -99,7 +99,7 @@ public class VisualizzaMenuAdapter extends RecyclerView.Adapter<VisualizzaMenuAd
                             }
                         }
                         if(!prodottiFiltrati.isEmpty()){
-                            filteredList.add(new SezioneMenu(sezione.getTitolo(), prodottiFiltrati));
+                            filteredList.add(new SezioneMenu(sezione.getNome(), prodottiFiltrati));
                         }
                     }
                 }

@@ -5,6 +5,8 @@ public class Supervisore {
     private String email;
     private String nomeUtente;
     private String password;
+    private String nomeAttivita;
+    private String indirizzoAttivita;
 
     public Supervisore(){
 
@@ -16,28 +18,54 @@ public class Supervisore {
         this.password = passwordSupervisore;
     }
 
-    public String getEmailSupervisore() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmailSupervisore(String emailSupervisore) {
-        this.email = emailSupervisore;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getNomeUtenteSupervisore() {
+    public String getNomeUtente() {
         return nomeUtente;
     }
 
-    public void setNomeUtenteSupervisore(String nomeUtenteSupervisore) {
-        this.nomeUtente = nomeUtenteSupervisore;
+    public void setNomeUtente(String nomeUtente) {
+        this.nomeUtente = nomeUtente;
     }
 
-    public String getPasswordSupervisore() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPasswordSupervisore(String passwordSupervisore) {
-        this.password = passwordSupervisore;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
+    @Override
+    public String toString() {
+        return "Supervisore{" +
+                "email='" + email + '\'' +
+                ", nomeUtente='" + nomeUtente + '\'' +
+                ", password='" + password + '\'' +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                '}';
+    }
 }

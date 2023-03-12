@@ -100,7 +100,7 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
             @Override
             public void onClick(View view) {
                 if(selezionaTavoloSpinner.getSelectedItem() != null){
-                    ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
+                    //ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
                     Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();

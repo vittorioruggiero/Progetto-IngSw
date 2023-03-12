@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Conto {
 
     private int id_conto;
-    private LocalDateTime data;
+    private java.sql.Date data;
     private Double importo;
     private Boolean stato;
 
@@ -17,11 +17,11 @@ public class Conto {
         this.id_conto = id_conto;
     }
 
-    public LocalDateTime getData() {
+    public java.sql.Date getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(java.sql.Date data) {
         this.data = data;
     }
 

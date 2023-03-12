@@ -5,6 +5,12 @@ public class AddettoSala {
     private String email;
     private String nomeUtente;
     private String password;
+    private String nomeAttivita;
+    private String indirizzoAttivita;
+
+    public AddettoSala(){
+
+    }
 
     public AddettoSala(String emailAddettoSala, String nomeUtenteAddettoSala, String passwordAddettoSala) {
         this.email = emailAddettoSala;
@@ -12,27 +18,54 @@ public class AddettoSala {
         this.password = passwordAddettoSala;
     }
 
-    public String getEmailAddettoSala() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmailAddettoSala(String emailAddettoSala) {
-        this.email = emailAddettoSala;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getNomeUtenteAddettoSala() {
+    public String getNomeUtente() {
         return nomeUtente;
     }
 
-    public void setNomeUtenteAddettoSala(String nomeUtenteAddettoSala) {
-        this.nomeUtente = nomeUtenteAddettoSala;
+    public void setNomeUtente(String nomeUtente) {
+        this.nomeUtente = nomeUtente;
     }
 
-    public String getPasswordAddettoSala() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPasswordAddettoSala(String passwordAddettoSala) {
-        this.password = passwordAddettoSala;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
+    @Override
+    public String toString() {
+        return "AddettoSala{" +
+                "email='" + email + '\'' +
+                ", nomeUtente='" + nomeUtente + '\'' +
+                ", password='" + password + '\'' +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                '}';
     }
 }

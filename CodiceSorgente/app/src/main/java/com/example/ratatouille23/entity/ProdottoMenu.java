@@ -8,6 +8,11 @@ public class ProdottoMenu{
     private String descrizioneSecondaLingua;
     private double costo;
     private String allergeni;
+    private String nomeSezione;
+
+    public ProdottoMenu(){
+
+    }
 
     public ProdottoMenu(String nome, String nomeSecondaLingua, String ingredienti, String ingredientiSecondaLingua, double prezzo) {
         this.nomeProdotto = nome;
@@ -81,5 +86,26 @@ public class ProdottoMenu{
 
     public void setAllergeni(String allergeni) {
         this.allergeni = allergeni;
+    }
+
+    public String getNomeSezione() {
+        return nomeSezione;
+    }
+
+    public void setNomeSezione(String nomeSezione) {
+        this.nomeSezione = nomeSezione;
+    }
+
+    @Override
+    public String toString() {
+        return "ProdottoMenu{" +
+                "nomeProdotto='" + nomeProdotto + '\'' +
+                ", nomeSecondaLingua='" + nomeSecondaLingua + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", descrizioneSecondaLingua='" + descrizioneSecondaLingua + '\'' +
+                ", costo=" + costo +
+                ", allergeni='" + allergeni + '\'' +
+                ", nomeSezione='" + nomeSezione + '\'' +
+                '}';
     }
 }

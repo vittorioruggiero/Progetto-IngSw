@@ -7,27 +7,29 @@ import java.util.List;
 
 public class SezioneMenu {
 
-    private String titolo;
+    private String nome;
+    private String nomeAttivita;
+    private String indirizzoAttivita;
     private List<ProdottoMenu> prodottiMenu;
 
-    public SezioneMenu(String titolo, List<ProdottoMenu> prodottiMenu) {
-        this.titolo = titolo;
+    public SezioneMenu(String nome, List<ProdottoMenu> prodottiMenu) {
+        this.nome = nome;
         this.prodottiMenu = prodottiMenu;
     }
 
-    public SezioneMenu(String titolo) {
-        this.titolo = titolo;
+    public SezioneMenu(String nome) {
+        this.nome = nome;
     }
 
     public SezioneMenu() {
     }
 
-    public String getTitolo() {
-        return titolo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public List<ProdottoMenu> getProdottiMenu() {
@@ -46,8 +48,28 @@ public class SezioneMenu {
         prodottiMenu.add(prodottoMenu);
     }
 
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
     @Override
     public String toString() {
-        return titolo;
+        return "SezioneMenu{" +
+                "nome='" + nome + '\'' +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                '}';
     }
 }

@@ -45,4 +45,14 @@ public class Attivita {
     public void setCapienza(int capienza) {
         this.capienza = capienza;
     }
+
+    @Override
+    public String toString() {
+        return "Attivita{" +
+                "nome='" + nome + '\'' +
+                ", indirizzo='" + indirizzo + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", capienza=" + capienza +
+                '}';
+    }
 }

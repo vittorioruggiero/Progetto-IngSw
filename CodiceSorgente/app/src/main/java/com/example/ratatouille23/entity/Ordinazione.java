@@ -6,9 +6,14 @@ import java.util.List;
 public class Ordinazione {
 
     private int id_ordinazione;
-    private List<SingoloOrdine> listaProdotti;
     private int numeroTavolo;
     private int numeroCommensali;
+    private int id_conto;
+    private List<SingoloOrdine> listaProdotti;
+
+    public Ordinazione(){
+
+    }
 
     public Ordinazione(List<SingoloOrdine> listaProdotti, int numeroTavolo, int numeroCommensali) {
         this.listaProdotti = listaProdotti;
@@ -16,15 +21,12 @@ public class Ordinazione {
         this.numeroCommensali = numeroCommensali;
     }
 
+    public Ordinazione(int numeroTavolo, int numeroCommensali) {
+        this.numeroTavolo = numeroTavolo;
+        this.numeroCommensali = numeroCommensali;
+    }
+
     public Ordinazione(List<SingoloOrdine> listaProdotti) {
-        this.listaProdotti = listaProdotti;
-    }
-
-    public List<SingoloOrdine> getListaProdotti() {
-        return listaProdotti;
-    }
-
-    public void setListaProdotti(List<SingoloOrdine> listaProdotti) {
         this.listaProdotti = listaProdotti;
     }
 
@@ -52,6 +54,22 @@ public class Ordinazione {
         this.id_ordinazione = id_ordinazione;
     }
 
+    public int getId_conto() {
+        return id_conto;
+    }
+
+    public void setId_conto(int id_conto) {
+        this.id_conto = id_conto;
+    }
+
+    public List<SingoloOrdine> getListaProdotti() {
+        return listaProdotti;
+    }
+
+    public void setListaProdotti(List<SingoloOrdine> listaProdotti) {
+        this.listaProdotti = listaProdotti;
+    }
+
     public double calcolaTotale() {
         Iterator<SingoloOrdine> listaProdottiIterator = this.listaProdotti.iterator();
         SingoloOrdine currentSingoloOrdine;
@@ -65,4 +83,13 @@ public class Ordinazione {
         return totale;
     }
 
+    @Override
+    public String toString() {
+        return "Ordinazione{" +
+                "id_ordinazione=" + id_ordinazione +
+                ", numeroTavolo=" + numeroTavolo +
+                ", numeroCommensali=" + numeroCommensali +
+                ", id_conto=" + id_conto +
+                '}';
+    }
 }

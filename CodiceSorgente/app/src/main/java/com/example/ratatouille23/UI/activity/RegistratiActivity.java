@@ -72,7 +72,7 @@ public class RegistratiActivity extends AppCompatActivity {
                     supervisore.setEmailSupervisore(email);
                     supervisore.setPasswordSupervisore(password);*/
                     admin.setNomeAttivita("Pizzeria");
-                    admin.setIndirizzoAttivita("Traversa");
+                    admin.setIndirizzoAttivita("Via Roma");
                     admin.setNomeUtenteAmministratore(nomeUtente);
                     admin.setEmailAmministratore(email);
                     admin.setPasswordAmministratore(password);

@@ -4,13 +4,18 @@ import com.example.ratatouille23.entity.ProdottoMenu;
 
 public class SingoloOrdine {
 
-    private int id;
+    private int id_singolo_ordine;
     private ProdottoMenu prodottoMenu;
-    private int quantitaProdotto;
+    private int quantita;
+    private int id_ordinazione;
+    private String nomeProdotto;
+    public SingoloOrdine(){
 
-    public SingoloOrdine(ProdottoMenu prodottoMenu, int quantitaProdotto) {
+    }
+
+    public SingoloOrdine(ProdottoMenu prodottoMenu, int quantita) {
         this.prodottoMenu = prodottoMenu;
-        this.quantitaProdotto = quantitaProdotto;
+        this.quantita = quantita;
     }
 
     public ProdottoMenu getProdottoMenu() {
@@ -21,23 +26,48 @@ public class SingoloOrdine {
         this.prodottoMenu = prodottoMenu;
     }
 
-    public int getQuantitaProdotto() {
-        return quantitaProdotto;
+    public int getQuantita() {
+        return quantita;
     }
 
-    public void setQuantitaProdotto(int quantitaProdotto) {
-        this.quantitaProdotto = quantitaProdotto;
+    public int getId_singolo_ordine() {
+        return id_singolo_ordine;
     }
 
-    public int getId() {
-        return id;
+    public void setId_singolo_ordine(int id_singolo_ordine) {
+        this.id_singolo_ordine = id_singolo_ordine;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setQuantita(int quantita) {
+        this.quantita = quantita;
+    }
+
+    public int getId_ordinazione() {
+        return id_ordinazione;
+    }
+
+    public void setId_ordinazione(int id_ordinazione) {
+        this.id_ordinazione = id_ordinazione;
+    }
+
+    public String getNomeProdotto() {
+        return nomeProdotto;
+    }
+
+    public void setNomeProdotto(String nomeProdotto) {
+        this.nomeProdotto = nomeProdotto;
     }
 
     public double calcolaTotale() {
-        return this.prodottoMenu.getCosto() * this.quantitaProdotto;
+        return this.prodottoMenu.getCosto() * this.quantita;
+    }
+
+    @Override
+    public String toString() {
+        return "SingoloOrdine{" +
+                "id_singolo_ordine=" + id_singolo_ordine +
+                ", quantita=" + quantita +
+                ", nomeProdotto='" + nomeProdotto + '\'' +
+                '}';
     }
 }
