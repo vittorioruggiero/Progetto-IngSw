@@ -10,11 +10,18 @@ public class Avviso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false)
     private String avviso;
+    @Column(name = "nomeAttivita")
+    private String nomeAttivita;
+    @Column(name = "indirizzoAttivita")
+    private String indirizzoAttivita;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
-            @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome", foreignKey = @ForeignKey(name = "avviso_attivita_fkey")),
-            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", foreignKey = @ForeignKey(name = "avviso_attivita_fkey"))
+            @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
+                    foreignKey = @ForeignKey(name = "avviso_attivita_fkey"), insertable = false, updatable = false),
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
+                    foreignKey = @ForeignKey(name = "avviso_attivita_fkey"), insertable = false, updatable = false)
     })
     private Attivita attivitaAvviso;
 
@@ -35,11 +42,29 @@ public class Avviso {
         this.avviso = avviso;
     }
 
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
     @Override
     public String toString() {
         return "Avviso{" +
                 "id=" + id +
                 ", avviso='" + avviso + '\'' +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
                 '}';
     }
 }

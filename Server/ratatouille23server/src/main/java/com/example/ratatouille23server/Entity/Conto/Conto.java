@@ -11,8 +11,11 @@ public class Conto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_conto;
-    private LocalDateTime data;
+    @Column(nullable = false)
+    private java.sql.Date data;
+    @Column(nullable = false)
     private Double importo;
+    @Column(nullable = false)
     private Boolean stato;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "conto")
@@ -26,11 +29,11 @@ public class Conto {
         this.id_conto = id_conto;
     }
 
-    public LocalDateTime getData() {
+    public java.sql.Date getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(java.sql.Date data) {
         this.data = data;
     }
 

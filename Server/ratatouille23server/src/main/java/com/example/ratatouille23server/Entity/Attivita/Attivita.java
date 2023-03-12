@@ -18,7 +18,9 @@ public class Attivita {
     private String nome;
     @Id
     private String indirizzo;
+    @Column(nullable = false)
     private String telefono;
+    @Column(nullable = false)
     private int capienza;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaAdmin")

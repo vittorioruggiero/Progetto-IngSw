@@ -15,11 +15,16 @@ public class Ordinazione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_ordinazione;
+    @Column(nullable = false)
     private int numeroTavolo;
+    @Column(nullable = false)
     private int numeroCommensali;
+    @Column(name = "id_conto")
+    private int id_conto;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_conto", referencedColumnName = "id_conto", foreignKey = @ForeignKey(name = "conto_fkey"))
+    @JoinColumn(name = "id_conto", referencedColumnName = "id_conto",
+            foreignKey = @ForeignKey(name = "conto_fkey"), insertable = false, updatable = false)
     private Conto conto;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordinazioneSingoloOrdine")
@@ -43,5 +48,23 @@ public class Ordinazione {
 
     public void setNumeroCommensali(int numeroCommensali) {
         this.numeroCommensali = numeroCommensali;
+    }
+
+    public int getId_conto() {
+        return id_conto;
+    }
+
+    public void setId_conto(int id_conto) {
+        this.id_conto = id_conto;
+    }
+
+    @Override
+    public String toString() {
+        return "Ordinazione{" +
+                "id_ordinazione=" + id_ordinazione +
+                ", numeroTavolo=" + numeroTavolo +
+                ", numeroCommensali=" + numeroCommensali +
+                ", id_conto=" + id_conto +
+                '}';
     }
 }

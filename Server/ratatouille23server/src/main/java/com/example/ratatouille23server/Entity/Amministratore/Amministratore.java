@@ -9,18 +9,20 @@ public class Amministratore {
 
     @Id
     private String email;
+    @Column(nullable = false)
     private String nomeUtente;
+    @Column(nullable = false)
     private String password;
-    @Column(name = "nomeAttivita", insertable = false, updatable = false)
+    @Column(name = "nomeAttivita")
     private String nomeAttivita;
-    @Column(name = "indirizzoAttivita", insertable = false, updatable = false)
+    @Column(name = "indirizzoAttivita")
     private String indirizzoAttivita;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
-                    foreignKey = @ForeignKey(name = "admin_attivita_fkey")),
-            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo")
+                    foreignKey = @ForeignKey(name = "admin_attivita_fkey"), insertable = false, updatable = false),
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", insertable = false, updatable = false)
     })
     private Attivita attivitaAdmin;
 

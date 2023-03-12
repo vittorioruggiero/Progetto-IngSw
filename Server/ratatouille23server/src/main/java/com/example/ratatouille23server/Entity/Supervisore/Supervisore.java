@@ -10,16 +10,21 @@ public class Supervisore {
 
     @Id
     private String email;
+    @Column(nullable = false)
     private String nomeUtente;
+    @Column(nullable = false)
     private String password;
-
+    @Column(name = "nomeAttivita")
+    private String nomeAttivita;
+    @Column(name = "indirizzoAttivita")
+    private String indirizzoAttivita;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
-                    foreignKey = @ForeignKey(name = "supervisore_attivita_fkey")),
+                    foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"), insertable = false, updatable = false),
             @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
-                    foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"))
+                    foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"), insertable = false, updatable = false)
     })
     private Attivita attivitaSupervisore;
 
@@ -47,12 +52,30 @@ public class Supervisore {
         this.password = password;
     }
 
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
     @Override
     public String toString() {
         return "Supervisore{" +
                 "email='" + email + '\'' +
                 ", nomeUtente='" + nomeUtente + '\'' +
                 ", password='" + password + '\'' +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
                 '}';
     }
 }
