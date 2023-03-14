@@ -16,17 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.entity.Amministratore;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class HomeAdminActivity extends AppCompatActivity {
 
     private NavHostFragment navHostFragment;
-
     private NavController navController;
-
     public BottomNavigationView bottomNavigationView;
-
     private AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

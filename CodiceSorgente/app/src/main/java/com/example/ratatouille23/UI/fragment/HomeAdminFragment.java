@@ -1,5 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
 import static com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment.addAvvisiAddettoSala;
 import static com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment.addAvvisoSupervisore;
 
@@ -27,9 +28,11 @@ import android.widget.Toast;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
+import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.AttivitaPkey;
 import com.example.ratatouille23.entity.Avviso;
+import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,10 +52,11 @@ public class HomeAdminFragment extends Fragment {
     private AttivitaAPI attivitaAPI;
     private RetrofitService retrofitService;
     private AlertDialog inserisciAvvisoAlertDialog;
+    private Amministratore amministratore = getAdmin();
+    private AmministratoreAPI amministratoreAPI;
     private Attivita attivitaEsistente;
     private Button creaAvvisoButton;
     private static Attivita attivita;
-    private Attivita nuovaAttivita;
 
     private boolean isEditing = false;
 
@@ -84,83 +88,81 @@ public class HomeAdminFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home_admin, container, false);
 
-        selezionaFotoButton = (FloatingActionButton) v.findViewById(R.id.selezionaFotoButton);
-        modificaButton = (FloatingActionButton) v.findViewById(R.id.opzioniButton);
-        foto = (ImageView) v.findViewById(R.id.foto);
-        nomeAttivitaEditText = (EditText) v.findViewById(R.id.nomeAttivitaEditText);
+        selezionaFotoButton = v.findViewById(R.id.selezionaFotoButton);
+        modificaButton = v.findViewById(R.id.opzioniButton);
+        foto = v.findViewById(R.id.foto);
+        nomeAttivitaEditText = v.findViewById(R.id.nomeAttivitaEditText);
         nomeAttivitaEditText.setBackgroundColor(Color.TRANSPARENT);
-        luogoAttivitaEditText = (EditText) v.findViewById(R.id.indirizzoAttivitaEditText);
-        telefonoAttivitaEditText = (EditText) v.findViewById(R.id.telefonoAttivitaEditText);
-        capienzaAttivitaEditText = (EditText) v.findViewById(R.id.capienzaAttivitaEditText);
+        luogoAttivitaEditText = v.findViewById(R.id.indirizzoAttivitaEditText);
+        telefonoAttivitaEditText = v.findViewById(R.id.telefonoAttivitaEditText);
+        capienzaAttivitaEditText = v.findViewById(R.id.capienzaAttivitaEditText);
 
         retrofitService = new RetrofitService();
         attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
-        try{
-            nomeAttivitaEditText.setText(attivita.getNome());
-            luogoAttivitaEditText.setText(attivita.getIndirizzo());
-            capienzaAttivitaEditText.setText(String.valueOf(attivita.getCapienza()));
-            telefonoAttivitaEditText.setText(attivita.getTelefono());
-        }catch (NullPointerException e){
+
+        if(!(amministratore.getNomeAttivita().equals("null"))){
+            String nome = amministratore.getNomeAttivita();
+            String indirizzo = amministratore.getIndirizzoAttivita();
+            checkAttivita(nome, indirizzo);
+        }else{
             Toast.makeText(getActivity(), "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
         }
 
         inserisciAvvisoAlertDialog = creaInserisciAvvisoAlertDialog();
-        creaAvvisoButton = (Button) v.findViewById(R.id.creaAvvisoButton);
+        creaAvvisoButton = v.findViewById(R.id.creaAvvisoButton);
 
-        selezionaFotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scegliImmagine();
-            }
-        });
+        selezionaFotoButton.setOnClickListener(view -> scegliImmagine());
 
-        modificaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nomeAttivita;
-                String indirizzoAttivita;
-                String telefonoAttivita;
-                int capienzaAttivita;
+        modificaButton.setOnClickListener(view -> {
+
+            String nomeAttivita;
+            String indirizzoAttivita;
+            String telefonoAttivita;
+            int capienzaAttivita;
 
 
-                if(nomeAttivitaEditText.isFocusable()){
-                    nomeAttivitaEditText.setFocusableInTouchMode(false);
-                    nomeAttivitaEditText.setFocusable(false);
-                    luogoAttivitaEditText.setFocusable(false);
-                    luogoAttivitaEditText.setFocusableInTouchMode(false);
-                    capienzaAttivitaEditText.setFocusable(false);
-                    capienzaAttivitaEditText.setFocusableInTouchMode(false);
-                    telefonoAttivitaEditText.setFocusable(false);
-                    telefonoAttivitaEditText.setFocusableInTouchMode(false);
-                    selezionaFotoButton.setVisibility(View.INVISIBLE);
-                    nomeAttivita = nomeAttivitaEditText.getText().toString();
-                    indirizzoAttivita = luogoAttivitaEditText.getText().toString();
-                    telefonoAttivita = telefonoAttivitaEditText.getText().toString();
-                    try {
-                        capienzaAttivita = Integer.parseInt(capienzaAttivitaEditText.getText().toString());
-                    }catch(NumberFormatException e){
-                        capienzaAttivita = 0;
-                    }
-                    attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
-                    salvaAttivita(attivita);
-                }else{
-                    nomeAttivitaEditText.setFocusableInTouchMode(true);
-                    nomeAttivitaEditText.setFocusable(true);
-                    luogoAttivitaEditText.setFocusable(true);
-                    luogoAttivitaEditText.setFocusableInTouchMode(true);
-                    capienzaAttivitaEditText.setFocusable(true);
-                    capienzaAttivitaEditText.setFocusableInTouchMode(true);
-                    telefonoAttivitaEditText.setFocusable(true);
-                    telefonoAttivitaEditText.setFocusableInTouchMode(true);
-                    selezionaFotoButton.setVisibility(View.VISIBLE);
+            if(nomeAttivitaEditText.isFocusable()){
+                nomeAttivitaEditText.setFocusableInTouchMode(false);
+                nomeAttivitaEditText.setFocusable(false);
+                luogoAttivitaEditText.setFocusable(false);
+                luogoAttivitaEditText.setFocusableInTouchMode(false);
+                capienzaAttivitaEditText.setFocusable(false);
+                capienzaAttivitaEditText.setFocusableInTouchMode(false);
+                telefonoAttivitaEditText.setFocusable(false);
+                telefonoAttivitaEditText.setFocusableInTouchMode(false);
+                selezionaFotoButton.setVisibility(View.INVISIBLE);
+                nomeAttivita = nomeAttivitaEditText.getText().toString();
+                indirizzoAttivita = luogoAttivitaEditText.getText().toString();
+                telefonoAttivita = telefonoAttivitaEditText.getText().toString();
+                try {
+                    capienzaAttivita = Integer.parseInt(capienzaAttivitaEditText.getText().toString());
+                }catch(NumberFormatException e){
+                    capienzaAttivita = 0;
                 }
-                if(isEditing){
-                    modificaButton.setImageResource(R.drawable.edit_icon);
-                }else{
-                    modificaButton.setImageResource(R.drawable.check_icon);
+                attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
+                if(amministratore.getNomeAttivita().equals("null")){
+                    amministratore.setNomeAttivita(attivita.getNome());
+                    amministratore.setIndirizzoAttivita(attivita.getIndirizzo());
+                    salvaAdmin(amministratore);
                 }
-                isEditing = !isEditing;
+                salvaAttivita(attivita);
+            }else{
+                nomeAttivitaEditText.setFocusableInTouchMode(true);
+                nomeAttivitaEditText.setFocusable(true);
+                luogoAttivitaEditText.setFocusable(true);
+                luogoAttivitaEditText.setFocusableInTouchMode(true);
+                capienzaAttivitaEditText.setFocusable(true);
+                capienzaAttivitaEditText.setFocusableInTouchMode(true);
+                telefonoAttivitaEditText.setFocusable(true);
+                telefonoAttivitaEditText.setFocusableInTouchMode(true);
+                selezionaFotoButton.setVisibility(View.VISIBLE);
             }
+            if(isEditing){
+                modificaButton.setImageResource(R.drawable.edit_icon);
+            }else{
+                modificaButton.setImageResource(R.drawable.check_icon);
+            }
+            isEditing = !isEditing;
         });
 
         creaAvvisoButton.setOnClickListener(new View.OnClickListener() {
@@ -185,13 +187,55 @@ public class HomeAdminFragment extends Fragment {
         return v;
     }
 
+    private void salvaAdmin(Amministratore amministratore) {
+
+        amministratoreAPI.salvataggioAdmin(amministratore)
+                .enqueue(new Callback<Amministratore>() {
+                    @Override
+                    public void onResponse(Call<Amministratore> call, Response<Amministratore> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Amministratore> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    private void checkAttivita(String nome, String indirizzo){
+
+        attivitaAPI.getAttivitaById(nome, indirizzo)
+                .enqueue(new Callback<Attivita>() {
+                    @Override
+                    public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            attivita = response.body();
+                            nomeAttivitaEditText.setText(attivita.getNome());
+                            luogoAttivitaEditText.setText(attivita.getIndirizzo());
+                            capienzaAttivitaEditText.setText(String.valueOf(attivita.getCapienza()));
+                            telefonoAttivitaEditText.setText(attivita.getTelefono());
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Attivita> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                    }
+                });
+
+    }
+
     private void salvaAttivita(Attivita nuovaAttivita) {
 
-        AttivitaPkey attivitaPkey = new AttivitaPkey();
-        attivitaPkey.setNome(nuovaAttivita.getNome());
-        attivitaPkey.setIndirizzo(nuovaAttivita.getIndirizzo());
+        String nome = nuovaAttivita.getNome();
+        String indirizzo = nuovaAttivita.getIndirizzo();
 
-        attivitaAPI.getAttivitaById(attivitaPkey)
+        attivitaAPI.getAttivitaById(nome, indirizzo)
                 .enqueue(new Callback<Attivita>() {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
