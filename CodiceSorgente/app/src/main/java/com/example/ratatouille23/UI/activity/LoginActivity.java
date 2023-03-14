@@ -172,6 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<AddettoSala> call, Throwable t) {
                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(LoginActivity.this, "Server Spento", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -204,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Supervisore> call, Throwable t) {
                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(LoginActivity.this, "Server Spento", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -216,7 +218,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Amministratore> call, Response<Amministratore> response) {
                         if(response.body() != null){
-                            //setAdmin(response.body());
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             admin = response.body();
                             if(admin != null){
@@ -236,6 +237,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Amministratore> call, Throwable t) {
                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(LoginActivity.this, "Server Spento", Toast.LENGTH_SHORT).show();
                     }
                 });
 

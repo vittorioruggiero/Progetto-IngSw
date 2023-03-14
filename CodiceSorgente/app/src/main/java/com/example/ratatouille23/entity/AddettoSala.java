@@ -7,6 +7,7 @@ public class AddettoSala {
     private String password;
     private String nomeAttivita;
     private String indirizzoAttivita;
+    private Boolean primoAccesso;
 
     public AddettoSala(){
 
@@ -58,6 +59,14 @@ public class AddettoSala {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
+    public Boolean getPrimoAccesso() {
+        return primoAccesso;
+    }
+
+    public void setPrimoAccesso(Boolean primoAccesso) {
+        this.primoAccesso = primoAccesso;
+    }
+
     @Override
     public String toString() {
         return "AddettoSala{" +
@@ -66,6 +75,7 @@ public class AddettoSala {
                 ", password='" + password + '\'' +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", primoAccesso=" + primoAccesso +
                 '}';
     }
 }
