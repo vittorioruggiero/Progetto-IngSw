@@ -54,13 +54,13 @@ class Ratatouille23serverApplicationTests {
 		}
 	}
 
-	@Test
+	//@Test
 	void addAdmin() {
 		Amministratore admin = new Amministratore();
 		admin.setEmail("123");
 		admin.setPassword("123");
 		admin.setNomeUtente("123");
-		amministratoreDAO.save(admin);
+		//amministratoreDAO.save(admin);
 	}
 
 

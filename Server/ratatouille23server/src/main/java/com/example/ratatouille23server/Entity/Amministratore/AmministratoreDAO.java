@@ -43,12 +43,9 @@ public class AmministratoreDAO {
 
 
     public ResponseEntity<Amministratore> getByNomeUtente(String nomeUtente){
-        Amministratore amministratore = new Amministratore();
-
+        Amministratore amministratore;
         try{
-            amministratore.setNomeUtente(repository.findByNomeUtente(nomeUtente).getNomeUtente());
-            amministratore.setEmail(repository.findByNomeUtente(nomeUtente).getEmail());
-            amministratore.setPassword(repository.findByNomeUtente(nomeUtente).getPassword());
+            amministratore = repository.findByNomeUtente(nomeUtente);
             return new ResponseEntity<>(amministratore, HttpStatus.OK);
         }
         catch(NullPointerException e){

@@ -21,11 +21,11 @@ public interface AmministratoreAPI {
     @GET("/admin/get-all")
     Call<List<Amministratore>> getAllAmministratore();
 
-    @HTTP(method = "GET", path = "/admin/get-by-id", hasBody = true)
-    Call<Amministratore> getAdminById(@Body String email);
+    @GET("/admin/get-by-id")
+    Call<Amministratore> getAdminById(@Query("email") String email);
 
-    @HTTP(method = "GET", path = "/admin/get-by-username", hasBody = true)
-    Call<Amministratore> getAdminByUsername(@Body String username);
+    @GET("/admin/get-by-username")
+    Call<Amministratore> getAdminByUsername(@Query("username") String username);
 
     @POST("/admin/salvataggioAdmin")
     Call<Amministratore> salvataggioAdmin(@Body Amministratore amministratore);

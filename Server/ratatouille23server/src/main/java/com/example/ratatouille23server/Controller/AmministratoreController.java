@@ -7,6 +7,9 @@ import com.example.ratatouille23server.Entity.Amministratore.AmministratoreDAO;
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.QueryAnnotation;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +27,13 @@ public class AmministratoreController {
         return amministratoreDAO.getAll();
     }
 
-    @GetMapping("/admin/get-by-id")
-    public Optional<Amministratore> getAdminById(@RequestParam(required = true) String email){
+    @RequestMapping(value = "/admin/get-by-id", method = RequestMethod.GET)
+    public Optional<Amministratore> getAdminById(@RequestParam("email") String email){
         return amministratoreDAO.getById(email);
     }
 
-    @GetMapping("/admin/get-by-username")
-    public ResponseEntity<Amministratore> getAdminByUsername(@RequestParam(required = true) String username){
+    @RequestMapping(value = "/admin/get-by-username", method = RequestMethod.GET)
+    public ResponseEntity<Amministratore> getAdminByUsername(@RequestParam("username") String username){
         return amministratoreDAO.getByNomeUtente(username);
     }
 
