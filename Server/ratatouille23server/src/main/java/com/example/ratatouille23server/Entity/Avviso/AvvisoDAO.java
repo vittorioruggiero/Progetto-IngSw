@@ -17,7 +17,7 @@ public class AvvisoDAO {
     @Autowired
     private AvvisoRepository repository;
 
-    public Avviso save(Avviso avviso){
+    public Avviso salvataggioAvviso(Avviso avviso){
         return repository.save(avviso);
     }
 

@@ -7,8 +7,10 @@ public class Avviso {
     private String nomeAttivita;
     private String indirizzoAttivita;
 
-    public Avviso(){
-
+    public Avviso(String avviso, String nomeAttivita, String indirizzoAttivita){
+        this.avviso = avviso;
+        this.nomeAttivita = nomeAttivita;
+        this.indirizzoAttivita = indirizzoAttivita;
     }
 
     public Avviso(String avviso) {

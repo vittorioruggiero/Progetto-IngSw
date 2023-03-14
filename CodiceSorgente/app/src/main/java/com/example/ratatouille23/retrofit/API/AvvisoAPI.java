@@ -14,7 +14,7 @@ public interface AvvisoAPI {
     @GET("/avviso/get-all")
     Call<List<Avviso>> getAllAvvisi();
 
-    @POST("/avviso/save")
-    Call<Avviso> save(@Body Avviso avviso);
+    @POST("/avviso/salvataggioAvviso")
+    Call<Avviso> salvataggioAvviso(@Body Avviso avviso);
 
 }

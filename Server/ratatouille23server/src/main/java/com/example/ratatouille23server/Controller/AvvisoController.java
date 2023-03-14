@@ -30,9 +30,9 @@ public class AvvisoController {
         return avvisoDAO.getById(avvisopkey);
     }
 
-    @PostMapping("/avviso/save")
-    public Avviso save(@RequestBody Avviso avviso){
-        return avvisoDAO.save(avviso);
+    @PostMapping("/avviso/salvataggioAvviso")
+    public Avviso salvataggioAvviso(@RequestBody Avviso avviso){
+        return avvisoDAO.salvataggioAvviso(avviso);
     }
 
 }

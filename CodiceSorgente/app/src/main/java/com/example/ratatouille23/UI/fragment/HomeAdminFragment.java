@@ -34,6 +34,7 @@ import com.example.ratatouille23.entity.AttivitaPkey;
 import com.example.ratatouille23.entity.Avviso;
 import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
+import com.example.ratatouille23.retrofit.API.AvvisoAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,6 +51,7 @@ public class HomeAdminFragment extends Fragment {
     private ImageView foto;
     private EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
     private AttivitaAPI attivitaAPI;
+    private AvvisoAPI avvisoAPI;
     private RetrofitService retrofitService;
     private AlertDialog inserisciAvvisoAlertDialog;
     private Amministratore amministratore = getAdmin();
@@ -98,7 +100,9 @@ public class HomeAdminFragment extends Fragment {
         capienzaAttivitaEditText = v.findViewById(R.id.capienzaAttivitaEditText);
 
         retrofitService = new RetrofitService();
+
         attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
+        avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
 
         if(!(amministratore.getNomeAttivita().equals("null"))){
             String nome = amministratore.getNomeAttivita();
@@ -320,7 +324,24 @@ public class HomeAdminFragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString());
-                        sendAvvisi(avviso);
+                        avvisoAPI.salvataggioAvviso(avviso)
+                                .enqueue(new Callback<Avviso>() {
+                                    @Override
+                                    public void onResponse(Call<Avviso> call, Response<Avviso> response) {
+                                        if(response.body() != null){
+                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
+                                        }else{
+                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Avviso> call, Throwable t) {
+                                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                                        Toast.makeText(getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+//                        sendAvvisi(avviso);
                         testoAvvisoEditText.setText("");
                         dialog.cancel();
                     }
