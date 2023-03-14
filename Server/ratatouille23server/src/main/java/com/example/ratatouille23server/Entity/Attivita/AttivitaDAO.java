@@ -35,7 +35,11 @@ public class AttivitaDAO {
         repository.deleteById(attivitaPkey);
     }
 
-    public Optional<Attivita> getById(AttivitaPkey attivitaPkey){
+    public Optional<Attivita> getById(String nome, String indirizzo){
+
+        AttivitaPkey attivitaPkey = new AttivitaPkey();
+        attivitaPkey.setNome(nome);
+        attivitaPkey.setIndirizzo(indirizzo);
         return repository.findById(attivitaPkey);
     }
 

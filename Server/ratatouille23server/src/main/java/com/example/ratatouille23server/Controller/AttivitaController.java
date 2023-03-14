@@ -1,13 +1,11 @@
 package com.example.ratatouille23server.Controller;
 
+import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +21,9 @@ public class AttivitaController {
         return attivitaDAO.getAll();
     }
 
-    @GetMapping("/attivita/get-by-id")
-    public Optional<Attivita> getAttivitaById(@RequestBody AttivitaPkey attivitaPkey){
-        return attivitaDAO.getById(attivitaPkey);
+    @RequestMapping(value = "/attivita/get-by-id", method = RequestMethod.GET)
+    public Optional<Attivita> getAdminById(@RequestParam("nome") String nome, @RequestParam("indirizzo") String indirizzo){
+        return attivitaDAO.getById(nome, indirizzo);
     }
 
     @PostMapping("/attivita/save")
