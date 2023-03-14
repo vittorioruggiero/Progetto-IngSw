@@ -2,6 +2,7 @@ package com.example.ratatouille23server.Entity.AddettoSala;
 
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name = "addettosala", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente_addetto_sala", columnNames = "nomeUtente"))
@@ -17,6 +18,8 @@ public class AddettoSala {
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
     private String indirizzoAttivita;
+    @Column(nullable = false, name = "primoAccesso", columnDefinition = "boolean default true")
+    private Boolean primoAccesso = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
@@ -67,6 +70,14 @@ public class AddettoSala {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
+    public Boolean getPrimoAccesso() {
+        return primoAccesso;
+    }
+
+    public void setPrimoAccesso(Boolean primoAccesso) {
+        this.primoAccesso = primoAccesso;
+    }
+
     @Override
     public String toString() {
         return "AddettoSala{" +
@@ -75,6 +86,7 @@ public class AddettoSala {
                 ", password='" + password + '\'' +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", primoAccesso=" + primoAccesso +
                 '}';
     }
 }

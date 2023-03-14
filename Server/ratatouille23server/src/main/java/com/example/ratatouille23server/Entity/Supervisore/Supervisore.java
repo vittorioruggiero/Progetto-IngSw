@@ -18,6 +18,8 @@ public class Supervisore {
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
     private String indirizzoAttivita;
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean primoAccesso = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
@@ -68,6 +70,14 @@ public class Supervisore {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
+    public Boolean getPrimoAccesso() {
+        return primoAccesso;
+    }
+
+    public void setPrimoAccesso(Boolean primoAccesso) {
+        this.primoAccesso = primoAccesso;
+    }
+
     @Override
     public String toString() {
         return "Supervisore{" +
@@ -76,6 +86,7 @@ public class Supervisore {
                 ", password='" + password + '\'' +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", primoAccesso=" + primoAccesso +
                 '}';
     }
 }
