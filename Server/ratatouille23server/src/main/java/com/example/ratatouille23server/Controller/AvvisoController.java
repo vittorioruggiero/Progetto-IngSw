@@ -6,10 +6,8 @@ import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import com.example.ratatouille23server.Entity.Avviso.Avviso;
 import com.example.ratatouille23server.Entity.Avviso.AvvisoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +26,11 @@ public class AvvisoController {
     @GetMapping("/avviso/get-by-id")
     public Optional<Avviso> getAttivitaById(@RequestBody Integer avvisopkey){
         return avvisoDAO.getById(avvisopkey);
+    }
+
+    @RequestMapping(value = "/avviso/get-all-by-attivita", method = RequestMethod.GET)
+    public ResponseEntity<List<Avviso>> getAllAvvisiByAttivita(@RequestParam("nomeAttivita") String nomeAttivita, @RequestParam("indirizzoAttivita") String indirizzoAttivita) {
+        return avvisoDAO.getAllByAttivita(nomeAttivita, indirizzoAttivita);
     }
 
     @PostMapping("/avviso/salvataggioAvviso")

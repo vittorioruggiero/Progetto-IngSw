@@ -1,6 +1,7 @@
 package com.example.ratatouille23.UI.fragment;
 
 import static com.example.ratatouille23.UI.activity.LoginActivity.clearAll;
+import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -85,7 +86,7 @@ public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.I
 
 
         avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
-        avvisoAPI.getAllAvvisi()
+        avvisoAPI.getAllAvvisiByAttivita(getSupervisore().getNomeAttivita(), getSupervisore().getIndirizzoAttivita())
                 .enqueue(new Callback<List<Avviso>>() {
                     @Override
                     public void onResponse(Call<List<Avviso>> call, Response<List<Avviso>> response) {

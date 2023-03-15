@@ -343,7 +343,7 @@ public class HomeAdminFragment extends Fragment {
                 "Conferma",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString());
+                        Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString(), getAttivita().getNome(), getAttivita().getIndirizzo());
                         avvisoAPI.salvataggioAvviso(avviso)
                                 .enqueue(new Callback<Avviso>() {
                                     @Override

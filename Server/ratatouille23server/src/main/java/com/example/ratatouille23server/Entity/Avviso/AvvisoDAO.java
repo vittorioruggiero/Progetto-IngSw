@@ -5,6 +5,8 @@ import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +30,16 @@ public class AvvisoDAO {
         return avvisoList;
     }
 
+    public ResponseEntity<List<Avviso>> getAllByAttivita(String nomeAttivita, String indirizzoAttivita) {
+        List<Avviso> listaAvvisi;
+        try {
+            listaAvvisi = repository.findAllByNomeAttivitaAndIndirizzoAttivita(nomeAttivita, indirizzoAttivita);
+            return new ResponseEntity<>(listaAvvisi, HttpStatus.OK);
+        }
+        catch(NullPointerException e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 
     public void delete(Avviso avviso){
         repository.delete(avviso);
