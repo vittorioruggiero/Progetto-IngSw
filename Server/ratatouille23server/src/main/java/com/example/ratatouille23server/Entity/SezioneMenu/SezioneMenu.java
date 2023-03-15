@@ -44,12 +44,12 @@ public class SezioneMenu {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
-    public Attivita getAttivitaSezione() {
-        return attivitaSezione;
+    public String getNome() {
+        return nome;
     }
 
-    public void setAttivitaSezione(Attivita attivitaSezione) {
-        this.attivitaSezione = attivitaSezione;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override

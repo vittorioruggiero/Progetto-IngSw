@@ -1,14 +1,13 @@
 package com.example.ratatouille23server.Controller;
 
+import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
 import com.example.ratatouille23server.Entity.ProdottoMenu.ProdottoMenu;
 import com.example.ratatouille23server.Entity.ProdottoMenu.ProdottoMenuDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +25,16 @@ public class ProdottoMenuController {
     @PostMapping("/prodottoMenu/save")
     public ProdottoMenu save(@RequestBody ProdottoMenu prodottoMenu){
         return prodottoMenuDAO.save(prodottoMenu);
+    }
+
+    @RequestMapping(value = "/prodottoMenu/get-by-sezione", method = RequestMethod.GET)
+    public ResponseEntity<List<ProdottoMenu>> getProdottiBySezione(@RequestParam("nomeSezione") String nomeSezione){
+        return prodottoMenuDAO.findBySezione(nomeSezione);
+    }
+
+    @RequestMapping(value = "/prodottoMenu/delete-by-id", method = RequestMethod.DELETE)
+    public void deleteById(@RequestParam("nomeProdotto") String nomeProdotto){
+        prodottoMenuDAO.deleteById(nomeProdotto);
     }
 
 }

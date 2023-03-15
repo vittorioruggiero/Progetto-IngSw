@@ -1,7 +1,10 @@
 package com.example.ratatouille23server.Entity.ProdottoMenu;
 
+import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,6 +39,21 @@ public class ProdottoMenuDAO {
 
     public Optional<ProdottoMenu> getById(String prodottoMenuPkey){
         return repository.findById(prodottoMenuPkey);
+    }
+
+    public ResponseEntity<List<ProdottoMenu>> findBySezione(String nomeSezione){
+        List<ProdottoMenu> prodottiMenu = new ArrayList<>();
+        try{
+            Streamable.of(repository.findAll())
+                            .forEach(prodottoMenu -> {
+                                if(prodottoMenu.getNomeSezione().equals(nomeSezione))
+                                    prodottiMenu.add(prodottoMenu);
+                            });
+            return new ResponseEntity<>(prodottiMenu, HttpStatus.OK);
+        }
+        catch(NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
 }

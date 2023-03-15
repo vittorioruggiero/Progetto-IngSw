@@ -7,6 +7,7 @@ import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import com.example.ratatouille23server.Entity.Avviso.Avviso;
 import com.example.ratatouille23server.Entity.Avviso.AvvisoDAO;
+import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenuDAO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,8 @@ class Ratatouille23serverApplicationTests {
 	private AvvisoDAO avvisoDAO;
 	@Autowired
 	private AmministratoreDAO amministratoreDAO;
+	@Autowired
+	private SezioneMenuDAO sezioneMenuDAO;
 
 	//@Test
 	void addAttivitaTest() {
@@ -33,12 +36,6 @@ class Ratatouille23serverApplicationTests {
 		attivitaDAO.save(attivita);
 	}
 
-	//@Test
-	void addAvvisoTest() {
-		Avviso avviso = new Avviso();
-		avviso.setAvviso("Prova");
-		avvisoDAO.save(avviso);
-	}
 
 	//@Test
 	void getAllAttivita(){
@@ -64,12 +61,10 @@ class Ratatouille23serverApplicationTests {
 	}
 
 
-	//@Test
+	@Test
 	void deleteById(){
-		AttivitaPkey attivitaPkey = new AttivitaPkey();
-		attivitaPkey.setNome("Ristorante");
-		attivitaPkey.setIndirizzo("Traversa Palazzo Terme, 20");
-		attivitaDAO.deleteById(attivitaPkey);
+		String nome = "Secondi Pesce";
+		sezioneMenuDAO.deleteById(nome);
 
 	}
 
