@@ -66,10 +66,6 @@ public class SezioneMenu {
 
     @Override
     public String toString() {
-        return "SezioneMenu{" +
-                "nome='" + nome + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
-                '}';
+        return nome;
     }
 }

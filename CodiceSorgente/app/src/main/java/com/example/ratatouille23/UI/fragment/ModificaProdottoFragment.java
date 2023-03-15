@@ -1,10 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.aggiungiProdotto;
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.eliminaProdotto;
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getTagFragment;
-import static com.example.ratatouille23.adapter.ProdottiAdapter.getBundle;
 
 import android.os.Bundle;
 
@@ -22,12 +18,20 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.adapter.ProdottiAdapter;
+import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
+import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ModificaProdottoFragment extends Fragment {
 
@@ -46,13 +50,15 @@ public class ModificaProdottoFragment extends Fragment {
     private static final String PREZZO = "prezzo";
     private static final String POSIZIONE = "posizione";
     private static final String POSIZIONE_SEZIONE = "posizione_sezione";
-    private String nomeProdotto;
+    private String nomeProdottoOriginale;
     private String nomeProdottoSecondaLingua;
     private String ingredienti;
     private String ingredientiSecondaLingua;
     private double prezzo;
     private int posizione;
     private int posizioneSezione;
+    private RetrofitService retrofitService;
+    private ProdottoMenuAPI prodottoMenuAPI;
 
     public ModificaProdottoFragment() {
         // Required empty public constructor
@@ -77,7 +83,7 @@ public class ModificaProdottoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            nomeProdotto = getArguments().getString(NOME_PRODOTTO);
+            nomeProdottoOriginale = getArguments().getString(NOME_PRODOTTO);
             nomeProdottoSecondaLingua = getArguments().getString(NOME_PRODOTTO_SECONDA_LINGUA);
             ingredienti = getArguments().getString(INGREDIENTI);
             ingredientiSecondaLingua = getArguments().getString(INGREDIENTI_SECONDA_LINGUA);
@@ -104,17 +110,19 @@ public class ModificaProdottoFragment extends Fragment {
         tipologiaProdottoModificaSpinner = v.findViewById(R.id.tipologiaProdottoModificaSpinner);
         eliminaProdottoButton = v.findViewById(R.id.eliminaProdottoButton);
 
+        retrofitService = new RetrofitService();
+        prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+
         if(getActivity().toString().contains("Admin"))
             bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
         else {
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
         }
 
-        nomeProdottoEditText.setText(nomeProdotto);
+        nomeProdottoEditText.setText(nomeProdottoOriginale);
         if(nomeProdottoSecondaLingua != null)
             nomeProdottoSecondaLinguaEditText.setText(nomeProdottoSecondaLingua);
-        if(ingredienti != null)
-            ingredientiEditText.setText(ingredienti);
+        ingredientiEditText.setText(ingredienti);
         if(ingredientiSecondaLingua != null)
             ingredientiSecondaLinguaEditText.setText(ingredientiSecondaLingua);
         costoEditText.setText(String.valueOf(prezzo));
@@ -126,88 +134,48 @@ public class ModificaProdottoFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tipologiaProdottoModificaSpinner.setAdapter(adapter);
 
-        salvaModificheButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        salvaModificheButton.setOnClickListener(view -> {
 
-                String nomeProdotto = nomeProdottoEditText.getText().toString();
-                String nomeProdottoSecondaLingua = nomeProdottoSecondaLinguaEditText.getText().toString();
-                String ingredienti = ingredientiEditText.getText().toString();
-                String ingredientiSecondaLingua = ingredientiSecondaLinguaEditText.getText().toString();
-                double costo;
+            String nomeProdotto = nomeProdottoEditText.getText().toString();
+            String nomeProdottoSecondaLingua = nomeProdottoSecondaLinguaEditText.getText().toString();
+            String ingredienti = ingredientiEditText.getText().toString();
+            String ingredientiSecondaLingua = ingredientiSecondaLinguaEditText.getText().toString();
+            double costo;
 
-                try {
-                    costo = Double.parseDouble(costoEditText.getText().toString());
-                }catch(NumberFormatException e){
-                    costo = 0;
-                }
-                ProdottoMenu nuovoProdotto = null;
+            try {
+                costo = Double.parseDouble(costoEditText.getText().toString());
+            }catch(NumberFormatException e){
+                costo = 0;
+            }
+            ProdottoMenu nuovoProdotto;
 
-                if(nomeProdotto.equals("") || ingredienti.equals("") || costo == 0){
-                    if(tipologiaProdottoModificaSpinner.getSelectedItem() != null){
-                        if(!(tipologiaProdottoModificaSpinner.getSelectedItem().toString().equals("Bibite")))
-                            Toast.makeText(getActivity(), "Riempire i campi obbligatori ", Toast.LENGTH_SHORT).show();
-                        else{
-                            if(nomeProdottoSecondaLingua.equals("")){
-                                nuovoProdotto = new ProdottoMenu(nomeProdotto, costo);
-                                try {
-                                    eliminaProdotto(posizione, posizioneSezione);
-                                    aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
-                                    sostituisciFragment();
-                                }catch(IndexOutOfBoundsException e){
-                                    Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                                }
-                            }else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
-                                nuovoProdotto = new ProdottoMenu(nomeProdotto, costo, nomeProdottoSecondaLingua);
-                                try {
-                                    eliminaProdotto(posizione, posizioneSezione);
-                                    aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
-                                    sostituisciFragment();
-                                }catch(IndexOutOfBoundsException e){
-                                    Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        }
-                    }else{
+            if(!(nomeProdotto.equals("")) && !(ingredienti.equals("")) && costo != 0){
+                if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+                    try {
+                        eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString());
+                    }catch(IndexOutOfBoundsException e){
                         Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
-                        try {
-                            eliminaProdotto(posizione, posizioneSezione);
-                            aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
-                            sostituisciFragment();
-                        }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
-                        Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
-                        try {
-                            eliminaProdotto(posizione, posizioneSezione);
-                            aggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItemPosition());
-                            sostituisciFragment();
-                        }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                        }
+                }
+                else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
+                    Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
+                    try {
+                        eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString());
+                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }else{
+                Toast.makeText(getActivity(), "Compilare i campi correttamente", Toast.LENGTH_SHORT).show();
             }
 
         });
 
-        eliminaProdottoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                eliminaProdotto(posizione, posizioneSezione);
-                sostituisciFragment();
-            }
-        });
+        eliminaProdottoButton.setOnClickListener(view -> eliminaProdotto());
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -218,6 +186,59 @@ public class ModificaProdottoFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
+    }
+
+    private void eliminaProdotto() {
+
+        prodottoMenuAPI.deleteById(nomeProdottoOriginale)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(getActivity(), "Prodotto eliminato correttamente", Toast.LENGTH_SHORT).show();
+                        sostituisciFragment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    private void eliminaEdAggiungiProdotto(ProdottoMenu nuovoProdotto, String nomeSezione){
+        prodottoMenuAPI.deleteById(nomeProdottoOriginale)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        nuovoProdotto.setNomeSezione(nomeSezione);
+                        prodottoMenuAPI.save(nuovoProdotto)
+                                .enqueue(new Callback<ProdottoMenu>() {
+                                    @Override
+                                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                                        if(response.body() != null){
+                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                                            Toast.makeText(getActivity(), "Prodotto salvato correttamente", Toast.LENGTH_SHORT).show();
+                                        }
+                                        sostituisciFragment();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+                                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                        sostituisciFragment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void sostituisciFragment(){

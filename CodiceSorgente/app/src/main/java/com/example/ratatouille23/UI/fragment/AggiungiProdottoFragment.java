@@ -1,6 +1,5 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.aggiungiProdotto;
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.content.Intent;
@@ -21,12 +20,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
+import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
+import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AggiungiProdottoFragment extends Fragment {
 
@@ -38,6 +47,8 @@ public class AggiungiProdottoFragment extends Fragment {
     private EditText ingredientiProdottoSecondaLinguaEditText;
     private Button aggiungiProdottoButton;
     private BottomNavigationView bottomNavigationView;
+    private RetrofitService retrofitService;
+    private ProdottoMenuAPI prodottoMenuAPI;
 
     public AggiungiProdottoFragment() {
         // Required empty public constructor
@@ -62,6 +73,9 @@ public class AggiungiProdottoFragment extends Fragment {
         ingredientiProdottoSecondaLinguaEditText = v.findViewById(R.id.ingredientiProdottoSecondaLinguaEditText);
         tipologiaProdottoSpinner = v.findViewById(R.id.tipologiaProdottoSpinner);
         aggiungiProdottoButton = v.findViewById(R.id.aggiungiProdottoButton);
+
+        retrofitService = new RetrofitService();
+        prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
 
         if(getActivity().toString().contains("Admin"))
             bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
@@ -89,40 +103,13 @@ public class AggiungiProdottoFragment extends Fragment {
             }catch(NumberFormatException e){
                 costo = 0;
             }
-            ProdottoMenu nuovoProdotto = null;
+            ProdottoMenu nuovoProdotto;
 
-            if(nomeProdotto.equals("") || ingredienti.equals("") || costo == 0){
-                if(tipologiaProdottoSpinner.getSelectedItem() != null){
-                    if(!(tipologiaProdottoSpinner.getSelectedItem().toString().equals("Bibite")))
-                        Toast.makeText(getActivity(), "Riempire i campi obbligatori ", Toast.LENGTH_SHORT).show();
-                    else{
-                        if((nomeProdottoSecondaLingua.equals(""))){
-                            nuovoProdotto = new ProdottoMenu(nomeProdotto, costo);
-                            try {
-                                aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
-                                sostituisciFragment();
-                            }catch(IndexOutOfBoundsException e){
-                                Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                            }
-                        }else{
-                            nuovoProdotto = new ProdottoMenu(nomeProdotto, costo, nomeProdottoSecondaLingua);
-                            try {
-                                aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
-                                sostituisciFragment();
-                            }catch(IndexOutOfBoundsException e){
-                                Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                }
-            }else{
+            if(!(nomeProdotto.equals("")) && !(ingredienti.equals("")) && costo != 0){
                 if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
                     nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
                     try {
-                        aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
-                        sostituisciFragment();
+                        aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString());
                     }catch(IndexOutOfBoundsException e){
                         Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                     }
@@ -133,12 +120,13 @@ public class AggiungiProdottoFragment extends Fragment {
                 else{
                     nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
                     try {
-                        aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItemPosition());
-                        sostituisciFragment();
+                        aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString());
                     }catch(IndexOutOfBoundsException e){
                         Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }else{
+                Toast.makeText(getActivity(), "Compilare i campi correttamente", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -152,6 +140,29 @@ public class AggiungiProdottoFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
+    }
+
+    private void aggiungiProdotto(ProdottoMenu nuovoProdotto, String nomeSezione) {
+
+        nuovoProdotto.setNomeSezione(nomeSezione);
+        prodottoMenuAPI.save(nuovoProdotto)
+                .enqueue(new Callback<ProdottoMenu>() {
+                    @Override
+                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            Toast.makeText(getActivity(), "Prodotto aggiunto correttamente", Toast.LENGTH_SHORT).show();
+                        }
+                        sostituisciFragment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     public void sostituisciFragment(){
