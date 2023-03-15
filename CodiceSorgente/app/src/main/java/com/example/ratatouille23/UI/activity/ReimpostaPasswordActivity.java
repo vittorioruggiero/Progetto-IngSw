@@ -1,5 +1,6 @@
 package com.example.ratatouille23.UI.activity;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.clearAll;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
 
@@ -84,6 +85,7 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                                         Toast.makeText(ReimpostaPasswordActivity.this, "Password cambiata con successo", Toast.LENGTH_SHORT).show();
                                         campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                                         passwordDiverseTextView.setVisibility(View.INVISIBLE);
+                                        clearAll();
                                         Intent intent = new Intent(ReimpostaPasswordActivity.this, LoginActivity.class);
                                         ReimpostaPasswordActivity.this.startActivity(intent);
                                     }else{
@@ -109,6 +111,7 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                                         Toast.makeText(ReimpostaPasswordActivity.this, "Password cambiata con successo", Toast.LENGTH_SHORT).show();
                                         campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
                                         passwordDiverseTextView.setVisibility(View.INVISIBLE);
+                                        clearAll();
                                         Intent intent = new Intent(ReimpostaPasswordActivity.this, LoginActivity.class);
                                         ReimpostaPasswordActivity.this.startActivity(intent);
                                     }else{
@@ -121,7 +124,6 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                                     Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
                                 }
                             });
-
                 }
             }else{
                 campiNonCompilatiTextView.setVisibility(View.INVISIBLE);

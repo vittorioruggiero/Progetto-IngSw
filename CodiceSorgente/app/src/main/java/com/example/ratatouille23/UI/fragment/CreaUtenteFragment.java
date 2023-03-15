@@ -2,6 +2,8 @@ package com.example.ratatouille23.UI.fragment;
 
 import static androidx.navigation.Navigation.findNavController;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,9 +20,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.HomeAdminActivity;
+import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.AddettoSala;
+import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Supervisore;
+import com.example.ratatouille23.retrofit.API.AddettoSalaAPI;
+import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
+import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +49,10 @@ public class CreaUtenteFragment extends Fragment {
     private Spinner tipologiaUtenteSpinner;
     private Button creaUtenteButton;
     private AlertDialog creazioneUtenteAlertDialog, uscitaCreazioneUtenteAlertDialog;
+    private RetrofitService retrofitService;
+    private Amministratore admin = getAdmin();
+    private AddettoSalaAPI addettoSalaAPI;
+    private SupervisoreAPI supervisoreAPI;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +100,10 @@ public class CreaUtenteFragment extends Fragment {
 
         inflatedView = inflater.inflate(R.layout.fragment_crea_utente, container, false);
 
+        retrofitService = new RetrofitService();
+        addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
+        supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
+
         nuovoUtenteNomeTextInputEditText = inflatedView.findViewById(R.id.nuovoUtenteNomeTextInputEditText);
         nuovoUtenteNomeTextInputEditText.setSaveEnabled(false);
 
@@ -109,8 +132,6 @@ public class CreaUtenteFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
-
                 creazioneUtenteAlertDialog.show();
             }
         });
@@ -135,34 +156,90 @@ public class CreaUtenteFragment extends Fragment {
 
         creazioneUtenteAlertDialogBuilder.setPositiveButton(
                 "Conferma",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        try{
-                            String nomeUtente = nuovoUtenteNomeTextInputEditText.getText().toString();
-                            String email = nuovoUtenteEmailTextInputEditText.getText().toString();
-                            String password = nuovoUtentePasswordTextInputEditText.getText().toString();
-                            String tipologiaUtente = tipologiaUtenteSpinner.getSelectedItem().toString();
-                            if(tipologiaUtente.equals("Supervisore")){
-                                Supervisore supervisore = new Supervisore(email, nomeUtente, password);
-                            }else if(tipologiaUtente.equals("Addetto alla sala")){
-                                AddettoSala addettoSala = new AddettoSala(email, nomeUtente, password);
+                (dialog, id) -> {
+                    try{
+                        String nomeUtente = nuovoUtenteNomeTextInputEditText.getText().toString();
+                        String email = nuovoUtenteEmailTextInputEditText.getText().toString();
+                        String password = nuovoUtentePasswordTextInputEditText.getText().toString();
+                        String tipologiaUtente = tipologiaUtenteSpinner.getSelectedItem().toString();
+                        if(tipologiaUtente.equals("Supervisore")){
+                            Supervisore supervisore = new Supervisore(email, nomeUtente, password);
+                            if(admin.getNomeAttivita() != null){
+                                supervisore.setNomeAttivita(admin.getNomeAttivita());
+                                supervisore.setIndirizzoAttivita(admin.getIndirizzoAttivita());
                             }
-                        }catch(NullPointerException e){
-                            Toast.makeText(getActivity(), "Inserisci tutti i campi", Toast.LENGTH_SHORT).show();
+                            salvaSupervisore(supervisore);
+                            clearCampi();
+                        }else if(tipologiaUtente.equals("Addetto alla sala")){
+                            AddettoSala addettoSala = new AddettoSala(email, nomeUtente, password);
+                            if(admin.getNomeAttivita() != null){
+                                addettoSala.setNomeAttivita(admin.getNomeAttivita());
+                                addettoSala.setIndirizzoAttivita(admin.getIndirizzoAttivita());
+                            }
+                            salvaAddettoSala(addettoSala);
+                            clearCampi();
                         }
-                        dialog.cancel();
+                    }catch(NullPointerException e){
+                        Toast.makeText(getActivity(), "Inserisci tutti i campi", Toast.LENGTH_SHORT).show();
                     }
+                    dialog.cancel();
                 });
 
         creazioneUtenteAlertDialogBuilder.setNegativeButton(
                 "Annulla",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
+                (dialog, id) -> {
+                    dialog.cancel();
                 });
 
         return creazioneUtenteAlertDialogBuilder.create();
+
+    }
+
+    private void clearCampi() {
+        nuovoUtenteNomeTextInputEditText.setText("");
+        nuovoUtenteEmailTextInputEditText.setText("");
+        nuovoUtentePasswordTextInputEditText.setText("");
+    }
+
+    private void salvaAddettoSala(AddettoSala addettoSala) {
+
+        addettoSalaAPI.save(addettoSala)
+                .enqueue(new Callback<AddettoSala>() {
+                    @Override
+                    public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
+                        if(response.body() != null){
+                            Toast.makeText(getActivity(), "Addetto Sala salvato correttamente", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddettoSala> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(getActivity(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    private void salvaSupervisore(Supervisore supervisore) {
+
+        supervisoreAPI.salvataggioSupervisore(supervisore)
+                .enqueue(new Callback<Supervisore>() {
+                    @Override
+                    public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
+                        if(response.body() != null){
+                            Toast.makeText(getActivity(), "Supervisore salvato correttamente", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Supervisore> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(getActivity(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

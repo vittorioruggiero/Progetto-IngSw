@@ -1,5 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.clearAll;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
 import static com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment.addAvvisiAddettoSala;
 import static com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment.addAvvisoSupervisore;
@@ -8,15 +9,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +44,8 @@ import com.example.ratatouille23.retrofit.API.AvvisoAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,22 +62,21 @@ public class HomeAdminFragment extends Fragment {
     private AvvisoAPI avvisoAPI;
     private RetrofitService retrofitService;
     private AlertDialog inserisciAvvisoAlertDialog;
-    private Amministratore amministratore = getAdmin();
+    private static Amministratore amministratore = getAdmin();
     private AmministratoreAPI amministratoreAPI;
-    private Attivita attivitaEsistente;
-    private Button creaAvvisoButton;
+    private Button creaAvvisoButton, logoutButton;
     private static Attivita attivita;
+    private Bitmap bitmap;
 
     private boolean isEditing = false;
 
     public HomeAdminFragment() {
         // Required empty public constructor
     }
+
     public static HomeAdminFragment newInstance(String param1, String param2) {
         HomeAdminFragment fragment = new HomeAdminFragment();
         Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,8 +85,6 @@ public class HomeAdminFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -98,13 +103,16 @@ public class HomeAdminFragment extends Fragment {
         luogoAttivitaEditText = v.findViewById(R.id.indirizzoAttivitaEditText);
         telefonoAttivitaEditText = v.findViewById(R.id.telefonoAttivitaEditText);
         capienzaAttivitaEditText = v.findViewById(R.id.capienzaAttivitaEditText);
+        creaAvvisoButton = v.findViewById(R.id.creaAvvisoButton);
+        logoutButton = v.findViewById(R.id.logoutButton);
 
         retrofitService = new RetrofitService();
 
         attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
         avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+        amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
 
-        if(!(amministratore.getNomeAttivita().equals("null"))){
+        if(!(amministratore.getNomeAttivita() == null)){
             String nome = amministratore.getNomeAttivita();
             String indirizzo = amministratore.getIndirizzoAttivita();
             checkAttivita(nome, indirizzo);
@@ -113,9 +121,15 @@ public class HomeAdminFragment extends Fragment {
         }
 
         inserisciAvvisoAlertDialog = creaInserisciAvvisoAlertDialog();
-        creaAvvisoButton = v.findViewById(R.id.creaAvvisoButton);
 
         selezionaFotoButton.setOnClickListener(view -> scegliImmagine());
+
+        logoutButton.setOnClickListener(view -> {
+            Intent loginscreen = new Intent(getActivity(), LoginActivity.class);
+            clearAll();
+            startActivity(loginscreen);
+            getActivity().finish();
+        });
 
         modificaButton.setOnClickListener(view -> {
 
@@ -143,13 +157,18 @@ public class HomeAdminFragment extends Fragment {
                 }catch(NumberFormatException e){
                     capienzaAttivita = 0;
                 }
-                attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
-                if(amministratore.getNomeAttivita().equals("null")){
-                    amministratore.setNomeAttivita(attivita.getNome());
-                    amministratore.setIndirizzoAttivita(attivita.getIndirizzo());
-                    salvaAdmin(amministratore);
+                if(nomeAttivita.equals("") || indirizzoAttivita.equals("") || telefonoAttivita.equals("")
+                        || capienzaAttivita == 0){
+                    Toast.makeText(getActivity(), "Inserisci tutti i dettagli correttamente", Toast.LENGTH_SHORT).show();
+                }else{
+                    attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
+                    if(amministratore.getNomeAttivita() == null || !(amministratore.getNomeAttivita().equals(attivita.getNome()))){
+                        amministratore.setNomeAttivita(nomeAttivita);
+                        amministratore.setIndirizzoAttivita(indirizzoAttivita);
+                        salvaAdmin(amministratore);
+                    }
+                    salvaAttivita(attivita);
                 }
-                salvaAttivita(attivita);
             }else{
                 nomeAttivitaEditText.setFocusableInTouchMode(true);
                 nomeAttivitaEditText.setFocusable(true);
@@ -179,11 +198,8 @@ public class HomeAdminFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                //Provvisorio: fatto per non dover riavviare l'applicazione per tornare alla LoginActivity
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                HomeAdminFragment.this.startActivity(intent);
                 //Esce dall'applicazione come il bottone centrale di Android
-//                getActivity().moveTaskToBack(true);
+                getActivity().moveTaskToBack(true);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -236,56 +252,21 @@ public class HomeAdminFragment extends Fragment {
 
     private void salvaAttivita(Attivita nuovaAttivita) {
 
-        String nome = nuovaAttivita.getNome();
-        String indirizzo = nuovaAttivita.getIndirizzo();
-
-        attivitaAPI.getAttivitaById(nome, indirizzo)
+        attivitaAPI.save(nuovaAttivita)
                 .enqueue(new Callback<Attivita>() {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
-                        setAttivitaEsistente(response.body());
+                        Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(Call<Attivita> call, Throwable t) {
-
+                        Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
                     }
                 });
-        if(attivitaEsistente == null){
-            attivitaAPI.save(nuovaAttivita)
-                    .enqueue(new Callback<Attivita>() {
-                        @Override
-                        public void onResponse(Call<Attivita> call, Response<Attivita> response) {
-                            Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
-                        }
+        //salvaImmagine();
 
-                        @Override
-                        public void onFailure(Call<Attivita> call, Throwable t) {
-                            Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
-                        }
-                    });
-        }else{
-            attivitaAPI.delete(attivitaEsistente);
-            attivitaAPI.save(nuovaAttivita)
-                    .enqueue(new Callback<Attivita>() {
-                        @Override
-                        public void onResponse(Call<Attivita> call, Response<Attivita> response) {
-                            Toast.makeText(getActivity(), "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<Attivita> call, Throwable t) {
-                            Toast.makeText(getActivity(), "Salvataggio Fallito", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error", t);
-                        }
-                    });
-        }
-
-    }
-
-    private void setAttivitaEsistente(Attivita attivitaResponse) {
-        attivitaEsistente = attivitaResponse;
     }
 
     private void scegliImmagine()
@@ -306,6 +287,45 @@ public class HomeAdminFragment extends Fragment {
                     foto.setImageURI(resultUri);
                 }
             });
+
+    /*private void scegliImmagine2(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        activityResultLauncher.launch(intent);
+    }
+
+
+    private final ActivityResultLauncher<Intent> activityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        Uri uri = data.getData();
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                            foto.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            });
+
+    private void salvaImmagine() {
+        ByteArrayOutputStream byteArrayOutputStream;
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        if(bitmap != null){
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            final String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+        }else{
+            Toast.makeText(getActivity(), "Seleziona la foto da salvare", Toast.LENGTH_SHORT).show();
+        }
+    }*/
+
+
 
 
     AlertDialog creaInserisciAvvisoAlertDialog() {
@@ -341,7 +361,8 @@ public class HomeAdminFragment extends Fragment {
                                         Toast.makeText(getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-//                        sendAvvisi(avviso);
+
+                        //sendAvvisi(avviso);
                         testoAvvisoEditText.setText("");
                         dialog.cancel();
                     }

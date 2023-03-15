@@ -1,5 +1,7 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.clearAll;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.LoginActivity;
@@ -30,6 +33,7 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
     private static final ArrayList<Avviso> avvisiAddettoSala = new ArrayList<>();
     private RecyclerView recyclerView;
     private AvvisiAdapter avvisiAddettoSalaAdapter;
+    private Button logoutButton;
 
     public HomeAddettoSalaFragment() {
         // Required empty public constructor
@@ -59,16 +63,23 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
         avvisiAddettoSalaAdapter = new AvvisiAdapter(avvisiAddettoSala, getContext(), this);
         recyclerView.setAdapter(avvisiAddettoSalaAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        logoutButton = inflatedView.findViewById(R.id.logoutButtonAddettoSala);
+
+
+        logoutButton.setOnClickListener(view -> {
+            Intent loginscreen = new Intent(getActivity(), LoginActivity.class);
+            loginscreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            clearAll();
+            startActivity(loginscreen);
+            getActivity().finish();
+        });
 
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                //Provvisorio: fatto per non dover riavviare l'applicazione per tornare alla LoginActivity
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                HomeAddettoSalaFragment.this.startActivity(intent);
                 //Esce dall'applicazione come il bottone centrale di Android
-//                getActivity().moveTaskToBack(true);
+                getActivity().moveTaskToBack(true);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

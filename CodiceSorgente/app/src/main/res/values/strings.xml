@@ -161,4 +161,5 @@
         "does not vary from 6dp in one app to 16dp in another app).\n"
         "Components may have different resting elevations across platforms, depending on the depth "
         "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -100,14 +100,20 @@ public class LoginActivity extends AppCompatActivity {
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             addettoSala = response.body();
                             if(addettoSala != null){
-                                if(addettoSala.getPrimoAccesso()){
+                                if(addettoSala.getPrimoAccesso() && addettoSala.getPassword().equals(passwordEditText.getText().toString())){
                                     Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
                                     LoginActivity.this.startActivity(intent);
-                                }else if(nomeUtenteEditText.getText().toString().equals(addettoSala.getNomeUtente())
-                                        && passwordEditText.getText().toString().equals(addettoSala.getPassword())){
-                                    campiErratiTextView.setVisibility(View.INVISIBLE);
-                                    Intent intent = new Intent(LoginActivity.this, HomeAddettoSalaActivity.class);
-                                    LoginActivity.this.startActivity(intent);
+                                    LoginActivity.this.finish();
+                                }else{
+                                    if(nomeUtenteEditText.getText().toString().equals(addettoSala.getNomeUtente())
+                                            && passwordEditText.getText().toString().equals(addettoSala.getPassword())){
+                                        campiErratiTextView.setVisibility(View.INVISIBLE);
+                                        Intent intent = new Intent(LoginActivity.this, HomeAddettoSalaActivity.class);
+                                        LoginActivity.this.startActivity(intent);
+                                        LoginActivity.this.finish();
+                                    }else{
+                                        campiErratiTextView.setVisibility(View.VISIBLE);
+                                    }
                                 }
                             }
                         }else{
@@ -136,14 +142,20 @@ public class LoginActivity extends AppCompatActivity {
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             supervisore = response.body();
                             if(supervisore != null){
-                                if(supervisore.getPrimoAccesso()){
+                                if(supervisore.getPrimoAccesso() && supervisore.getPassword().equals(passwordEditText.getText().toString())){
                                     Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
                                     LoginActivity.this.startActivity(intent);
-                                }else if(nomeUtenteEditText.getText().toString().equals(supervisore.getNomeUtente())
-                                        && passwordEditText.getText().toString().equals(supervisore.getPassword())){
-                                    campiErratiTextView.setVisibility(View.INVISIBLE);
-                                    Intent intent = new Intent(LoginActivity.this, HomeSupervisoreActivity.class);
-                                    LoginActivity.this.startActivity(intent);
+                                    LoginActivity.this.finish();
+                                }else{
+                                    if(nomeUtenteEditText.getText().toString().equals(supervisore.getNomeUtente())
+                                            && passwordEditText.getText().toString().equals(supervisore.getPassword())){
+                                        campiErratiTextView.setVisibility(View.INVISIBLE);
+                                        Intent intent = new Intent(LoginActivity.this, HomeSupervisoreActivity.class);
+                                        LoginActivity.this.startActivity(intent);
+                                        LoginActivity.this.finish();
+                                    }else{
+                                        campiErratiTextView.setVisibility(View.VISIBLE);
+                                    }
                                 }
                             }
                         }else{
@@ -176,7 +188,11 @@ public class LoginActivity extends AppCompatActivity {
                                         && passwordEditText.getText().toString().equals(admin.getPasswordAmministratore())){
                                     Intent intent = new Intent(LoginActivity.this, HomeAdminActivity.class);
                                     LoginActivity.this.startActivity(intent);
+                                    LoginActivity.this.finish();
                                     campiErratiTextView.setVisibility(View.INVISIBLE);
+                                }
+                                else{
+                                    campiErratiTextView.setVisibility(View.VISIBLE);
                                 }
                             }
                         }else{
@@ -204,5 +220,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public static Supervisore getSupervisore(){
         return supervisore;
+    }
+
+    public static void clearAll(){
+        admin = null;
+        addettoSala = null;
+        supervisore = null;
     }
 }
