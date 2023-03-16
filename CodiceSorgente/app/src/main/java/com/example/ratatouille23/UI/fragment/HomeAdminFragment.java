@@ -234,40 +234,12 @@ public class HomeAdminFragment extends Fragment {
 
         inserisciAvvisoAlertDialogBuilder.setPositiveButton(
                 "Conferma",
-<<<<<<< Updated upstream
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString(), getAttivita().getNome(), getAttivita().getIndirizzo());
-                        avvisoAPI.salvataggioAvviso(avviso)
-                                .enqueue(new Callback<Avviso>() {
-                                    @Override
-                                    public void onResponse(Call<Avviso> call, Response<Avviso> response) {
-                                        if(response.body() != null){
-                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
-                                        }else{
-                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Avviso> call, Throwable t) {
-                                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                                        Toast.makeText(getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                        //sendAvvisi(avviso);
-                        testoAvvisoEditText.setText("");
-                        dialog.cancel();
-                    }
-=======
-                (dialog, id) -> {
+                    (dialog, id) -> {
                     Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString());
                     controllerAdmin.salvaAvviso(avviso, getActivity());
                     //sendAvvisi(avviso);
                     testoAvvisoEditText.setText("");
                     dialog.cancel();
->>>>>>> Stashed changes
                 });
 
         inserisciAvvisoAlertDialogBuilder.setNegativeButton(
