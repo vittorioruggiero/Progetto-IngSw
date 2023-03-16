@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
@@ -38,9 +39,8 @@ public class AggiungiSezioneFragment extends Fragment {
     private EditText nomeSezioneEditText;
     private Button salvaSezioneButton;
     private BottomNavigationView bottomNavigationView;
-    private RetrofitService retrofitService;
-    private SezioneMenuAPI sezioneMenuAPI;
-    private Amministratore admin = getAdmin();
+    private Controller controllerAdmin;
+    private Controller controllerSupervisore;
 
 
     public AggiungiSezioneFragment() {
@@ -60,13 +60,13 @@ public class AggiungiSezioneFragment extends Fragment {
 
         nomeSezioneEditText = v.findViewById(R.id.nuovaSezioneEditText);
         salvaSezioneButton = v.findViewById(R.id.eliminaSezioneButton);
-        retrofitService = new RetrofitService();
-        sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
 
-        if(getActivity().toString().contains("Admin"))
+        if(getActivity().toString().contains("Admin")){
             bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
-        else {
+            controllerAdmin = new Controller(getActivity().toString());
+        }else{
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+            controllerSupervisore = new Controller(getActivity().toString());
         }
 
         salvaSezioneButton.setOnClickListener(view -> {
@@ -74,10 +74,13 @@ public class AggiungiSezioneFragment extends Fragment {
             if(nomeSezione.equals("")){
                 Toast.makeText(getActivity(), "Inserisci il nome della sezione", Toast.LENGTH_SHORT).show();
             }else{
-                SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
-                nuovaSezione.setNomeAttivita(admin.getNomeAttivita());
-                nuovaSezione.setIndirizzoAttivita(admin.getIndirizzoAttivita());
-                addSezione(nuovaSezione);
+                if(getActivity().toString().contains("Admin")){
+                    SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
+                    controllerAdmin.addSezioneAdmin(nuovaSezione, getActivity(), this);
+                }else if(getActivity().toString().contains("Supervisore")){
+                    SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
+                    controllerSupervisore.addSezioneSupervisore(nuovaSezione, getActivity(), this);
+                }
             }
 
         });
@@ -91,28 +94,6 @@ public class AggiungiSezioneFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
-
-    }
-
-    private void addSezione(SezioneMenu nuovaSezione) {
-
-        sezioneMenuAPI.save(nuovaSezione)
-                .enqueue(new Callback<SezioneMenu>() {
-                    @Override
-                    public void onResponse(Call<SezioneMenu> call, Response<SezioneMenu> response) {
-                        if(response.body() != null){
-                            Toast.makeText(getActivity(), "Sezione Salvata Correttamente", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                        }
-                        sostituisciFragment();
-                    }
-
-                    @Override
-                    public void onFailure(Call<SezioneMenu> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
     }
 

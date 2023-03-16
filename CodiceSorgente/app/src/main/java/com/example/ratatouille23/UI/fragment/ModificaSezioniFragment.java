@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.entity.SezioneMenu;
@@ -38,8 +39,8 @@ public class ModificaSezioniFragment extends Fragment {
     private Spinner sezioniSpinner;
     private Button eliminaSezioneButtom;
     private BottomNavigationView bottomNavigationView;
-    private RetrofitService retrofitService;
-    private SezioneMenuAPI sezioneMenuAPI;
+    private Controller controllerAdmin;
+    private Controller controllerSupervisore;
 
     public ModificaSezioniFragment() {
         // Required empty public constructor
@@ -58,13 +59,13 @@ public class ModificaSezioniFragment extends Fragment {
 
         sezioniSpinner = v.findViewById(R.id.sezioniSpinner);
         eliminaSezioneButtom = v.findViewById(R.id.eliminaSezioneButton);
-        retrofitService = new RetrofitService();
-        sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
 
-        if(getActivity().toString().contains("Admin"))
+        if(getActivity().toString().contains("Admin")){
             bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
-        else {
+            controllerAdmin = new Controller(getActivity().toString());
+        }else{
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+            controllerSupervisore = new Controller(getActivity().toString());
         }
 
         ArrayList<SezioneMenu> sezioni = getSezioni();
@@ -76,7 +77,11 @@ public class ModificaSezioniFragment extends Fragment {
 
         eliminaSezioneButtom.setOnClickListener(view -> {
             try {
-                eliminaSezione(sezioniSpinner.getSelectedItem().toString());
+                if(getActivity().toString().contains("Admin")){
+                    controllerAdmin.eliminaSezione(sezioniSpinner.getSelectedItem().toString(), getActivity(), this);
+                }else{
+                    controllerSupervisore.eliminaSezione(sezioniSpinner.getSelectedItem().toString(), getActivity(), this);
+                }
 
             }catch(ArrayIndexOutOfBoundsException e){
                 Toast.makeText(getActivity(), "Non ci sono sezioni da eliminare", Toast.LENGTH_SHORT).show();
@@ -92,26 +97,6 @@ public class ModificaSezioniFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
-    }
-
-    private void eliminaSezione(String nomeSezione) {
-
-        sezioneMenuAPI.deleteById(nomeSezione)
-                        .enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                Toast.makeText(getActivity(), "Sezione Eliminata Correttamente", Toast.LENGTH_SHORT).show();
-                                sostituisciFragment();
-                            }
-
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                                Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
     }
 
     public void sostituisciFragment(){

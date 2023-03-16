@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
@@ -49,38 +50,14 @@ public class CreaUtenteFragment extends Fragment {
     private Spinner tipologiaUtenteSpinner;
     private Button creaUtenteButton;
     private AlertDialog creazioneUtenteAlertDialog, uscitaCreazioneUtenteAlertDialog;
-    private RetrofitService retrofitService;
-    private Amministratore admin = getAdmin();
-    private AddettoSalaAPI addettoSalaAPI;
-    private SupervisoreAPI supervisoreAPI;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Controller controllerAdmin;
 
     public CreaUtenteFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreaUtenteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CreaUtenteFragment newInstance(String param1, String param2) {
         CreaUtenteFragment fragment = new CreaUtenteFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,8 +66,6 @@ public class CreaUtenteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -99,10 +74,7 @@ public class CreaUtenteFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         inflatedView = inflater.inflate(R.layout.fragment_crea_utente, container, false);
-
-        retrofitService = new RetrofitService();
-        addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
-        supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
+        controllerAdmin = new Controller(getActivity().toString());
 
         nuovoUtenteNomeTextInputEditText = inflatedView.findViewById(R.id.nuovoUtenteNomeTextInputEditText);
         nuovoUtenteNomeTextInputEditText.setSaveEnabled(false);
@@ -128,13 +100,7 @@ public class CreaUtenteFragment extends Fragment {
         tipologiaUtenteSpinner.setSelection(adapter.getPosition("Supervisore"));
 
         creazioneUtenteAlertDialog = creaCreazioneUtenteAlertDialog();
-        creaUtenteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                creazioneUtenteAlertDialog.show();
-            }
-        });
+        creaUtenteButton.setOnClickListener(view -> creazioneUtenteAlertDialog.show());
 
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -163,20 +129,10 @@ public class CreaUtenteFragment extends Fragment {
                         String password = nuovoUtentePasswordTextInputEditText.getText().toString();
                         String tipologiaUtente = tipologiaUtenteSpinner.getSelectedItem().toString();
                         if(tipologiaUtente.equals("Supervisore")){
-                            Supervisore supervisore = new Supervisore(email, nomeUtente, password);
-                            if(admin.getNomeAttivita() != null){
-                                supervisore.setNomeAttivita(admin.getNomeAttivita());
-                                supervisore.setIndirizzoAttivita(admin.getIndirizzoAttivita());
-                            }
-                            salvaSupervisore(supervisore);
+                            controllerAdmin.salvaSupervisore(nomeUtente, email, password, getActivity());
                             clearCampi();
                         }else if(tipologiaUtente.equals("Addetto alla sala")){
-                            AddettoSala addettoSala = new AddettoSala(email, nomeUtente, password);
-                            if(admin.getNomeAttivita() != null){
-                                addettoSala.setNomeAttivita(admin.getNomeAttivita());
-                                addettoSala.setIndirizzoAttivita(admin.getIndirizzoAttivita());
-                            }
-                            salvaAddettoSala(addettoSala);
+                            controllerAdmin.salvaAddettoSala(nomeUtente, email, password, getActivity());
                             clearCampi();
                         }
                     }catch(NullPointerException e){
@@ -201,48 +157,6 @@ public class CreaUtenteFragment extends Fragment {
         nuovoUtentePasswordTextInputEditText.setText("");
     }
 
-    private void salvaAddettoSala(AddettoSala addettoSala) {
-
-        addettoSalaAPI.save(addettoSala)
-                .enqueue(new Callback<AddettoSala>() {
-                    @Override
-                    public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
-                        if(response.body() != null){
-                            Toast.makeText(getActivity(), "Addetto Sala salvato correttamente", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<AddettoSala> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
-    private void salvaSupervisore(Supervisore supervisore) {
-
-        supervisoreAPI.salvataggioSupervisore(supervisore)
-                .enqueue(new Callback<Supervisore>() {
-                    @Override
-                    public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
-                        if(response.body() != null){
-                            Toast.makeText(getActivity(), "Supervisore salvato correttamente", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Supervisore> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
     AlertDialog creaUscitaCreazioneUtenteAlertDialog() {
 
         AlertDialog.Builder uscitaCreazioneUtenteAlertDialogBuilder = new AlertDialog.Builder(getContext());
@@ -251,19 +165,11 @@ public class CreaUtenteFragment extends Fragment {
 
         uscitaCreazioneUtenteAlertDialogBuilder.setPositiveButton(
                 "Conferma",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        requireActivity().onBackPressed();
-                    }
-                });
+                (dialog, id) -> requireActivity().onBackPressed());
 
         uscitaCreazioneUtenteAlertDialogBuilder.setNegativeButton(
                 "Annulla",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, id) -> dialog.cancel());
 
         return uscitaCreazioneUtenteAlertDialogBuilder.create();
     }

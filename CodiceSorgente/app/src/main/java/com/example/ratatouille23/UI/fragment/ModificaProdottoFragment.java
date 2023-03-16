@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.entity.ProdottoMenu;
@@ -57,8 +58,8 @@ public class ModificaProdottoFragment extends Fragment {
     private double prezzo;
     private int posizione;
     private int posizioneSezione;
-    private RetrofitService retrofitService;
-    private ProdottoMenuAPI prodottoMenuAPI;
+    private Controller controllerAdmin;
+    private Controller controllerSupervisore;
 
     public ModificaProdottoFragment() {
         // Required empty public constructor
@@ -110,13 +111,12 @@ public class ModificaProdottoFragment extends Fragment {
         tipologiaProdottoModificaSpinner = v.findViewById(R.id.tipologiaProdottoModificaSpinner);
         eliminaProdottoButton = v.findViewById(R.id.eliminaProdottoButton);
 
-        retrofitService = new RetrofitService();
-        prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
-
-        if(getActivity().toString().contains("Admin"))
+        if(getActivity().toString().contains("Admin")){
             bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
-        else {
+            controllerAdmin = new Controller(getActivity().toString());
+        }else{
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+            controllerSupervisore = new Controller(getActivity().toString());
         }
 
         nomeProdottoEditText.setText(nomeProdottoOriginale);
@@ -153,7 +153,13 @@ public class ModificaProdottoFragment extends Fragment {
                 if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
                     nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
                     try {
-                        eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString());
+                        if(getActivity().toString().contains("Admin")){
+                            controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                    getActivity(), this);
+                        }else{
+                            controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                    getActivity(), this);
+                        }
                     }catch(IndexOutOfBoundsException e){
                         Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                     }
@@ -164,7 +170,13 @@ public class ModificaProdottoFragment extends Fragment {
                 else{
                     nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
                     try {
-                        eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString());
+                        if(getActivity().toString().contains("Admin")){
+                            controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                    getActivity(), this);
+                        }else{
+                            controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                    getActivity(), this);
+                        }
                     }catch(IndexOutOfBoundsException e){
                         Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                     }
@@ -175,7 +187,15 @@ public class ModificaProdottoFragment extends Fragment {
 
         });
 
-        eliminaProdottoButton.setOnClickListener(view -> eliminaProdotto());
+        eliminaProdottoButton.setOnClickListener(view ->{
+
+            if(getActivity().toString().contains("Admin")){
+                controllerAdmin.eliminaProdotto(nomeProdottoOriginale, getActivity(), this);
+            }else{
+                controllerSupervisore.eliminaProdotto(nomeProdottoOriginale, getActivity(), this);
+            }
+
+        });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -186,59 +206,6 @@ public class ModificaProdottoFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
-    }
-
-    private void eliminaProdotto() {
-
-        prodottoMenuAPI.deleteById(nomeProdottoOriginale)
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(getActivity(), "Prodotto eliminato correttamente", Toast.LENGTH_SHORT).show();
-                        sostituisciFragment();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
-    private void eliminaEdAggiungiProdotto(ProdottoMenu nuovoProdotto, String nomeSezione){
-        prodottoMenuAPI.deleteById(nomeProdottoOriginale)
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        nuovoProdotto.setNomeSezione(nomeSezione);
-                        prodottoMenuAPI.save(nuovoProdotto)
-                                .enqueue(new Callback<ProdottoMenu>() {
-                                    @Override
-                                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
-                                        if(response.body() != null){
-                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                                            Toast.makeText(getActivity(), "Prodotto salvato correttamente", Toast.LENGTH_SHORT).show();
-                                        }
-                                        sostituisciFragment();
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
-                                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                        sostituisciFragment();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     public void sostituisciFragment(){

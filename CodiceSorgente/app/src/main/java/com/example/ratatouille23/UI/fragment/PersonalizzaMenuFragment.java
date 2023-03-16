@@ -1,13 +1,9 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
-import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
-
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -15,11 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
-import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.activity.HomeAdminActivity;
-import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.adapter.MenuRecyclerAdapter;
 import com.example.ratatouille23.adapter.ProdottiAdapter;
 import com.example.ratatouille23.entity.Amministratore;
@@ -33,30 +27,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapter.ItemClickListener {
 
-    private static final String TAG = "PersonalizzaMenuFragment";
     private static ArrayList<SezioneMenu> sezioni = new ArrayList<>();
-    private static ArrayList<ProdottoMenu> prodottiMenu = new ArrayList<>();
-    private Amministratore admin;
-    private Supervisore supervisore;
     private RecyclerView recyclerView;
     private FragmentTransaction transaction;
     private SearchView cercaProdottiSearchView;
     private static MenuRecyclerAdapter menuRecyclerAdapter;
     private FloatingActionButton opzioniButton;
     private BottomNavigationView bottomNavigationView;
-    private RetrofitService retrofitService;
-    private SezioneMenuAPI sezioneMenuAPI;
-    private ProdottoMenuAPI prodottoMenuAPI;
+    private Controller controllerAdmin;
+    private Controller controllerSupervisore;
 
     public PersonalizzaMenuFragment() {
         // Required empty public constructor
@@ -75,24 +57,16 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         opzioniButton = v.findViewById(R.id.opzioniButton);
         recyclerView = v.findViewById(R.id.menuAttivitaRecyclerView);
         cercaProdottiSearchView = v.findViewById(R.id.personalizzaMenuSearchView);
-        retrofitService = new RetrofitService();
-        sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
-        prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
 
         if(getActivity().toString().contains("Admin")){
-            admin = getAdmin();
-            checkSezioniAdmin();
-        }else{
-            supervisore = getSupervisore();
-            checkSezioniSupervisore();
-        }
-
-        if(getActivity().toString().contains("Admin"))
             bottomNavigationView = requireActivity().findViewById(R.id.adminBottomNavigationView);
-        else {
+            controllerAdmin = new Controller(getActivity().toString());
+            controllerAdmin.checkSezioniAdmin(getActivity(), this);
+        }else{
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
+            controllerSupervisore = new Controller(getActivity().toString());
+            controllerSupervisore.checkSezioniSupervisore(getActivity(), this);
         }
-
 
         opzioniButton.setOnClickListener(view -> {
             PopupMenu opzioniMenu = new PopupMenu(getActivity(), opzioniButton);
@@ -137,82 +111,6 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
 
     }
 
-    private void checkSezioniAdmin() {
-
-        sezioneMenuAPI.getSezioniByAttivita(admin.getNomeAttivita(), admin.getIndirizzoAttivita())
-                .enqueue(new Callback<ArrayList<SezioneMenu>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<SezioneMenu>> call, Response<ArrayList<SezioneMenu>> response) {
-                        if(response.body() != null){
-                            setProdotti(response.body());
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                        }else{
-                            Toast.makeText(getActivity(), "Non ci sono prodotti da visualizzare", Toast.LENGTH_SHORT).show();
-                        }
-                        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), PersonalizzaMenuFragment.this);
-                        recyclerView.setAdapter(menuRecyclerAdapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<SezioneMenu>> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-
-    }
-
-    private void checkSezioniSupervisore() {
-
-        sezioneMenuAPI.getSezioniByAttivita(supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita())
-                .enqueue(new Callback<ArrayList<SezioneMenu>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<SezioneMenu>> call, Response<ArrayList<SezioneMenu>> response) {
-                        if(response.body() != null){
-                            setProdotti(response.body());
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                        }else{
-                            Toast.makeText(getActivity(), "Non ci sono prodotti da visualizzare", Toast.LENGTH_SHORT).show();
-                        }
-                        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), PersonalizzaMenuFragment.this);
-                        recyclerView.setAdapter(menuRecyclerAdapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<SezioneMenu>> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
-    private void setProdotti(ArrayList<SezioneMenu> sezioniMenu) {
-        sezioni = sezioniMenu;
-        for(SezioneMenu sezioneMenu : sezioni){
-            prodottoMenuAPI.getProdottiBySezione(sezioneMenu.getNome())
-                    .enqueue(new Callback<List<ProdottoMenu>>() {
-                        @Override
-                        public void onResponse(Call<List<ProdottoMenu>> call, Response<List<ProdottoMenu>> response) {
-                            if(response.body() != null){
-                                sezioneMenu.setProdottiMenu(response.body());
-                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            }
-                            menuRecyclerAdapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<ProdottoMenu>> call, Throwable t) {
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                            Toast.makeText(getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-
-    }
-
     public void sostituisciFragment(Fragment fragment){
         transaction = getFragmentManager().beginTransaction();
         if(getActivity().toString().contains("Admin")){
@@ -229,6 +127,16 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
 
     public static ArrayList<SezioneMenu> getSezioni(){
         return sezioni;
+    }
+
+    public void setMenuRecyclerAdapter(ArrayList<SezioneMenu> sezioniAggiornate){
+        sezioni = sezioniAggiornate;
+        menuRecyclerAdapter = new MenuRecyclerAdapter(PersonalizzaMenuFragment.sezioni, getActivity(), PersonalizzaMenuFragment.this);
+        recyclerView.setAdapter(menuRecyclerAdapter);
+    }
+
+    public void notifyDataChanged(){
+        menuRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
