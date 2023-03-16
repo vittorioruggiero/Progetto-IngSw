@@ -23,7 +23,7 @@ public class Attivita {
     @Column(nullable = false)
     private int capienza;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaAdmin")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "attivitaAdmin")
     private List<Amministratore> amministratori;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaAvviso")
