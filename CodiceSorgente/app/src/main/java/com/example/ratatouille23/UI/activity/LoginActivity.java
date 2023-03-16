@@ -8,12 +8,14 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
@@ -35,6 +37,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private Controller controller;
     private EditText nomeUtenteEditText, passwordEditText;
     private TextView campiErratiTextView, registratiTextView;
     private Button accediButton;
@@ -50,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        controller = new Controller();
+
         retrofitService = new RetrofitService();
         amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
         supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
@@ -84,7 +90,9 @@ public class LoginActivity extends AppCompatActivity {
         accediButton.setOnClickListener(v -> {
 
             String username = nomeUtenteEditText.getText().toString();
-            checkAdmin(username);
+            String password = passwordEditText.getText().toString();
+//            checkAdmin(username);
+            controller.checkAdmin(this, username, password);
 
         });
 
@@ -210,6 +218,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void setCampiErratiTextViewVisibility(int visibility) {
+        campiErratiTextView.setVisibility(visibility);
+    }
+
     public static Amministratore getAdmin(){
         return admin;
     }
@@ -220,6 +232,18 @@ public class LoginActivity extends AppCompatActivity {
 
     public static Supervisore getSupervisore(){
         return supervisore;
+    }
+
+    public static void setAdmin(Amministratore nuovoAdmin) {
+        admin = nuovoAdmin;
+    }
+
+    public static void setSupervisore(Supervisore nuovoSupervisore) {
+        supervisore = nuovoSupervisore;
+    }
+
+    public static void setAddettoSala(AddettoSala nuovoAddettoSala) {
+        addettoSala = nuovoAddettoSala;
     }
 
     public static void clearAll(){

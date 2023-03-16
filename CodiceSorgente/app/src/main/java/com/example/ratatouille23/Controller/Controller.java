@@ -6,9 +6,15 @@ import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore
 import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.ratatouille23.UI.activity.HomeAddettoSalaActivity;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
+import com.example.ratatouille23.UI.activity.HomeSupervisoreActivity;
+import com.example.ratatouille23.UI.activity.LoginActivity;
+import com.example.ratatouille23.UI.activity.ReimpostaPasswordActivity;
 import com.example.ratatouille23.UI.fragment.AggiungiProdottoFragment;
 import com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment;
 import com.example.ratatouille23.UI.fragment.HomeAdminFragment;
@@ -31,6 +37,7 @@ import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -55,6 +62,10 @@ public class Controller {
     private RetrofitService retrofitService;
     private ArrayList<SezioneMenu> sezioni = getSezioni();
 
+    public Controller() {
+
+    }
+
     public Controller(String utente){
 
         if(utente != null){
@@ -72,6 +83,134 @@ public class Controller {
                 supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
             }
         }
+
+    }
+
+    public void checkAddettoSala(LoginActivity loginActivity, String username, String password) {
+
+        if(addettoSalaAPI == null) {
+            retrofitService = new RetrofitService();
+            addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
+        }
+
+        addettoSalaAPI.getAddettoSalaByUsername(username)
+                .enqueue(new Callback<AddettoSala>() {
+                    @Override
+                    public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            addettoSala = response.body();
+                            loginActivity.setAddettoSala(addettoSala);
+                            if(addettoSala != null){
+                                if(addettoSala.getPrimoAccesso() && addettoSala.getPassword().equals(password)){
+                                    mostraReimpostaPasswordActivity(loginActivity);
+                                }else{
+                                    if(username.equals(addettoSala.getNomeUtente())
+                                            && password.equals(addettoSala.getPassword())){
+                                        loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
+                                        mostraHomeAddettoSalaActivity(loginActivity);
+                                    }else{
+                                        loginActivity.setCampiErratiTextViewVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            loginActivity.setCampiErratiTextViewVisibility(View.VISIBLE);
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddettoSala> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(loginActivity, "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    public void checkSupervisore(LoginActivity loginActivity, String username, String password) {
+
+        if(supervisoreAPI == null) {
+            retrofitService = new RetrofitService();
+            supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
+        }
+
+        supervisoreAPI.getSupervisoreByUsername(username)
+                .enqueue(new Callback<Supervisore>() {
+                    @Override
+                    public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            supervisore = response.body();
+                            loginActivity.setSupervisore(supervisore);
+                            if(supervisore != null){
+                                if(supervisore.getPrimoAccesso() && supervisore.getPassword().equals(password)){
+                                    mostraReimpostaPasswordActivity(loginActivity);
+                                }else{
+                                    if(username.equals(supervisore.getNomeUtente())
+                                            && password.equals(supervisore.getPassword())){
+                                        loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
+                                        mostraHomeSupervisoreActivity(loginActivity);
+                                    }else{
+                                        loginActivity.setCampiErratiTextViewVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Trying addettosala...");
+                            checkAddettoSala(loginActivity, username, password);
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Supervisore> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(loginActivity, "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    public void checkAdmin(LoginActivity loginActivity, String username, String password) {
+
+        if(amministratoreAPI == null) {
+            retrofitService = new RetrofitService();
+            amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
+        }
+
+        amministratoreAPI.getAdminByUsername(username)
+                .enqueue(new Callback<Amministratore>() {
+                    @Override
+                    public void onResponse(Call<Amministratore> call, Response<Amministratore> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            admin = response.body();
+                            loginActivity.setAdmin(admin);
+                            if(admin != null){
+                                if(username.equals(admin.getNomeUtenteAmministratore())
+                                        && password.equals(admin.getPasswordAmministratore())){
+                                    mostraHomeAdminActivity(loginActivity);
+                                    loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
+                                }
+                                else{
+                                    loginActivity.setCampiErratiTextViewVisibility(View.VISIBLE);
+                                }
+                            }
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Trying supervisore...");
+                            checkSupervisore(loginActivity, username, password);
+                        }
+
+                    }
+                    @Override
+                    public void onFailure(Call<Amministratore> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(loginActivity, "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -127,6 +266,32 @@ public class Controller {
                     public void onFailure(Call<ArrayList<SezioneMenu>> call, Throwable t) {
                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
                         Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    public void checkAttivita(String nome, String indirizzo, HomeAdminFragment homeAdminFragment){
+
+        if(attivitaAPI == null){
+            attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
+        }
+
+        attivitaAPI.getAttivitaById(nome, indirizzo)
+                .enqueue(new Callback<Attivita>() {
+                    @Override
+                    public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            homeAdminFragment.setAttivita(response.body());
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Attivita> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
                     }
                 });
 
@@ -218,6 +383,33 @@ public class Controller {
 
     }
 
+    public void aggiungiProdotto(ProdottoMenu nuovoProdotto, String nomeSezione, Activity activity, AggiungiProdottoFragment aggiungiProdottoFragment) {
+
+        if(prodottoMenuAPI == null){
+            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+        }
+
+        nuovoProdotto.setNomeSezione(nomeSezione);
+        prodottoMenuAPI.save(nuovoProdotto)
+                .enqueue(new Callback<ProdottoMenu>() {
+                    @Override
+                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            Toast.makeText(activity, "Prodotto aggiunto correttamente", Toast.LENGTH_SHORT).show();
+                        }
+                        aggiungiProdottoFragment.sostituisciFragment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
     public void eliminaProdotto(String nomeProdottoOriginale, Activity activity, ModificaProdottoFragment modificaProdottoFragment) {
 
         if(prodottoMenuAPI == null){
@@ -280,32 +472,6 @@ public class Controller {
                 });
     }
 
-    public void aggiungiProdotto(ProdottoMenu nuovoProdotto, String nomeSezione, Activity activity, AggiungiProdottoFragment aggiungiProdottoFragment) {
-
-        if(prodottoMenuAPI == null){
-            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
-        }
-
-        nuovoProdotto.setNomeSezione(nomeSezione);
-        prodottoMenuAPI.save(nuovoProdotto)
-                .enqueue(new Callback<ProdottoMenu>() {
-                    @Override
-                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            Toast.makeText(activity, "Prodotto aggiunto correttamente", Toast.LENGTH_SHORT).show();
-                        }
-                        aggiungiProdottoFragment.sostituisciFragment();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
 
     public void eliminaSezione(String nomeSezione, Activity activity, ModificaSezioniFragment modificaSezioniFragment) {
 
@@ -393,38 +559,6 @@ public class Controller {
 
     }
 
-    public void checkAttivita(String nome, String indirizzo, HomeAdminFragment homeAdminFragment){
-
-        if(attivitaAPI == null){
-            attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
-        }
-
-        attivitaAPI.getAttivitaById(nome, indirizzo)
-                .enqueue(new Callback<Attivita>() {
-                    @Override
-                    public void onResponse(Call<Attivita> call, Response<Attivita> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            homeAdminFragment.setAttivita(response.body());
-                        }else{
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Attivita> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                    }
-                });
-
-    }
-
-    public void salvaAttivitaEdAdmin(Attivita attivita, Activity activity){
-
-        salvaAttivita(attivita, activity);
-
-    }
-
     private void salvaAdmin(Amministratore amministratore) {
 
         if(amministratoreAPI != null){
@@ -474,6 +608,14 @@ public class Controller {
 
     }
 
+    public void salvaAttivitaEdAdmin(Attivita attivita, Activity activity){
+
+        salvaAttivita(attivita, activity);
+
+    }
+
+
+
     public void salvaAvviso(Avviso avviso, Activity activity){
 
         if(avvisoAPI == null){
@@ -503,7 +645,28 @@ public class Controller {
     }
 
 
+    public void mostraReimpostaPasswordActivity(LoginActivity loginActivity) {
+        Intent intent = new Intent(loginActivity, ReimpostaPasswordActivity.class);
+        loginActivity.startActivity(intent);
+        loginActivity.finish();
+    }
 
+    public void mostraHomeAddettoSalaActivity(LoginActivity loginActivity) {
+        Intent intent = new Intent(loginActivity, HomeAddettoSalaActivity.class);
+        loginActivity.startActivity(intent);
+        loginActivity.finish();
+    }
 
+    public void mostraHomeSupervisoreActivity(LoginActivity loginActivity) {
+        Intent intent = new Intent(loginActivity, HomeSupervisoreActivity.class);
+        loginActivity.startActivity(intent);
+        loginActivity.finish();
+    }
+
+    public void mostraHomeAdminActivity(LoginActivity loginActivity) {
+        Intent intent = new Intent(loginActivity, HomeAdminActivity.class);
+        loginActivity.startActivity(intent);
+        loginActivity.finish();
+    }
 
 }

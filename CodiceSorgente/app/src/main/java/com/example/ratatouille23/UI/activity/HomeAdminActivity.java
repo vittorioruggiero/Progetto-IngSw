@@ -72,7 +72,8 @@ public class HomeAdminActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                navController.navigate(R.id.homeAdminFragment);
+                if (navController.getCurrentDestination().getId() != R.id.homeAdminFragment) navController.navigate(R.id.homeAdminFragment);
+                else moveTaskToBack(true);
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);

@@ -45,7 +45,8 @@ public class HomeAddettoSalaActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                navController.navigate(R.id.homeAddettoSalaFragment);
+                if (navController.getCurrentDestination().getId() != R.id.homeAddettoSalaFragment) navController.navigate(R.id.homeAddettoSalaFragment);
+                else moveTaskToBack(true);
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
