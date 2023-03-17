@@ -3,7 +3,7 @@ package com.example.ratatouille23.Controller;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
+//import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -60,7 +60,8 @@ public class Controller {
     private AvvisoAPI avvisoAPI;
     private AddettoSala addettoSala;
     private RetrofitService retrofitService;
-    private ArrayList<SezioneMenu> sezioni = getSezioni();
+    //private ArrayList<SezioneMenu> sezioni = getSezioni();
+    private ArrayList<SezioneMenu> sezioni;
 
     public Controller() {
 

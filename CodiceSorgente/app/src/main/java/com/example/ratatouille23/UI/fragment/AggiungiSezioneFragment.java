@@ -25,6 +25,8 @@ import com.example.ratatouille23.entity.SezioneMenu;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -41,15 +43,31 @@ public class AggiungiSezioneFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private Controller controllerAdmin;
     private Controller controllerSupervisore;
+    private static final String CONTROLLER_AGGIUNGI_SEZIONE = "controllerAggiungiSezione";
 
 
     public AggiungiSezioneFragment() {
         // Required empty public constructor
     }
 
+    public static AggiungiSezioneFragment newIstance(Controller controller){
+
+        AggiungiSezioneFragment fragment = new AggiungiSezioneFragment();
+        Bundle args = new Bundle();
+        Gson gson = new Gson();
+        String myJson = gson.toJson(controller);
+        args.putString(CONTROLLER_AGGIUNGI_SEZIONE, myJson);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            Gson gson = new Gson();
+            //controller = gson.fromJson(getArguments().getString(CONTROLLER_AGGIUNGI_SEZIONE), Controller.class);
+        }
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
-
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -23,6 +21,8 @@ import com.example.ratatouille23.entity.SezioneMenu;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,14 +41,31 @@ public class ModificaSezioniFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private Controller controllerAdmin;
     private Controller controllerSupervisore;
+    private ArrayList<SezioneMenu> sezioni;
+    private static final String SEZIONI_MODIFICA_SEZIONI = "sezioniModificaSezioni";
 
     public ModificaSezioniFragment() {
         // Required empty public constructor
     }
 
+    public static ModificaSezioniFragment newIstance(ArrayList<SezioneMenu> sezioni){
+
+        ModificaSezioniFragment fragment = new ModificaSezioniFragment();
+        Bundle args = new Bundle();
+        Gson gson = new Gson();
+        String myJson = gson.toJson(sezioni);
+        args.putString(SEZIONI_MODIFICA_SEZIONI, myJson);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            Gson gson = new Gson();
+            sezioni = gson.fromJson(getArguments().getString(SEZIONI_MODIFICA_SEZIONI), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
+        }
     }
 
     @Override
@@ -67,8 +84,6 @@ public class ModificaSezioniFragment extends Fragment {
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
             controllerSupervisore = new Controller(getActivity().toString());
         }
-
-        ArrayList<SezioneMenu> sezioni = getSezioni();
 
         ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, sezioni);

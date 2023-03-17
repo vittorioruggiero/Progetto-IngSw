@@ -39,7 +39,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private Controller controller;
     private EditText nomeUtenteEditText, passwordEditText;
-    private TextView campiErratiTextView, registratiTextView;
+    private TextView campiErratiTextView;
+    //private TextView registratiTextView;
     private Button accediButton;
     private AmministratoreAPI amministratoreAPI;
     private AddettoSalaAPI addettoSalaAPI;
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
 
 
-        registratiTextView = findViewById(R.id.registratiTextView);
+        /*registratiTextView = findViewById(R.id.registratiTextView);
         String registratiText = "Hai un ristorante? Registrati";
 
         SpannableString spannableString = new SpannableString(registratiText);
@@ -76,7 +77,8 @@ public class LoginActivity extends AppCompatActivity {
 
         spannableString.setSpan(clickableSpan, 19,29, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         registratiTextView.setText(spannableString);
-        registratiTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        registratiTextView.setMovementMethod(LinkMovementMethod.getInstance());*/
+
 
         Login();
     }

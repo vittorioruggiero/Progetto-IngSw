@@ -34,7 +34,7 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
     private RecyclerView recyclerView;
     private FragmentTransaction transaction;
     private SearchView cercaProdottiSearchView;
-    private static MenuRecyclerAdapter menuRecyclerAdapter;
+    private MenuRecyclerAdapter menuRecyclerAdapter;
     private FloatingActionButton opzioniButton;
     private BottomNavigationView bottomNavigationView;
     private Controller controllerAdmin;
@@ -77,15 +77,17 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
                 int id = menuItem.getItemId();
 
                 if(id == R.id.aggiungiProdotto){
-                    AggiungiProdottoFragment fragment = new AggiungiProdottoFragment();
+                    Fragment fragment = AggiungiProdottoFragment.newIstance(sezioni);
                     sostituisciFragment(fragment);
                     return true;
                 }else if(id == R.id.aggiungiSezione){
                     AggiungiSezioneFragment fragment = new AggiungiSezioneFragment();
+                    //Fragment fragment = AggiungiSezioneFragment.newIstance(controllerAdmin);
                     sostituisciFragment(fragment);
                     return true;
                 }else if(id == R.id.ordineSezioni){
-                    ModificaSezioniFragment fragment = new ModificaSezioniFragment();
+                    //ModificaSezioniFragment fragment = new ModificaSezioniFragment();
+                    Fragment fragment = ModificaSezioniFragment.newIstance(sezioni);
                     sostituisciFragment(fragment);
                 }
                 return false;
@@ -131,7 +133,7 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
 
     public void setMenuRecyclerAdapter(ArrayList<SezioneMenu> sezioniAggiornate){
         sezioni = sezioniAggiornate;
-        menuRecyclerAdapter = new MenuRecyclerAdapter(PersonalizzaMenuFragment.sezioni, getActivity(), PersonalizzaMenuFragment.this);
+        menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), PersonalizzaMenuFragment.this);
         recyclerView.setAdapter(menuRecyclerAdapter);
     }
 
@@ -142,7 +144,7 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
     @Override
     public void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
         Fragment fragment = ModificaProdottoFragment.newInstance(prodottoMenu.getNomeProdotto(), prodottoMenu.getNomeSecondaLingua(),
-                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(), prodottoMenu.getCosto(), posizione, posizioneSezione);
+                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(), prodottoMenu.getCosto(), posizione, posizioneSezione, sezioni);
         sostituisciFragment(fragment);
     }
 

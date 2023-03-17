@@ -1,13 +1,9 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -21,22 +17,13 @@ import android.widget.Toast;
 
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.activity.HomeAdminActivity;
-import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
-import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
-import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
-import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AggiungiProdottoFragment extends Fragment {
 
@@ -50,14 +37,31 @@ public class AggiungiProdottoFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private Controller controllerAdmin;
     private Controller controllerSupervisore;
+    private static final String SEZIONI_AGGIUNGI_PRODOTTO = "sezioniAggiungiProdotto";
+    private ArrayList<SezioneMenu> sezioni = new ArrayList<>();
 
     public AggiungiProdottoFragment() {
         // Required empty public constructor
     }
 
+    public static AggiungiProdottoFragment newIstance(ArrayList<SezioneMenu> sezioni){
+
+        AggiungiProdottoFragment fragment = new AggiungiProdottoFragment();
+        Bundle args = new Bundle();
+        Gson gson = new Gson();
+        String myJson = gson.toJson(sezioni);
+        args.putString(SEZIONI_AGGIUNGI_PRODOTTO, myJson);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            Gson gson = new Gson();
+            sezioni = gson.fromJson(getArguments().getString(SEZIONI_AGGIUNGI_PRODOTTO), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
+        }
 
     }
 
@@ -82,8 +86,6 @@ public class AggiungiProdottoFragment extends Fragment {
             bottomNavigationView = requireActivity().findViewById(R.id.supervisoreBottomNavigationView);
             controllerSupervisore = new Controller(getActivity().toString());
         }
-
-        ArrayList<SezioneMenu> sezioni = getSezioni();
 
         ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, sezioni);

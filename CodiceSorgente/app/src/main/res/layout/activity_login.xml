@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="@+id/passwordLayout"
         app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
-    <!-- Registrati Text View -->
+    <!-- Registrati Text View
     <TextView
         android:id="@+id/registratiTextView"
         android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" /> -->
 
     <!-- Nome Utente Edit Text -->
     <com.google.android.material.textfield.TextInputLayout

@@ -1,6 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
+//import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.os.Bundle;
 
@@ -25,6 +25,8 @@ import com.example.ratatouille23.entity.SezioneMenu;
 import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -51,6 +53,7 @@ public class ModificaProdottoFragment extends Fragment {
     private static final String PREZZO = "prezzo";
     private static final String POSIZIONE = "posizione";
     private static final String POSIZIONE_SEZIONE = "posizione_sezione";
+    private static final String SEZIONI_MODIFICA_PRODOTTO = "sezioniModificaProdotto";
     private String nomeProdottoOriginale;
     private String nomeProdottoSecondaLingua;
     private String ingredienti;
@@ -60,15 +63,19 @@ public class ModificaProdottoFragment extends Fragment {
     private int posizioneSezione;
     private Controller controllerAdmin;
     private Controller controllerSupervisore;
+    private ArrayList<SezioneMenu> sezioni;
 
     public ModificaProdottoFragment() {
         // Required empty public constructor
     }
 
     public static ModificaProdottoFragment newInstance(String nomeProdotto, String nomeProdottoSecondaLingua,
-                                                       String ingredienti, String ingredientiSecondaLingua, double prezzo, int posizione, int posizioneSezione){
+                                                       String ingredienti, String ingredientiSecondaLingua,
+                                                       double prezzo, int posizione, int posizioneSezione,
+                                                       ArrayList<SezioneMenu> sezioni){
         ModificaProdottoFragment fragment = new ModificaProdottoFragment();
         Bundle args = new Bundle();
+        Gson gson = new Gson();
         args.putString(NOME_PRODOTTO, nomeProdotto);
         args.putString(NOME_PRODOTTO_SECONDA_LINGUA, nomeProdottoSecondaLingua);
         args.putString(INGREDIENTI, ingredienti);
@@ -76,6 +83,8 @@ public class ModificaProdottoFragment extends Fragment {
         args.putDouble(PREZZO, prezzo);
         args.putInt(POSIZIONE, posizione);
         args.putInt(POSIZIONE_SEZIONE, posizioneSezione);
+        String myJson = gson.toJson(sezioni);
+        args.putString(SEZIONI_MODIFICA_PRODOTTO, myJson);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,6 +93,7 @@ public class ModificaProdottoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
+            Gson gson = new Gson();
             nomeProdottoOriginale = getArguments().getString(NOME_PRODOTTO);
             nomeProdottoSecondaLingua = getArguments().getString(NOME_PRODOTTO_SECONDA_LINGUA);
             ingredienti = getArguments().getString(INGREDIENTI);
@@ -91,6 +101,8 @@ public class ModificaProdottoFragment extends Fragment {
             prezzo = getArguments().getDouble(PREZZO);
             posizione = getArguments().getInt(POSIZIONE);
             posizioneSezione = getArguments().getInt(POSIZIONE_SEZIONE);
+            sezioni = gson.fromJson(getArguments().getString(SEZIONI_MODIFICA_PRODOTTO), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
+
         }
     }
 
@@ -126,8 +138,6 @@ public class ModificaProdottoFragment extends Fragment {
         if(ingredientiSecondaLingua != null)
             ingredientiSecondaLinguaEditText.setText(ingredientiSecondaLingua);
         costoEditText.setText(String.valueOf(prezzo));
-
-        ArrayList<SezioneMenu> sezioni = getSezioni();
 
         ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, sezioni);
