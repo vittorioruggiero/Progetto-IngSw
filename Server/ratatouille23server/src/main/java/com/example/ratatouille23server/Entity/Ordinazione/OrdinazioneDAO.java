@@ -1,9 +1,9 @@
 package com.example.ratatouille23server.Entity.Ordinazione;
 
-import com.example.ratatouille23server.Entity.Conto.Conto;
-import com.example.ratatouille23server.Entity.Conto.ContoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,4 +39,14 @@ public class OrdinazioneDAO {
         return repository.findById(ordinazionePkey);
     }
 
+    public ResponseEntity<List<Ordinazione>> getAllByAttivita(String nomeAttivita, String indirizzoAttivita) {
+        List<Ordinazione> listaOrdinazioni;
+        try {
+            listaOrdinazioni = repository.findAllByNomeAttivitaAndIndirizzoAttivita(nomeAttivita, indirizzoAttivita);
+            return new ResponseEntity<>(listaOrdinazioni, HttpStatus.OK);
+        }
+        catch(NullPointerException e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 }

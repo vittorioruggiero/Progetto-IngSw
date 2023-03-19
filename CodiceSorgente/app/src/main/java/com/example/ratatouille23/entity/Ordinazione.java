@@ -9,6 +9,8 @@ public class Ordinazione {
     private int numeroTavolo;
     private int numeroCommensali;
     private int id_conto;
+    private String nomeAttivita;
+    private String indirizzoAttivita;
     private List<SingoloOrdine> listaProdotti;
 
     public Ordinazione(){
@@ -62,6 +64,22 @@ public class Ordinazione {
         this.id_conto = id_conto;
     }
 
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
     public List<SingoloOrdine> getListaProdotti() {
         return listaProdotti;
     }
@@ -90,6 +108,9 @@ public class Ordinazione {
                 ", numeroTavolo=" + numeroTavolo +
                 ", numeroCommensali=" + numeroCommensali +
                 ", id_conto=" + id_conto +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", listaProdotti=" + listaProdotti +
                 '}';
     }
 }

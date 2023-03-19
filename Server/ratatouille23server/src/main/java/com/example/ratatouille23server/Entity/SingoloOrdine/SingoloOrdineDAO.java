@@ -1,9 +1,9 @@
 package com.example.ratatouille23server.Entity.SingoloOrdine;
 
-import com.example.ratatouille23server.Entity.Avviso.Avviso;
-import com.example.ratatouille23server.Entity.Avviso.AvvisoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,5 +41,14 @@ public class SingoloOrdineDAO {
         return repository.findById(singoloOrdinePkey);
     }
 
-
+    public ResponseEntity<List<SingoloOrdine>> getAllByOrdinazione(int idOrdinazione) {
+        List<SingoloOrdine> listaSingoliOrdini;
+        try {
+            listaSingoliOrdini = repository.findAllByIdOrdinazione(idOrdinazione);
+            return new ResponseEntity<>(listaSingoliOrdini, HttpStatus.OK);
+        }
+        catch(NullPointerException e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 }

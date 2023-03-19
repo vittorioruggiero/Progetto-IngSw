@@ -13,7 +13,7 @@ public class SingoloOrdine {
     @Column(nullable = false)
     private int quantita;
     @Column(name = "id_ordinazione")
-    private int id_ordinazione;
+    private int idOrdinazione;
     @Column(name = "nomeProdotto")
     private String nomeProdotto;
 
@@ -40,12 +40,12 @@ public class SingoloOrdine {
         this.quantita = quantita;
     }
 
-    public int getId_ordinazione() {
-        return id_ordinazione;
+    public int getIdOrdinazione() {
+        return idOrdinazione;
     }
 
-    public void setId_ordinazione(int id_ordinazione) {
-        this.id_ordinazione = id_ordinazione;
+    public void setIdOrdinazione(int id_ordinazione) {
+        this.idOrdinazione = id_ordinazione;
     }
 
     public String getNomeProdotto() {
@@ -61,7 +61,7 @@ public class SingoloOrdine {
         return "SingoloOrdine{" +
                 "id_singolo_ordine=" + id_singolo_ordine +
                 ", quantita=" + quantita +
-                ", id_ordinazione=" + id_ordinazione +
+                ", id_ordinazione=" + idOrdinazione +
                 ", nomeProdotto='" + nomeProdotto + '\'' +
                 '}';
     }

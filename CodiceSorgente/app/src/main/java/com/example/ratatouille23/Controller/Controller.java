@@ -6,8 +6,11 @@ import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore
 //import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.ratatouille23.UI.activity.HomeAddettoSalaActivity;
@@ -17,28 +20,35 @@ import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.UI.activity.ReimpostaPasswordActivity;
 import com.example.ratatouille23.UI.fragment.AggiungiProdottoFragment;
 import com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment;
+import com.example.ratatouille23.UI.fragment.ContiFragment;
 import com.example.ratatouille23.UI.fragment.HomeAdminFragment;
 import com.example.ratatouille23.UI.fragment.ModificaProdottoFragment;
 import com.example.ratatouille23.UI.fragment.ModificaSezioniFragment;
 import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
+import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Avviso;
+import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.example.ratatouille23.entity.SingoloOrdine;
 import com.example.ratatouille23.entity.Supervisore;
 import com.example.ratatouille23.retrofit.API.AddettoSalaAPI;
 import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
 import com.example.ratatouille23.retrofit.API.AvvisoAPI;
+import com.example.ratatouille23.retrofit.API.OrdinazioneAPI;
 import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
+import com.example.ratatouille23.retrofit.API.SingoloOrdineAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +69,9 @@ public class Controller {
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
     private AddettoSala addettoSala;
+    private List<Ordinazione> listaOrdinazioni;
+    private List<SingoloOrdine> listaSingoliOrdini;
+    private SingoliOrdiniAdapter singoliOrdiniAdapter;
     private RetrofitService retrofitService;
     //private ArrayList<SezioneMenu> sezioni = getSezioni();
     private ArrayList<SezioneMenu> sezioni;
@@ -70,17 +83,15 @@ public class Controller {
     public Controller(String utente){
 
         if(utente != null){
+            retrofitService = new RetrofitService();
             if(utente.contains("Admin")){
                 admin = getAdmin();
-                retrofitService = new RetrofitService();
                 amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
             }else if(utente.contains("AddettoSala")){
                 addettoSala = getAddettoSala();
-                retrofitService = new RetrofitService();
                 addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
             }else if(utente.contains("Supervisore")){
                 supervisore = getSupervisore();
-                retrofitService = new RetrofitService();
                 supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
             }
         }
@@ -322,6 +333,92 @@ public class Controller {
                         }
                     });
         }
+
+    }
+
+    public void setListaSingoliOrdini(ContiFragment contiFragment, int id_ordinazione) {
+
+        retrofitService = new RetrofitService();
+
+        SingoloOrdineAPI singoloOrdineAPI = retrofitService.getRetrofit().create(SingoloOrdineAPI.class);
+
+        singoloOrdineAPI.getAllSingoliOrdiniByOrdinazione(id_ordinazione)
+                .enqueue(new Callback<List<SingoloOrdine>>() {
+                    @Override
+                    public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
+                        if(response.body() != null) {
+                            listaSingoliOrdini = response.body();
+//                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaSingoliOrdini.toString());
+                        }
+                        else {
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<SingoloOrdine>> call, Throwable t) {
+                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(contiFragment.getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void setOrdinazioneinConto(ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita) {
+
+        retrofitService = new RetrofitService();
+
+        OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+
+        ordinazioneAPI.getAllOrdinazioniByAttivita(nomeAttivita, indirizzoAttivita)
+                .enqueue(new Callback<List<Ordinazione>>() {
+                    @Override
+                    public void onResponse(Call<List<Ordinazione>> call, Response<List<Ordinazione>> response) {
+
+                        if(response.body() != null) {
+
+                            listaOrdinazioni = response.body();
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaOrdinazioni.toString());
+
+                            ArrayList<Integer> listaTavoli = new ArrayList<>();
+
+                            Iterator<Ordinazione> listaOrdinazioniIterator = listaOrdinazioni.iterator();
+                            Ordinazione ordinazioneCorrente;
+
+                            //Inserisco solo i tavoli in cui c'è un'ordinazione
+                            while(listaOrdinazioniIterator.hasNext()) {
+                                ordinazioneCorrente = listaOrdinazioniIterator.next();
+                                listaTavoli.add(ordinazioneCorrente.getNumeroTavolo());
+                            }
+
+                            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(contiFragment.getActivity(),
+                                    android.R.layout.simple_spinner_item, listaTavoli);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            contiFragment.getSelezionaTavoloSpinner().setAdapter(adapter);
+
+                            Ordinazione primaOrdinazione = listaOrdinazioni.get(0);
+                            setListaSingoliOrdini(contiFragment, primaOrdinazione.getId_ordinazione());
+                            primaOrdinazione.setListaProdotti(listaSingoliOrdini);
+
+//                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaSingoliOrdini.toString());
+
+//                            contiFragment.setTextView(String.valueOf(primaOrdinazione.getNumeroCommensali()), String.valueOf(primaOrdinazione.calcolaTotale()));
+//
+//                            singoliOrdiniAdapter = new SingoliOrdiniAdapter(primaOrdinazione.getListaProdotti());
+//                            contiFragment.getRecyclerView().setAdapter(singoliOrdiniAdapter);
+//
+//                            AlertDialog alertDialog = contiFragment.creaChiusuraContoAlertDialog(primaOrdinazione.getListaProdotti(), singoliOrdiniAdapter);
+                        }
+                        else {
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Ordinazione>> call, Throwable t) {
+                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(contiFragment.getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

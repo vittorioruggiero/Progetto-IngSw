@@ -1,13 +1,11 @@
 package com.example.ratatouille23.entity;
 
-import com.example.ratatouille23.entity.ProdottoMenu;
-
 public class SingoloOrdine {
 
     private int id_singolo_ordine;
     private ProdottoMenu prodottoMenu;
     private int quantita;
-    private int id_ordinazione;
+    private int idOrdinazione;
     private String nomeProdotto;
     public SingoloOrdine(){
 
@@ -42,12 +40,12 @@ public class SingoloOrdine {
         this.quantita = quantita;
     }
 
-    public int getId_ordinazione() {
-        return id_ordinazione;
+    public int getIdOrdinazione() {
+        return idOrdinazione;
     }
 
-    public void setId_ordinazione(int id_ordinazione) {
-        this.id_ordinazione = id_ordinazione;
+    public void setIdOrdinazione(int idOrdinazione) {
+        this.idOrdinazione = idOrdinazione;
     }
 
     public String getNomeProdotto() {
@@ -66,7 +64,9 @@ public class SingoloOrdine {
     public String toString() {
         return "SingoloOrdine{" +
                 "id_singolo_ordine=" + id_singolo_ordine +
+                ", prodottoMenu=" + prodottoMenu +
                 ", quantita=" + quantita +
+                ", idOrdinazione=" + idOrdinazione +
                 ", nomeProdotto='" + nomeProdotto + '\'' +
                 '}';
     }

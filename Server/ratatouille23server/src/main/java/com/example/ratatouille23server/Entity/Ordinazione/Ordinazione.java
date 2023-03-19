@@ -1,6 +1,7 @@
 package com.example.ratatouille23server.Entity.Ordinazione;
 
 import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
+import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import com.example.ratatouille23server.Entity.Conto.Conto;
 import com.example.ratatouille23server.Entity.ProdottoMenu.ProdottoMenu;
 import com.example.ratatouille23server.Entity.SingoloOrdine.SingoloOrdine;
@@ -21,6 +22,18 @@ public class Ordinazione {
     private int numeroCommensali;
     @Column(name = "id_conto")
     private int id_conto;
+    @Column(name = "nomeAttivita")
+    private String nomeAttivita;
+    @Column(name = "indirizzoAttivita")
+    private String indirizzoAttivita;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
+                    foreignKey = @ForeignKey(name = "ordinazione_attivita_fkey"), insertable = false, updatable = false),
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
+                    foreignKey = @ForeignKey(name = "ordinazione_attivita_fkey"), insertable = false, updatable = false)
+    })
+    private Attivita attivitaOrdinazione;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_conto", referencedColumnName = "id_conto",
@@ -50,6 +63,22 @@ public class Ordinazione {
         this.numeroCommensali = numeroCommensali;
     }
 
+    public String getNomeAttivita() {
+        return nomeAttivita;
+    }
+
+    public void setNomeAttivita(String nomeAttivita) {
+        this.nomeAttivita = nomeAttivita;
+    }
+
+    public String getIndirizzoAttivita() {
+        return indirizzoAttivita;
+    }
+
+    public void setIndirizzoAttivita(String indirizzoAttivita) {
+        this.indirizzoAttivita = indirizzoAttivita;
+    }
+
     public int getId_conto() {
         return id_conto;
     }
@@ -65,6 +94,11 @@ public class Ordinazione {
                 ", numeroTavolo=" + numeroTavolo +
                 ", numeroCommensali=" + numeroCommensali +
                 ", id_conto=" + id_conto +
+                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", attivitaOrdinazione=" + attivitaOrdinazione +
+                ", conto=" + conto +
+                ", singoliOrdiniOrdinazione=" + singoliOrdiniOrdinazione +
                 '}';
     }
 }

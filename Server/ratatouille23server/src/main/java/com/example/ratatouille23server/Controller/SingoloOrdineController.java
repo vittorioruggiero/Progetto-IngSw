@@ -1,14 +1,10 @@
 package com.example.ratatouille23server.Controller;
 
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
 import com.example.ratatouille23server.Entity.SingoloOrdine.SingoloOrdine;
 import com.example.ratatouille23server.Entity.SingoloOrdine.SingoloOrdineDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +17,11 @@ public class SingoloOrdineController {
     @GetMapping("/singoloOrdine/get-all")
     public List<SingoloOrdine> getAllSingoloOrdine(){
         return singoloOrdineDAO.getAll();
+    }
+
+    @RequestMapping(value = "/singoloOrdine/get-all-by-ordinazione", method = RequestMethod.GET)
+    public ResponseEntity<List<SingoloOrdine>> getAllSingoliOrdiniByOrdinazione(@RequestParam("idOrdinazione") int idOrdinazione) {
+        return singoloOrdineDAO.getAllByOrdinazione(idOrdinazione);
     }
 
     @PostMapping("/singoloOrdine/save")

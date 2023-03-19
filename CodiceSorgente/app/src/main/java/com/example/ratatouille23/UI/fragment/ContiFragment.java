@@ -1,56 +1,29 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.getOrdinazione;
-import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.getTavoli;
+import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.pdf.PdfDocument;
-import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.os.Parcelable;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
 import com.example.ratatouille23.entity.Ordinazione;
-import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -62,18 +35,16 @@ import java.util.List;
  */
 public class ContiFragment extends Fragment {
 
+    private Controller controller;
     private View inflatedView;
-
     private FragmentTransaction transaction;
-
     private TextView numeroCommensaliCifraTextView, totaleCifraTextView;
-
     private Spinner selezionaTavoloSpinner;
     private Ordinazione ordinazione;
     private ArrayList<Integer> tavoli;
-
+    SingoliOrdiniAdapter singoliOrdiniAdapter;
+    RecyclerView recyclerView;
     private Button visualizzaContoButton, chiudiContoButton;
-
     private AlertDialog chiusuraContoAlertDialog;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -116,10 +87,13 @@ public class ContiFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_conti, container, false);
+
+        controller = new Controller(getActivity().toString());
 
         //findViewById
 
@@ -128,39 +102,31 @@ public class ContiFragment extends Fragment {
         selezionaTavoloSpinner = inflatedView.findViewById(R.id.selezionaTavoloSpinner);
         numeroCommensaliCifraTextView = inflatedView.findViewById(R.id.numeroCommensaliCifraTextView);
         totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
+        recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
 
-        ordinazione = getOrdinazione();
-        tavoli = getTavoli();
+        controller.setOrdinazioneinConto(ContiFragment.this, getSupervisore().getNomeAttivita(), getSupervisore().getIndirizzoAttivita());
 
-        //set selezionaTavoloSpinner
-
-        if(tavoli != null){
-            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_spinner_item, tavoli);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            selezionaTavoloSpinner.setAdapter(adapter);
-        }
-
-        SingoliOrdiniAdapter singoliOrdiniAdapter;
-        RecyclerView recyclerView;
-
-        if(ordinazione != null){
-            numeroCommensaliCifraTextView.setText(String.valueOf(ordinazione.getNumeroCommensali()));
-            totaleCifraTextView.setText(String.valueOf(ordinazione.calcolaTotale()));
-            recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
-            singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
-            recyclerView.setAdapter(singoliOrdiniAdapter);
-            chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
-        }
-        //set RecyclerView
-
-        //List<SingoloOrdine> listaProdotti = new ArrayList<>();
-
-        //setOggettiDiProva(listaProdotti);
-
-        //set Listener e AlertDialog
-
-
+//        ordinazione = getOrdinazione();
+//        tavoli = getTavoli();
+//
+//        //set selezionaTavoloSpinner
+//
+//        if(tavoli != null){
+//            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
+//                    android.R.layout.simple_spinner_item, tavoli);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            selezionaTavoloSpinner.setAdapter(adapter);
+//        }
+//
+//        if(ordinazione != null){
+//            numeroCommensaliCifraTextView.setText(String.valueOf(ordinazione.getNumeroCommensali()));
+//            totaleCifraTextView.setText(String.valueOf(ordinazione.calcolaTotale()));
+//
+//            singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
+//            recyclerView.setAdapter(singoliOrdiniAdapter);
+//
+//            chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
+//        }
 
         visualizzaContoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +153,20 @@ public class ContiFragment extends Fragment {
         return inflatedView;
     }
 
-    AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti, SingoliOrdiniAdapter singoliOrdiniAdapter) {
+    public Spinner getSelezionaTavoloSpinner() {
+        return selezionaTavoloSpinner;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setTextView(String numeroCommensali, String totale) {
+        numeroCommensaliCifraTextView.setText(numeroCommensali);
+        totaleCifraTextView.setText(totale);
+    }
+
+    public AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti, SingoliOrdiniAdapter singoliOrdiniAdapter) {
 
         AlertDialog.Builder chiusuraContoAlertDialogBuilder = new AlertDialog.Builder(getContext());
         chiusuraContoAlertDialogBuilder.setMessage("Sei sicuro di voler chiudere il conto?");

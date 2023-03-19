@@ -1,14 +1,10 @@
 package com.example.ratatouille23server.Controller;
 
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
 import com.example.ratatouille23server.Entity.Ordinazione.Ordinazione;
 import com.example.ratatouille23server.Entity.Ordinazione.OrdinazioneDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +17,11 @@ public class OrdinazioneController {
     @GetMapping("/ordinazione/get-all")
     public List<Ordinazione> getAllOrdinazione(){
         return ordinazioneDAO.getAll();
+    }
+
+    @RequestMapping(value = "/ordinazione/get-all-by-attivita", method = RequestMethod.GET)
+    public ResponseEntity<List<Ordinazione>> getAllOrdinazioniByAttivita(@RequestParam("nomeAttivita") String nomeAttivita, @RequestParam("indirizzoAttivita") String indirizzoAttivita) {
+        return ordinazioneDAO.getAllByAttivita(nomeAttivita, indirizzoAttivita);
     }
 
     @PostMapping("/ordinazione/save")
