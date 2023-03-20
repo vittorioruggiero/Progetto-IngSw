@@ -1,7 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
 import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.aggiungiProdottoOrdinazione;
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.os.Bundle;
 
@@ -19,6 +18,8 @@ import android.widget.Toast;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.SezioneMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     private static final String PREZZO = "prezzo";
     private static final String POSIZIONE = "posizione";
     private static final String POSIZIONE_SEZIONE = "posizione_sezione";
+    private static final String SEZIONI_VISUALIZZA_PRODOTTO = "sezioni-visualizza-prodotto";
     private String nomeProdotto;
     private String nomeProdottoSecondaLingua;
     private String ingredienti;
@@ -47,6 +49,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     private int posizione;
     private int posizioneSezione;
     private SingoloOrdine singoloOrdine;
+    private ArrayList<SezioneMenu> sezioni = new ArrayList<>();
 
 
     public VisualizzaProdottoFragment() {
@@ -54,9 +57,12 @@ public class VisualizzaProdottoFragment extends Fragment {
     }
 
     public static VisualizzaProdottoFragment newInstance(String nomeProdotto, String nomeProdottoSecondaLingua,
-                                                         String ingredienti, String ingredientiSecondaLingua, double prezzo, int posizione, int posizioneSezione) {
+                                                         String ingredienti, String ingredientiSecondaLingua,
+                                                         double prezzo, int posizione, int posizioneSezione,
+                                                         ArrayList<SezioneMenu> sezioniMenu) {
         VisualizzaProdottoFragment fragment = new VisualizzaProdottoFragment();
         Bundle args = new Bundle();
+        Gson gson = new Gson();
         args.putString(NOME_PRODOTTO, nomeProdotto);
         args.putString(NOME_PRODOTTO_SECONDA_LINGUA, nomeProdottoSecondaLingua);
         args.putString(INGREDIENTI, ingredienti);
@@ -64,6 +70,8 @@ public class VisualizzaProdottoFragment extends Fragment {
         args.putDouble(PREZZO, prezzo);
         args.putInt(POSIZIONE, posizione);
         args.putInt(POSIZIONE_SEZIONE, posizioneSezione);
+        String myJson = gson.toJson(sezioniMenu);
+        args.putString(SEZIONI_VISUALIZZA_PRODOTTO, myJson);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,6 +80,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            Gson gson = new Gson();
             nomeProdotto = getArguments().getString(NOME_PRODOTTO);
             nomeProdottoSecondaLingua = getArguments().getString(NOME_PRODOTTO_SECONDA_LINGUA);
             ingredienti = getArguments().getString(INGREDIENTI);
@@ -79,6 +88,7 @@ public class VisualizzaProdottoFragment extends Fragment {
             prezzo = getArguments().getDouble(PREZZO);
             posizione = getArguments().getInt(POSIZIONE);
             posizioneSezione = getArguments().getInt(POSIZIONE_SEZIONE);
+            sezioni = gson.fromJson(getArguments().getString(SEZIONI_VISUALIZZA_PRODOTTO), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
         }
     }
 
@@ -97,7 +107,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         quantitaEditText = v.findViewById(R.id.quantitaVisualizzaEditText);
         indietroButton = v.findViewById(R.id.indietroButton);
 
-        ArrayList<SezioneMenu> sezioni = getSezioni();
+        //ArrayList<SezioneMenu> sezioni = getSezioni();
 
         nomeProdottoEditText.setText(nomeProdotto);
         if(nomeProdottoSecondaLingua != null)
@@ -108,27 +118,19 @@ public class VisualizzaProdottoFragment extends Fragment {
             ingredientiSecondaLinguaEditText.setText(ingredientiSecondaLingua);
         costoEditText.setText(String.valueOf(prezzo));
 
-        aggiungiProdottoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    quantita = Integer.parseInt(quantitaEditText.getText().toString());
-                    singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), quantita);
-                    aggiungiProdottoOrdinazione(singoloOrdine);
-                    sostituisciFragment();
-                }catch(NumberFormatException e){
-                    Toast.makeText(getActivity(), "Inserire una quantità valida", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        indietroButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        aggiungiProdottoButton.setOnClickListener(view -> {
+            try {
+                quantita = Integer.parseInt(quantitaEditText.getText().toString());
+                singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), quantita);
+                aggiungiProdottoOrdinazione(singoloOrdine);
                 sostituisciFragment();
+            }catch(NumberFormatException e){
+                Toast.makeText(getActivity(), "Inserire una quantità valida", Toast.LENGTH_SHORT).show();
             }
+
         });
+
+        indietroButton.setOnClickListener(view -> sostituisciFragment());
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override

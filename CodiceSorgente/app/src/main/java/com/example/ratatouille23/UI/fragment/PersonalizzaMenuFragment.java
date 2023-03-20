@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapter.ItemClickListener {
 
-    private static ArrayList<SezioneMenu> sezioni = new ArrayList<>();
+    private ArrayList<SezioneMenu> sezioni = new ArrayList<>();
     private RecyclerView recyclerView;
     private FragmentTransaction transaction;
     private SearchView cercaProdottiSearchView;
@@ -127,9 +127,9 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         bottomNavigationView.setVisibility(View.INVISIBLE);
     }
 
-    public static ArrayList<SezioneMenu> getSezioni(){
+    /*public static ArrayList<SezioneMenu> getSezioni(){
         return sezioni;
-    }
+    }*/
 
     public void setMenuRecyclerAdapter(ArrayList<SezioneMenu> sezioniAggiornate){
         sezioni = sezioniAggiornate;

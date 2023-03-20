@@ -1,5 +1,6 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 import static com.example.ratatouille23.UI.fragment.HomeAdminFragment.getAttivita;
 
 import android.os.Bundle;
@@ -17,8 +18,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.adapter.ProdottiOrdinazioneAdapter;
+import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
@@ -36,17 +39,19 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
     private Spinner selezionaTavoloSpinner;
     private EditText numeroCommensaliEditText;
     private RecyclerView recyclerView;
-    private Attivita attivita;
-    private static ArrayList<Integer> tavoli;
+    //private Attivita attivita;
+    private ArrayList<Integer> tavoli = new ArrayList<>();
     private static ProdottiOrdinazioneAdapter prodottiOrdinazioneAdapter;
     private static Ordinazione ordinazione;
     private static List<SingoloOrdine> prodottiOrdine = new ArrayList<>();
+    private Controller controller;
+    private AddettoSala addettoSala = getAddettoSala();
 
     public OrdinazioniFragment() {
         // Required empty public constructor
     }
 
-    public static OrdinazioniFragment newInstance(String param1, String param2) {
+    public static OrdinazioniFragment newInstance() {
         OrdinazioniFragment fragment = new OrdinazioniFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -71,11 +76,19 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         numeroCommensaliEditText = v.findViewById(R.id.numeroCommensaliOrdinazioneEditText);
         selezionaTavoloSpinner = v.findViewById(R.id.selezionaTavoloOrdinazioneSpinner);
         recyclerView = v.findViewById(R.id.contiRecyclerView);
+        controller = new Controller(getActivity().toString());
 
-        tavoli = new ArrayList<>();
-        attivita = getAttivita();
+        if(addettoSala.getNomeAttivita() != null){
+            String nome = addettoSala.getNomeAttivita();
+            String indirizzo = addettoSala.getIndirizzoAttivita();
+            controller.checkAttivitaAddettoSala(nome, indirizzo, this);
+        }else{
+            Toast.makeText(getActivity(), "Errore! Contattare l'amministratore", Toast.LENGTH_SHORT).show();
+        }
 
-        if(attivita != null){
+        //attivita = getAttivita();
+
+        /*if(attivita != null){
             for(int i = 1; i <= attivita.getCapienza(); i++){
                 tavoli.add(i);
             }
@@ -84,27 +97,21 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             selezionaTavoloSpinner.setAdapter(adapter);
 
-        }
+        }*/
 
         prodottiOrdinazioneAdapter = new ProdottiOrdinazioneAdapter(prodottiOrdine, getActivity(), this);
         recyclerView.setAdapter(prodottiOrdinazioneAdapter);
 
-        aggiungiProdottoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                VisualizzaMenuFragment fragment = new VisualizzaMenuFragment();
-                sostituisciFragment(fragment);
-            }
+        aggiungiProdottoButton.setOnClickListener(view -> {
+            VisualizzaMenuFragment fragment = new VisualizzaMenuFragment();
+            sostituisciFragment(fragment);
         });
-        salvaOrdinazioneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(selezionaTavoloSpinner.getSelectedItem() != null){
-                    //ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
-                    Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
-                }
+        salvaOrdinazioneButton.setOnClickListener(view -> {
+            if(selezionaTavoloSpinner.getSelectedItem() != null){
+                //ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
+                Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -130,11 +137,24 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         prodottiOrdinazioneAdapter.notifyDataSetChanged();
     }
 
-    public static Ordinazione getOrdinazione(){
+    /*public static Ordinazione getOrdinazione(){
         return ordinazione;
-    }
+    }*/
 
-    public static ArrayList<Integer> getTavoli(){
+    /*public static ArrayList<Integer> getTavoli(){
         return tavoli;
+    }*/
+
+    public void setTavoliAttivita(Attivita attivita){
+        if(attivita != null){
+            for(int i = 1; i <= attivita.getCapienza(); i++){
+                tavoli.add(i);
+            }
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_item, tavoli);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selezionaTavoloSpinner.setAdapter(adapter);
+
+        }
     }
 }

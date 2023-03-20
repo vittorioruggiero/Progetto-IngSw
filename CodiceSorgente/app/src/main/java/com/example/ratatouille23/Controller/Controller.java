@@ -24,7 +24,9 @@ import com.example.ratatouille23.UI.fragment.ContiFragment;
 import com.example.ratatouille23.UI.fragment.HomeAdminFragment;
 import com.example.ratatouille23.UI.fragment.ModificaProdottoFragment;
 import com.example.ratatouille23.UI.fragment.ModificaSezioniFragment;
+import com.example.ratatouille23.UI.fragment.OrdinazioniFragment;
 import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
+import com.example.ratatouille23.UI.fragment.VisualizzaMenuFragment;
 import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
@@ -283,6 +285,34 @@ public class Controller {
 
     }
 
+    public void checkSezioniAddettoSala(Activity activity, VisualizzaMenuFragment visualizzaMenuFragment) {
+
+        if(sezioneMenuAPI == null){
+            sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
+        }
+
+        sezioneMenuAPI.getSezioniByAttivita(addettoSala.getNomeAttivita(), addettoSala.getIndirizzoAttivita())
+                .enqueue(new Callback<ArrayList<SezioneMenu>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<SezioneMenu>> call, Response<ArrayList<SezioneMenu>> response) {
+                        if(response.body() != null){
+                            setProdottiAddettoSala(response.body(), activity, visualizzaMenuFragment);
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                        }else{
+                            Toast.makeText(activity, "Non ci sono prodotti da visualizzare", Toast.LENGTH_SHORT).show();
+                        }
+                        visualizzaMenuFragment.setVisualizzaMenuRecyclerAdapter(sezioni);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<SezioneMenu>> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
     public void checkAttivita(String nome, String indirizzo, HomeAdminFragment homeAdminFragment){
 
         if(attivitaAPI == null){
@@ -296,6 +326,32 @@ public class Controller {
                         if(response.body() != null){
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             homeAdminFragment.setAttivita(response.body());
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Attivita> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                    }
+                });
+
+    }
+
+    public void checkAttivitaAddettoSala(String nome, String indirizzo, OrdinazioniFragment ordinazioniFragment){
+
+        if(attivitaAPI == null){
+            attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
+        }
+
+        attivitaAPI.getAttivitaById(nome, indirizzo)
+                .enqueue(new Callback<Attivita>() {
+                    @Override
+                    public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            ordinazioniFragment.setTavoliAttivita(response.body());
                         }else{
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
@@ -324,6 +380,34 @@ public class Controller {
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             }
                             fragmentPersonalizzaMenu.notifyDataChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ProdottoMenu>> call, Throwable t) {
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                            Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
+    }
+
+    public void setProdottiAddettoSala(ArrayList<SezioneMenu> sezioniMenu, Activity activity,
+                                       VisualizzaMenuFragment visualizzaMenuFragment) {
+        if(prodottoMenuAPI == null){
+            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+        }
+        sezioni = sezioniMenu;
+        for(SezioneMenu sezioneMenu : sezioni){
+            prodottoMenuAPI.getProdottiBySezione(sezioneMenu.getNome())
+                    .enqueue(new Callback<List<ProdottoMenu>>() {
+                        @Override
+                        public void onResponse(Call<List<ProdottoMenu>> call, Response<List<ProdottoMenu>> response) {
+                            if(response.body() != null){
+                                sezioneMenu.setProdottiMenu(response.body());
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            }
+                            visualizzaMenuFragment.notifyDataChanged();
                         }
 
                         @Override

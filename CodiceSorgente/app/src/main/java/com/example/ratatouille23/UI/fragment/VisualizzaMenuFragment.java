@@ -1,7 +1,5 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
-
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -15,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.adapter.MenuRecyclerAdapter;
 import com.example.ratatouille23.adapter.ProdottiVisualizzaMenuAdapter;
 import com.example.ratatouille23.adapter.VisualizzaMenuAdapter;
 import com.example.ratatouille23.entity.ProdottoMenu;
@@ -34,13 +34,10 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     private RecyclerView recyclerView;
     private SearchView cercaProdottoSearchView;
     private Button indietroButton;
-    private static VisualizzaMenuAdapter visualizzaMenuAdapter;
+    private VisualizzaMenuAdapter visualizzaMenuAdapter;
     private FragmentTransaction transaction;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
+    private Controller controller;
+    private ArrayList<SezioneMenu> sezioni;
 
     public VisualizzaMenuFragment() {
         // Required empty public constructor
@@ -49,8 +46,6 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     public static VisualizzaMenuFragment newInstance(String param1, String param2) {
         VisualizzaMenuFragment fragment = new VisualizzaMenuFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +54,6 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -74,14 +67,18 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
         cercaProdottoSearchView = v.findViewById(R.id.visualizzaMenuSearchView);
         indietroButton = v.findViewById(R.id.indietroButton);
 
+        controller = new Controller(getActivity().toString());
+
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.addettoSalaBottomNavigationView);
         bottomNavigationView.setVisibility(View.GONE);
 
-        ArrayList<SezioneMenu> sezioni = getSezioni();
+        controller.checkSezioniAddettoSala(getActivity(), this);
+
+        //ArrayList<SezioneMenu> sezioni = getSezioni();
 
 
-        visualizzaMenuAdapter = new VisualizzaMenuAdapter(sezioni, getActivity(), this);
-        recyclerView.setAdapter(visualizzaMenuAdapter);
+        //visualizzaMenuAdapter = new VisualizzaMenuAdapter(sezioni, getActivity(), this);
+        //recyclerView.setAdapter(visualizzaMenuAdapter);
 
         cercaProdottoSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -118,7 +115,8 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
 
     public void onItemClickVisual(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
         Fragment fragment = VisualizzaProdottoFragment.newInstance(prodottoMenu.getNomeProdotto(), prodottoMenu.getNomeSecondaLingua(),
-                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(), prodottoMenu.getCosto(), posizione, posizioneSezione);
+                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(),
+                prodottoMenu.getCosto(), posizione, posizioneSezione, sezioni);
         sostituisciFragmentSecond(fragment);
     }
 
@@ -144,6 +142,16 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
         transaction.replace(R.id.addettoSalaFragmentContainerView, fragment, null);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void setVisualizzaMenuRecyclerAdapter(ArrayList<SezioneMenu> sezioniAggiornate){
+        sezioni = sezioniAggiornate;
+        visualizzaMenuAdapter = new VisualizzaMenuAdapter(sezioni, getActivity(), VisualizzaMenuFragment.this);
+        recyclerView.setAdapter(visualizzaMenuAdapter);
+    }
+
+    public void notifyDataChanged(){
+        visualizzaMenuAdapter.notifyDataSetChanged();
     }
 
 
