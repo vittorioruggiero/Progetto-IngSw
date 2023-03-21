@@ -104,7 +104,7 @@ public class ContiFragment extends Fragment {
         totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
         recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
 
-        controller.setOrdinazioneinConto(ContiFragment.this, getSupervisore().getNomeAttivita(), getSupervisore().getIndirizzoAttivita());
+        controller.setOrdinazioniInConti(ContiFragment.this, getSupervisore().getNomeAttivita(), getSupervisore().getIndirizzoAttivita());
 
 //        ordinazione = getOrdinazione();
 //        tavoli = getTavoli();
@@ -164,6 +164,10 @@ public class ContiFragment extends Fragment {
     public void setTextView(String numeroCommensali, String totale) {
         numeroCommensaliCifraTextView.setText(numeroCommensali);
         totaleCifraTextView.setText(totale);
+    }
+
+    public void setChiusuraContoAlertDialog(AlertDialog alertDialog) {
+        chiusuraContoAlertDialog = alertDialog;
     }
 
     public AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti, SingoliOrdiniAdapter singoliOrdiniAdapter) {

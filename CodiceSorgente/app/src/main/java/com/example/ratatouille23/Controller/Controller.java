@@ -8,7 +8,6 @@ import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -48,7 +47,6 @@ import com.example.ratatouille23.retrofit.API.SingoloOrdineAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -420,19 +418,50 @@ public class Controller {
 
     }
 
-    public void setListaSingoliOrdini(ContiFragment contiFragment, int id_ordinazione) {
+    public void setProdottoInSingoloOrdine(ContiFragment contiFragment, SingoloOrdine singoloOrdine) {
+
+        ProdottoMenuAPI prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+
+        prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                .enqueue(new Callback<ProdottoMenu>() {
+                    @Override
+                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                        if(response.body() != null) {
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
+                            singoloOrdine.setProdottoMenu(response.body());
+                        }
+                        else {
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                        Toast.makeText(contiFragment.getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void setListaSingoliOrdini(ContiFragment contiFragment, Ordinazione ordinazione) {
 
         retrofitService = new RetrofitService();
 
         SingoloOrdineAPI singoloOrdineAPI = retrofitService.getRetrofit().create(SingoloOrdineAPI.class);
 
-        singoloOrdineAPI.getAllSingoliOrdiniByOrdinazione(id_ordinazione)
+        singoloOrdineAPI.getAllSingoliOrdiniByOrdinazione(ordinazione.getId_ordinazione())
                 .enqueue(new Callback<List<SingoloOrdine>>() {
                     @Override
                     public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
                         if(response.body() != null) {
                             listaSingoliOrdini = response.body();
-//                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaSingoliOrdini.toString());
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaSingoliOrdini.toString());
+
+                            Iterator<SingoloOrdine> listaSingoloOrdiniIterator = listaSingoliOrdini.iterator();
+                            while(listaSingoloOrdiniIterator.hasNext())
+                                setProdottoInSingoloOrdine(contiFragment ,listaSingoloOrdiniIterator.next());
+
+                            ordinazione.setListaProdotti(listaSingoliOrdini);
                         }
                         else {
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
@@ -447,7 +476,7 @@ public class Controller {
                 });
     }
 
-    public void setOrdinazioneinConto(ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita) {
+    public void setOrdinazioniInConti(ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita) {
 
         retrofitService = new RetrofitService();
 
@@ -468,29 +497,29 @@ public class Controller {
                             Iterator<Ordinazione> listaOrdinazioniIterator = listaOrdinazioni.iterator();
                             Ordinazione ordinazioneCorrente;
 
-                            //Inserisco solo i tavoli in cui c'è un'ordinazione
                             while(listaOrdinazioniIterator.hasNext()) {
                                 ordinazioneCorrente = listaOrdinazioniIterator.next();
+                                //Inserisco solo i tavoli in cui c'è un'ordinazione
                                 listaTavoli.add(ordinazioneCorrente.getNumeroTavolo());
+                                setListaSingoliOrdini(contiFragment, ordinazioneCorrente);
                             }
+
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaOrdinazioni.toString());
 
                             ArrayAdapter<Integer> adapter = new ArrayAdapter<>(contiFragment.getActivity(),
                                     android.R.layout.simple_spinner_item, listaTavoli);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             contiFragment.getSelezionaTavoloSpinner().setAdapter(adapter);
 
-                            Ordinazione primaOrdinazione = listaOrdinazioni.get(0);
-                            setListaSingoliOrdini(contiFragment, primaOrdinazione.getId_ordinazione());
-                            primaOrdinazione.setListaProdotti(listaSingoliOrdini);
-
-//                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaSingoliOrdini.toString());
-
-//                            contiFragment.setTextView(String.valueOf(primaOrdinazione.getNumeroCommensali()), String.valueOf(primaOrdinazione.calcolaTotale()));
+//                            Ordinazione primaOrdinazione = listaOrdinazioni.get(0);
 //
+//                            contiFragment.setTextView(String.valueOf(primaOrdinazione.getNumeroCommensali()), String.valueOf(primaOrdinazione.calcolaTotale()));
+////
 //                            singoliOrdiniAdapter = new SingoliOrdiniAdapter(primaOrdinazione.getListaProdotti());
 //                            contiFragment.getRecyclerView().setAdapter(singoliOrdiniAdapter);
-//
+////
 //                            AlertDialog alertDialog = contiFragment.creaChiusuraContoAlertDialog(primaOrdinazione.getListaProdotti(), singoliOrdiniAdapter);
+//                            contiFragment.setChiusuraContoAlertDialog(alertDialog);
                         }
                         else {
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());

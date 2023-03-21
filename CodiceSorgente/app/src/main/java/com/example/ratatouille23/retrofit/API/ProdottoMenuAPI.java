@@ -17,6 +17,9 @@ public interface ProdottoMenuAPI {
     @GET("/prodottoMenu/get-all")
     Call<List<ProdottoMenu>> getAllProdottoMenu();
 
+    @GET("/prodottoMenu/get-by-id")
+    Call<ProdottoMenu> getProdottoById(@Query("nome") String nome);
+
     @GET("/prodottoMenu/get-by-sezione")
     Call<List<ProdottoMenu>> getProdottiBySezione(@Query("nomeSezione") String nomeSezione);
 

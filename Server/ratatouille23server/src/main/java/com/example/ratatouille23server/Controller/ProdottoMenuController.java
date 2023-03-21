@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProdottoMenuController {
@@ -20,6 +21,11 @@ public class ProdottoMenuController {
     @GetMapping("/prodottoMenu/get-all")
     public List<ProdottoMenu> getAllProdottoMenu(){
         return prodottoMenuDAO.getAll();
+    }
+
+    @RequestMapping(value = "/prodottoMenu/get-by-id", method = RequestMethod.GET)
+    public Optional<ProdottoMenu> getProdottoById(@RequestParam("nome") String nome){
+        return prodottoMenuDAO.getById(nome);
     }
 
     @PostMapping("/prodottoMenu/save")
