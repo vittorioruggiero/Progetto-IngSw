@@ -9,6 +9,19 @@ public class Conto {
     private Double importo;
     private Boolean stato;
 
+    public Conto(int id_conto, java.sql.Date data, Double importo, Boolean stato) {
+        this.id_conto = id_conto;
+        this.data = data;
+        this.importo = importo;
+        this.stato = stato;
+    }
+
+    public Conto(java.sql.Date data, Double importo, Boolean stato) {
+        this.data = data;
+        this.importo = importo;
+        this.stato = stato;
+    }
+
     public int getId_conto() {
         return id_conto;
     }

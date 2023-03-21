@@ -17,7 +17,7 @@ public class SingoloOrdine {
     @Column(name = "nomeProdotto")
     private String nomeProdotto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_ordinazione", referencedColumnName = "id_ordinazione",
             foreignKey = @ForeignKey(name = "ordinazione_fkey"), insertable = false, updatable = false)
     private Ordinazione ordinazioneSingoloOrdine;

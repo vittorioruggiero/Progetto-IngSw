@@ -28,6 +28,7 @@ import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Avviso;
+import com.example.ratatouille23.entity.Conto;
 import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
@@ -46,8 +47,8 @@ import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -525,7 +526,7 @@ public class Controller {
 
     }
 
-    /*public void chiusuraConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita){
+    public void chiusuraConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita){
         retrofitService = new RetrofitService();
 
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
@@ -535,7 +536,7 @@ public class Controller {
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
                         if(response.body() != null){
                             Toast.makeText(contiFragment.getActivity(), "OK: " + response.body().calcolaTotale(), Toast.LENGTH_SHORT).show();
-                            //salvaEdEliminaOrdinazione(response.body());
+                            salvaContoEdEliminaOrdinazione(contiFragment, response.body());
                         }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                             Toast.makeText(contiFragment.getActivity(), "Nessun conto da chiudere", Toast.LENGTH_SHORT).show();
@@ -547,16 +548,47 @@ public class Controller {
 
                     }
                 });
-    }*/
+    }
 
-    /*public void salvaEdEliminaOrdinazione(Ordinazione ordinazione){
+    public void salvaContoEdEliminaOrdinazione(ContiFragment contiFragment, Ordinazione ordinazione){
         retrofitService = new RetrofitService();
+
+        LocalDate dataCorrente = LocalDate.from(java.time.LocalDateTime.now());
+        Conto conto = new Conto(ordinazione.getId_conto(), java.sql.Date.valueOf(dataCorrente.toString()), ordinazione.calcolaTotale(), false);
+
         ContoAPI contoAPI = retrofitService.getRetrofit().create(ContoAPI.class);
+        contoAPI.save(conto)
+                .enqueue(new Callback<Conto>() {
+                    @Override
+                    public void onResponse(Call<Conto> call, Response<Conto> response) {
+                        eliminaOrdinazione(contiFragment, ordinazione.getId_ordinazione());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Conto> call, Throwable t) {
+                        Toast.makeText(contiFragment.getActivity(), "Controlla connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    public void eliminaOrdinazione(ContiFragment contiFragment, int id_ordinazione) {
+
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+        ordinazioneAPI.deleteById(id_ordinazione)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(contiFragment.getActivity(), "Ordinazione eliminata e conto salvato correttamente", Toast.LENGTH_SHORT).show();
+                    }
 
-        //conto
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(contiFragment.getActivity(), "Controlla connessione", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-    }*/
+    }
 
     public void addSezioneAdmin(SezioneMenu nuovaSezione, Activity activity, AggiungiSezioneFragment aggiungiSezioneFragment) {
 

@@ -24,6 +24,6 @@ public interface OrdinazioneAPI {
     Call<Ordinazione> save(@Body Ordinazione ordinazione);
 
     @DELETE("/ordinazione/delete-by-id")
-    Call<Void> deleteById(@Query("id") int id);
+    Call<Void> deleteById(@Query("id_ordinazione") int id_ordinazione);
 
 }

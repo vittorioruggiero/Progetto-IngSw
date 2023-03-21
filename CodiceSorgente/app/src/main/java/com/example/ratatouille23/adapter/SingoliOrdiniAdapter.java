@@ -49,6 +49,10 @@ public class SingoliOrdiniAdapter extends RecyclerView.Adapter<SingoliOrdiniAdap
         }
     }
 
+    public SingoloOrdine getItem(int posizione) {
+        return listaSingoliOrdini.get(posizione);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView holderProdottoSelezionatoItemTextView, holderCifraQuantitaProdottoTextView;

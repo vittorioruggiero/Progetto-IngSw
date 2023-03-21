@@ -32,8 +32,8 @@ public class OrdinazioneController {
     }
 
     @RequestMapping(value = "/ordinazione/delete-by-id", method = RequestMethod.DELETE)
-    public void deleteById(@RequestParam("id") int id){
-        ordinazioneDAO.deleteById(id);
+    public void deleteById(@RequestParam("id_ordinazione") int id_ordinazione){
+        ordinazioneDAO.deleteById(id_ordinazione);
     }
 
 }

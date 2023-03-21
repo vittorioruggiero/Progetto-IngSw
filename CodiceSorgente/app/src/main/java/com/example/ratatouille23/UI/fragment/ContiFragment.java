@@ -109,29 +109,6 @@ public class ContiFragment extends Fragment {
         });
 
 
-
-//        ordinazione = getOrdinazione();
-//        tavoli = getTavoli();
-//
-//        //set selezionaTavoloSpinner
-//
-//        if(tavoli != null){
-//            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
-//                    android.R.layout.simple_spinner_item, tavoli);
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            selezionaTavoloSpinner.setAdapter(adapter);
-//        }
-//
-//        if(ordinazione != null){
-//            numeroCommensaliCifraTextView.setText(String.valueOf(ordinazione.getNumeroCommensali()));
-//            totaleCifraTextView.setText(String.valueOf(ordinazione.calcolaTotale()));
-//
-//            singoliOrdiniAdapter = new SingoliOrdiniAdapter(ordinazione.getListaProdotti());
-//            recyclerView.setAdapter(singoliOrdiniAdapter);
-//
-//            chiusuraContoAlertDialog = creaChiusuraContoAlertDialog(ordinazione.getListaProdotti(), singoliOrdiniAdapter);
-//        }
-
         visualizzaContoButton.setOnClickListener(view -> {
 
             if(ordinazione != null){
