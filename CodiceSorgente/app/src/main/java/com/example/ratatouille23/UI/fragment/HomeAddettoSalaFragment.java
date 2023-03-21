@@ -2,6 +2,7 @@ package com.example.ratatouille23.UI.fragment;
 
 import static com.example.ratatouille23.UI.activity.LoginActivity.clearAll;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
+//import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,9 +42,8 @@ import retrofit2.Response;
  * Use the {@link HomeAddettoSalaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.ItemClickListenerAvvisi {
+public class HomeAddettoSalaFragment extends Fragment {
 
-    private static final ArrayList<Avviso> avvisiAddettoSala = new ArrayList<>();
     private RecyclerView recyclerView;
     private AvvisiAdapter avvisiAddettoSalaAdapter;
     private Button logoutButton;
@@ -55,7 +55,7 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
         // Required empty public constructor
     }
 
-    public static HomeAddettoSalaFragment newInstance(String param1, String param2) {
+    public static HomeAddettoSalaFragment newInstance() {
         HomeAddettoSalaFragment fragment = new HomeAddettoSalaFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -87,7 +87,7 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
                         if(response.body() != null){
                             Logger.getLogger(HomeAddettoSalaActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
                             listaAvvisi = response.body();
-                            avvisiAddettoSalaAdapter = new AvvisiAdapter(listaAvvisi, getContext(), HomeAddettoSalaFragment.this);
+                            avvisiAddettoSalaAdapter = new AvvisiAdapter(listaAvvisi, getContext());
                             recyclerView.setAdapter(avvisiAddettoSalaAdapter);
                             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
                         }else{
@@ -122,16 +122,5 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return inflatedView;
-    }
-
-    @Override
-    public void onItemClickAvviso(int posizione) {
-        //avvisiAddettoSala.get(posizione);
-        avvisiAddettoSala.remove(posizione);
-        avvisiAddettoSalaAdapter.notifyDataSetChanged();
-    }
-
-    public static void addAvvisiAddettoSala(Avviso avviso){
-        avvisiAddettoSala.add(avviso);
     }
 }

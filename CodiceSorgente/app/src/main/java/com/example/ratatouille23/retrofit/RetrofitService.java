@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
 
     private final String ipPCAnielloFisso = "192.168.1.79";
-    private final String ipPCAnielloPortatile = "192.168.1.15";
+    private final String ipPCAnielloPortatile = "192.168.1.30";
     private final String ipAnielloPortatileUnina = "100.74.19.159";
     private final String ipVittorio = "192.168.0.29";
     private Retrofit retrofit;
@@ -18,7 +18,7 @@ public class RetrofitService {
     }
 
     private void initializeRetrofit() {
-        retrofit = new Retrofit.Builder().baseUrl("http://" + ipVittorio + ":8080")
+        retrofit = new Retrofit.Builder().baseUrl("http://" + ipPCAnielloPortatile + ":8080")
                 .addConverterFactory(new NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();

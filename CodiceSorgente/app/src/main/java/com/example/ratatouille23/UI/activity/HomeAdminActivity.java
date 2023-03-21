@@ -19,12 +19,17 @@ import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.Amministratore;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.Gson;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HomeAdminActivity extends AppCompatActivity {
 
     private NavHostFragment navHostFragment;
     private NavController navController;
     public BottomNavigationView bottomNavigationView;
+    private Amministratore admin = new Amministratore();
     private AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +50,19 @@ public class HomeAdminActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).isChecked() && item.getItemId()!=R.id.creaUtenteFragment) {
-                    uscitaCreazioneUtenteAlertDialog.show();
-                }
-                else navController.navigate(item.getItemId());
+        Gson gson = new Gson();
+        admin = gson.fromJson(getIntent().getStringExtra("admin"), Amministratore.class);
 
-                return true;
+        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + admin);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            if(bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).isChecked() && item.getItemId()!=R.id.creaUtenteFragment) {
+                uscitaCreazioneUtenteAlertDialog.show();
             }
+            else navController.navigate(item.getItemId());
+
+            return true;
         });
 
 //        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
@@ -88,23 +96,21 @@ public class HomeAdminActivity extends AppCompatActivity {
 
         uscitaCreazioneUtenteAlertDialogBuilder.setPositiveButton(
                 "Conferma",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        navController.navigate(bottomNavigationView.getSelectedItemId());
-                    }
-                });
+                (dialog, id) -> navController.navigate(bottomNavigationView.getSelectedItemId()));
 
         uscitaCreazioneUtenteAlertDialogBuilder.setNegativeButton(
                 "Annulla",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).setChecked(true);
+                (dialog, id) -> {
+                    bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).setChecked(true);
 //                        bottomNavigationView.setSelectedItemId(R.id.creaUtenteFragment);
-                        dialog.cancel();
-                    }
+                    dialog.cancel();
                 });
 
         return uscitaCreazioneUtenteAlertDialogBuilder.create();
+    }
+
+    public Amministratore getAmministratore(){
+        return admin;
     }
 
 }

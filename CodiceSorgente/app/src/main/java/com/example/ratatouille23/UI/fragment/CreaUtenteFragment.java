@@ -1,16 +1,7 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static androidx.navigation.Navigation.findNavController;
-
-import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
-
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,24 +10,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
+
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.activity.HomeAdminActivity;
-import com.example.ratatouille23.UI.activity.LoginActivity;
-import com.example.ratatouille23.entity.AddettoSala;
-import com.example.ratatouille23.entity.Amministratore;
-import com.example.ratatouille23.entity.Supervisore;
-import com.example.ratatouille23.retrofit.API.AddettoSalaAPI;
-import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
-import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,7 +34,7 @@ public class CreaUtenteFragment extends Fragment {
     public CreaUtenteFragment() {
         // Required empty public constructor
     }
-    public static CreaUtenteFragment newInstance(String param1, String param2) {
+    public static CreaUtenteFragment newInstance() {
         CreaUtenteFragment fragment = new CreaUtenteFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -65,8 +44,6 @@ public class CreaUtenteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override

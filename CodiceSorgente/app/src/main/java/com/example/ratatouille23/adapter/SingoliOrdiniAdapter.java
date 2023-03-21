@@ -32,7 +32,9 @@ public class SingoliOrdiniAdapter extends RecyclerView.Adapter<SingoliOrdiniAdap
     @Override
     public void onBindViewHolder(@NonNull SingoliOrdiniAdapter.ViewHolder holder, int position) {
 
-        holder.holderProdottoSelezionatoItemTextView.setText(listaSingoliOrdini.get(position).getProdottoMenu().getNomeProdotto());
+        if(listaSingoliOrdini.get(position).getProdottoMenu() != null){
+            holder.holderProdottoSelezionatoItemTextView.setText(listaSingoliOrdini.get(position).getProdottoMenu().getNomeProdotto());
+        }
         holder.holderCifraQuantitaProdottoTextView.setText(String.valueOf(listaSingoliOrdini.get(position).getQuantita()));
 
     }

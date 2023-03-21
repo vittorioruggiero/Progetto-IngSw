@@ -57,7 +57,10 @@ public class SingoloOrdine {
     }
 
     public double calcolaTotale() {
-        return this.prodottoMenu.getCosto() * this.quantita;
+        if(this.prodottoMenu != null)
+            return this.prodottoMenu.getCosto() * this.quantita;
+        else
+            return 0;
     }
 
     @Override

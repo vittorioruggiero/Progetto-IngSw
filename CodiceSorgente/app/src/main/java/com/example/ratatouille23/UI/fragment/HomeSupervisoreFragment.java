@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.HomeSupervisoreActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.adapter.AvvisiAdapter;
@@ -26,7 +25,6 @@ import com.example.ratatouille23.entity.Avviso;
 import com.example.ratatouille23.retrofit.API.AvvisoAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,14 +33,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeSupervisoreFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.ItemClickListenerAvvisi{
+public class HomeSupervisoreFragment extends Fragment{
 
-    private static final ArrayList<Avviso> avvisiSupervisore = new ArrayList<>();
     private RecyclerView recyclerView;
     private List<Avviso> listaAvvisi;
     private AvvisiAdapter avvisiSupervisoreAdapter;
@@ -53,7 +45,7 @@ public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.I
     public HomeSupervisoreFragment() {
         // Required empty public constructor
     }
-    public static HomeSupervisoreFragment newInstance(String param1, String param2) {
+    public static HomeSupervisoreFragment newInstance() {
         HomeSupervisoreFragment fragment = new HomeSupervisoreFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -93,7 +85,7 @@ public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.I
                         if(response.body() != null){
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
                             listaAvvisi = response.body();
-                            avvisiSupervisoreAdapter = new AvvisiAdapter(listaAvvisi, getContext(), HomeSupervisoreFragment.this);
+                            avvisiSupervisoreAdapter = new AvvisiAdapter(listaAvvisi, getContext());
                             recyclerView.setAdapter(avvisiSupervisoreAdapter);
                             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
                         }else{
@@ -118,15 +110,5 @@ public class HomeSupervisoreFragment extends Fragment implements AvvisiAdapter.I
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return inflatedView;
-    }
-
-    @Override
-    public void onItemClickAvviso(int posizione) {
-        listaAvvisi.remove(posizione);
-        avvisiSupervisoreAdapter.notifyDataSetChanged();
-    }
-
-    public static void addAvvisoSupervisore(Avviso avviso){
-        avvisiSupervisore.add(avviso);
     }
 }

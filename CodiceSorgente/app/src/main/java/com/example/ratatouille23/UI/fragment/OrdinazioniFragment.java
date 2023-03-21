@@ -1,7 +1,8 @@
 package com.example.ratatouille23.UI.fragment;
 
+//import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
+
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
-import static com.example.ratatouille23.UI.fragment.HomeAdminFragment.getAttivita;
 
 import android.os.Bundle;
 
@@ -39,7 +40,6 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
     private Spinner selezionaTavoloSpinner;
     private EditText numeroCommensaliEditText;
     private RecyclerView recyclerView;
-    //private Attivita attivita;
     private ArrayList<Integer> tavoli = new ArrayList<>();
     private static ProdottiOrdinazioneAdapter prodottiOrdinazioneAdapter;
     private static Ordinazione ordinazione;
@@ -61,8 +61,6 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -85,19 +83,6 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         }else{
             Toast.makeText(getActivity(), "Errore! Contattare l'amministratore", Toast.LENGTH_SHORT).show();
         }
-
-        //attivita = getAttivita();
-
-        /*if(attivita != null){
-            for(int i = 1; i <= attivita.getCapienza(); i++){
-                tavoli.add(i);
-            }
-            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_spinner_item, tavoli);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            selezionaTavoloSpinner.setAdapter(adapter);
-
-        }*/
 
         prodottiOrdinazioneAdapter = new ProdottiOrdinazioneAdapter(prodottiOrdine, getActivity(), this);
         recyclerView.setAdapter(prodottiOrdinazioneAdapter);
@@ -157,4 +142,8 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
 
         }
     }
+
+
+
+
 }

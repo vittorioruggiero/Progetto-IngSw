@@ -1,7 +1,5 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
-
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;

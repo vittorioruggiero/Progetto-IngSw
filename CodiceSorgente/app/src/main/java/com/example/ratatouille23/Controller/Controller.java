@@ -3,13 +3,10 @@ package com.example.ratatouille23.Controller;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
-//import static com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment.getSezioni;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.ratatouille23.UI.activity.HomeAddettoSalaActivity;
@@ -40,12 +37,14 @@ import com.example.ratatouille23.retrofit.API.AddettoSalaAPI;
 import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
 import com.example.ratatouille23.retrofit.API.AvvisoAPI;
+import com.example.ratatouille23.retrofit.API.ContoAPI;
 import com.example.ratatouille23.retrofit.API.OrdinazioneAPI;
 import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.API.SingoloOrdineAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,14 +65,14 @@ public class Controller {
     private Supervisore supervisore;
     private SezioneMenuAPI sezioneMenuAPI;
     private ProdottoMenuAPI prodottoMenuAPI;
+    private SingoloOrdineAPI singoloOrdineAPI;
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
     private AddettoSala addettoSala;
     private List<Ordinazione> listaOrdinazioni;
-    private List<SingoloOrdine> listaSingoliOrdini;
+    private List<SingoloOrdine> listaSingoliOrdini = new ArrayList<>();
     private SingoliOrdiniAdapter singoliOrdiniAdapter;
     private RetrofitService retrofitService;
-    //private ArrayList<SezioneMenu> sezioni = getSezioni();
     private ArrayList<SezioneMenu> sezioni;
 
     public Controller() {
@@ -204,7 +203,7 @@ public class Controller {
                             if(admin != null){
                                 if(username.equals(admin.getNomeUtenteAmministratore())
                                         && password.equals(admin.getPasswordAmministratore())){
-                                    mostraHomeAdminActivity(loginActivity);
+                                    mostraHomeAdminActivity(loginActivity, admin);
                                     loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
                                 }
                                 else{
@@ -252,6 +251,33 @@ public class Controller {
                     }
                 });
 
+
+    }
+
+    public void setProdotti(ArrayList<SezioneMenu> sezioniMenu, Activity activity, PersonalizzaMenuFragment fragmentPersonalizzaMenu) {
+        if(prodottoMenuAPI == null){
+            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+        }
+        sezioni = sezioniMenu;
+        for(SezioneMenu sezioneMenu : sezioni){
+            prodottoMenuAPI.getProdottiBySezione(sezioneMenu.getNome())
+                    .enqueue(new Callback<List<ProdottoMenu>>() {
+                        @Override
+                        public void onResponse(Call<List<ProdottoMenu>> call, Response<List<ProdottoMenu>> response) {
+                            if(response.body() != null){
+                                sezioneMenu.setProdottiMenu(response.body());
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            }
+                            fragmentPersonalizzaMenu.notifyDataChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ProdottoMenu>> call, Throwable t) {
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                            Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
 
     }
 
@@ -363,32 +389,34 @@ public class Controller {
 
     }
 
-    public void setProdotti(ArrayList<SezioneMenu> sezioniMenu, Activity activity, PersonalizzaMenuFragment fragmentPersonalizzaMenu) {
-        if(prodottoMenuAPI == null){
-            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
-        }
-        sezioni = sezioniMenu;
-        for(SezioneMenu sezioneMenu : sezioni){
-            prodottoMenuAPI.getProdottiBySezione(sezioneMenu.getNome())
-                    .enqueue(new Callback<List<ProdottoMenu>>() {
-                        @Override
-                        public void onResponse(Call<List<ProdottoMenu>> call, Response<List<ProdottoMenu>> response) {
-                            if(response.body() != null){
-                                sezioneMenu.setProdottiMenu(response.body());
-                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            }
-                            fragmentPersonalizzaMenu.notifyDataChanged();
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<ProdottoMenu>> call, Throwable t) {
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                            Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+    public void checkAttivitaSupervisore(String nome, String indirizzo, ContiFragment contiFragment){
+
+        if(attivitaAPI == null){
+            attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
         }
+
+        attivitaAPI.getAttivitaById(nome, indirizzo)
+                .enqueue(new Callback<Attivita>() {
+                    @Override
+                    public void onResponse(Call<Attivita> call, Response<Attivita> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            contiFragment.setTavoliAttivita(response.body());
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Attivita> call, Throwable t) {
+                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                    }
+                });
 
     }
+
+
 
     public void setProdottiAddettoSala(ArrayList<SezioneMenu> sezioniMenu, Activity activity,
                                        VisualizzaMenuFragment visualizzaMenuFragment) {
@@ -418,122 +446,117 @@ public class Controller {
 
     }
 
-    public void setProdottoInSingoloOrdine(ContiFragment contiFragment, SingoloOrdine singoloOrdine) {
+    public void getOrdinazioneByTavolo(ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita, int tavolo){
+        retrofitService = new RetrofitService();
 
-        ProdottoMenuAPI prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
-
-        prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
-                .enqueue(new Callback<ProdottoMenu>() {
+        OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+                .enqueue(new Callback<Ordinazione>() {
                     @Override
-                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
-                        if(response.body() != null) {
-                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
-                            singoloOrdine.setProdottoMenu(response.body());
-                        }
-                        else {
+                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                        if(response.body() != null){
+                            setProdottiOrdinazione(response.body(), contiFragment);
+                        }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            contiFragment.setSingoliOrdiniRecyclerAdapter(null);
+                            contiFragment.setTextView("", "");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
-                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(contiFragment.getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<Ordinazione> call, Throwable t) {
+
                     }
                 });
     }
 
-    public void setListaSingoliOrdini(ContiFragment contiFragment, Ordinazione ordinazione) {
-
+    public void setProdottiOrdinazione(Ordinazione ordinazione, ContiFragment contiFragment){
         retrofitService = new RetrofitService();
 
         SingoloOrdineAPI singoloOrdineAPI = retrofitService.getRetrofit().create(SingoloOrdineAPI.class);
-
         singoloOrdineAPI.getAllSingoliOrdiniByOrdinazione(ordinazione.getId_ordinazione())
                 .enqueue(new Callback<List<SingoloOrdine>>() {
                     @Override
                     public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
-                        if(response.body() != null) {
-                            listaSingoliOrdini = response.body();
-                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaSingoliOrdini.toString());
-
-                            Iterator<SingoloOrdine> listaSingoloOrdiniIterator = listaSingoliOrdini.iterator();
-                            while(listaSingoloOrdiniIterator.hasNext())
-                                setProdottoInSingoloOrdine(contiFragment ,listaSingoloOrdiniIterator.next());
-
-                            ordinazione.setListaProdotti(listaSingoliOrdini);
-                        }
-                        else {
+                        if(response.body() != null){
+                            setProdottiSingoloOrdine(response.body(), contiFragment, ordinazione);
+                        }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
                     }
+
 
                     @Override
                     public void onFailure(Call<List<SingoloOrdine>> call, Throwable t) {
-                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(contiFragment.getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+
                     }
                 });
     }
 
-    public void setOrdinazioniInConti(ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita) {
+    public void setProdottiSingoloOrdine(List<SingoloOrdine> singoliOrdini, ContiFragment contiFragment, Ordinazione ordinazione){
+        if(prodottoMenuAPI == null){
+            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+        }
+        for(SingoloOrdine singoloOrdine : singoliOrdini){
+            prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                    .enqueue(new Callback<ProdottoMenu>() {
+                        @Override
+                        public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                            if(response.body() != null){
+                                singoloOrdine.setProdottoMenu(response.body());
+                            }else{
+                                Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            }
+                            contiFragment.setSingoliOrdiniRecyclerAdapter(singoliOrdini);
+                            contiFragment.notifyDataChanged();
+                            ordinazione.setListaProdotti(singoliOrdini);
+                            contiFragment.setTextView(String.valueOf(ordinazione.getNumeroCommensali()), String.valueOf(ordinazione.calcolaTotale()));
 
+                        }
+
+                        @Override
+                        public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+
+                        }
+                    });
+
+
+        }
+
+    }
+
+    /*public void chiusuraConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita){
         retrofitService = new RetrofitService();
 
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
-
-        ordinazioneAPI.getAllOrdinazioniByAttivita(nomeAttivita, indirizzoAttivita)
-                .enqueue(new Callback<List<Ordinazione>>() {
+        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+                .enqueue(new Callback<Ordinazione>() {
                     @Override
-                    public void onResponse(Call<List<Ordinazione>> call, Response<List<Ordinazione>> response) {
-
-                        if(response.body() != null) {
-
-                            listaOrdinazioni = response.body();
-                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaOrdinazioni.toString());
-
-                            ArrayList<Integer> listaTavoli = new ArrayList<>();
-
-                            Iterator<Ordinazione> listaOrdinazioniIterator = listaOrdinazioni.iterator();
-                            Ordinazione ordinazioneCorrente;
-
-                            while(listaOrdinazioniIterator.hasNext()) {
-                                ordinazioneCorrente = listaOrdinazioniIterator.next();
-                                //Inserisco solo i tavoli in cui c'è un'ordinazione
-                                listaTavoli.add(ordinazioneCorrente.getNumeroTavolo());
-                                setListaSingoliOrdini(contiFragment, ordinazioneCorrente);
-                            }
-
-                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + listaOrdinazioni.toString());
-
-                            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(contiFragment.getActivity(),
-                                    android.R.layout.simple_spinner_item, listaTavoli);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            contiFragment.getSelezionaTavoloSpinner().setAdapter(adapter);
-
-//                            Ordinazione primaOrdinazione = listaOrdinazioni.get(0);
-//
-//                            contiFragment.setTextView(String.valueOf(primaOrdinazione.getNumeroCommensali()), String.valueOf(primaOrdinazione.calcolaTotale()));
-////
-//                            singoliOrdiniAdapter = new SingoliOrdiniAdapter(primaOrdinazione.getListaProdotti());
-//                            contiFragment.getRecyclerView().setAdapter(singoliOrdiniAdapter);
-////
-//                            AlertDialog alertDialog = contiFragment.creaChiusuraContoAlertDialog(primaOrdinazione.getListaProdotti(), singoliOrdiniAdapter);
-//                            contiFragment.setChiusuraContoAlertDialog(alertDialog);
-                        }
-                        else {
+                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                        if(response.body() != null){
+                            Toast.makeText(contiFragment.getActivity(), "OK: " + response.body().calcolaTotale(), Toast.LENGTH_SHORT).show();
+                            //salvaEdEliminaOrdinazione(response.body());
+                        }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            Toast.makeText(contiFragment.getActivity(), "Nessun conto da chiudere", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<Ordinazione>> call, Throwable t) {
-                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(contiFragment.getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<Ordinazione> call, Throwable t) {
+
                     }
                 });
+    }*/
 
-    }
+    /*public void salvaEdEliminaOrdinazione(Ordinazione ordinazione){
+        retrofitService = new RetrofitService();
+        ContoAPI contoAPI = retrofitService.getRetrofit().create(ContoAPI.class);
+        OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+
+        //conto
+
+    }*/
 
     public void addSezioneAdmin(SezioneMenu nuovaSezione, Activity activity, AggiungiSezioneFragment aggiungiSezioneFragment) {
 
@@ -844,6 +867,7 @@ public class Controller {
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
                         }else{
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            Toast.makeText(activity, "Avviso troppo lungo!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -874,8 +898,11 @@ public class Controller {
         loginActivity.finish();
     }
 
-    public void mostraHomeAdminActivity(LoginActivity loginActivity) {
+    public void mostraHomeAdminActivity(LoginActivity loginActivity, Amministratore admin) {
+        Gson gson = new Gson();
+        String adminJson = gson.toJson(admin);
         Intent intent = new Intent(loginActivity, HomeAdminActivity.class);
+        intent.putExtra("admin", adminJson);
         loginActivity.startActivity(intent);
         loginActivity.finish();
     }

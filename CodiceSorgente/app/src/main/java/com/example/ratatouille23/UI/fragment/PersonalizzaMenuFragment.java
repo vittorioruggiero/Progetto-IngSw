@@ -127,10 +127,6 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
         bottomNavigationView.setVisibility(View.INVISIBLE);
     }
 
-    /*public static ArrayList<SezioneMenu> getSezioni(){
-        return sezioni;
-    }*/
-
     public void setMenuRecyclerAdapter(ArrayList<SezioneMenu> sezioniAggiornate){
         sezioni = sezioniAggiornate;
         menuRecyclerAdapter = new MenuRecyclerAdapter(sezioni, getActivity(), PersonalizzaMenuFragment.this);

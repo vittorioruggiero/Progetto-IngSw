@@ -62,24 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
         addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
 
-
-        /*registratiTextView = findViewById(R.id.registratiTextView);
-        String registratiText = "Hai un ristorante? Registrati";
-
-        SpannableString spannableString = new SpannableString(registratiText);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegistratiActivity.class);
-                LoginActivity.this.startActivity(intent);
-            }
-        };
-
-        spannableString.setSpan(clickableSpan, 19,29, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        registratiTextView.setText(spannableString);
-        registratiTextView.setMovementMethod(LinkMovementMethod.getInstance());*/
-
-
         Login();
     }
 
@@ -93,130 +75,9 @@ public class LoginActivity extends AppCompatActivity {
 
             String username = nomeUtenteEditText.getText().toString();
             String password = passwordEditText.getText().toString();
-//            checkAdmin(username);
             controller.checkAdmin(this, username, password);
 
         });
-
-    }
-
-    private void checkAddettoSala(String username) {
-
-        addettoSalaAPI.getAddettoSalaByUsername(username)
-                .enqueue(new Callback<AddettoSala>() {
-                    @Override
-                    public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            addettoSala = response.body();
-                            if(addettoSala != null){
-                                if(addettoSala.getPrimoAccesso() && addettoSala.getPassword().equals(passwordEditText.getText().toString())){
-                                    Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
-                                    LoginActivity.this.startActivity(intent);
-                                    LoginActivity.this.finish();
-                                }else{
-                                    if(nomeUtenteEditText.getText().toString().equals(addettoSala.getNomeUtente())
-                                            && passwordEditText.getText().toString().equals(addettoSala.getPassword())){
-                                        campiErratiTextView.setVisibility(View.INVISIBLE);
-                                        Intent intent = new Intent(LoginActivity.this, HomeAddettoSalaActivity.class);
-                                        LoginActivity.this.startActivity(intent);
-                                        LoginActivity.this.finish();
-                                    }else{
-                                        campiErratiTextView.setVisibility(View.VISIBLE);
-                                    }
-                                }
-                            }
-                        }else{
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                            campiErratiTextView.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<AddettoSala> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(LoginActivity.this, "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
-    private void checkSupervisore(String username) {
-
-        supervisoreAPI.getSupervisoreByUsername(username)
-                .enqueue(new Callback<Supervisore>() {
-                    @Override
-                    public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            supervisore = response.body();
-                            if(supervisore != null){
-                                if(supervisore.getPrimoAccesso() && supervisore.getPassword().equals(passwordEditText.getText().toString())){
-                                    Intent intent = new Intent(LoginActivity.this, ReimpostaPasswordActivity.class);
-                                    LoginActivity.this.startActivity(intent);
-                                    LoginActivity.this.finish();
-                                }else{
-                                    if(nomeUtenteEditText.getText().toString().equals(supervisore.getNomeUtente())
-                                            && passwordEditText.getText().toString().equals(supervisore.getPassword())){
-                                        campiErratiTextView.setVisibility(View.INVISIBLE);
-                                        Intent intent = new Intent(LoginActivity.this, HomeSupervisoreActivity.class);
-                                        LoginActivity.this.startActivity(intent);
-                                        LoginActivity.this.finish();
-                                    }else{
-                                        campiErratiTextView.setVisibility(View.VISIBLE);
-                                    }
-                                }
-                            }
-                        }else{
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Trying addettosala...");
-                            checkAddettoSala(username);
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Supervisore> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(LoginActivity.this, "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
-    private void checkAdmin(String username) {
-
-        amministratoreAPI.getAdminByUsername(username)
-                .enqueue(new Callback<Amministratore>() {
-                    @Override
-                    public void onResponse(Call<Amministratore> call, Response<Amministratore> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
-                            admin = response.body();
-                            if(admin != null){
-                                if(nomeUtenteEditText.getText().toString().equals(admin.getNomeUtenteAmministratore())
-                                        && passwordEditText.getText().toString().equals(admin.getPasswordAmministratore())){
-                                    Intent intent = new Intent(LoginActivity.this, HomeAdminActivity.class);
-                                    LoginActivity.this.startActivity(intent);
-                                    LoginActivity.this.finish();
-                                    campiErratiTextView.setVisibility(View.INVISIBLE);
-                                }
-                                else{
-                                    campiErratiTextView.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        }else{
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Trying supervisore...");
-                            checkSupervisore(username);
-                        }
-
-                    }
-                    @Override
-                    public void onFailure(Call<Amministratore> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(LoginActivity.this, "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
     }
 
@@ -236,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         return supervisore;
     }
 
-    public static void setAdmin(Amministratore nuovoAdmin) {
+    public void setAdmin(Amministratore nuovoAdmin) {
         admin = nuovoAdmin;
     }
 

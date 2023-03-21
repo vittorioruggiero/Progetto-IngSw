@@ -2,27 +2,13 @@ package com.example.ratatouille23.UI.fragment;
 
 import static com.example.ratatouille23.UI.activity.LoginActivity.clearAll;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
-import static com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment.addAvvisiAddettoSala;
-import static com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment.addAvvisoSupervisore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.fragment.app.Fragment;
-
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,39 +17,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
-import com.example.ratatouille23.entity.AttivitaPkey;
 import com.example.ratatouille23.entity.Avviso;
-import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
-import com.example.ratatouille23.retrofit.API.AttivitaAPI;
-import com.example.ratatouille23.retrofit.API.AvvisoAPI;
-import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeAdminFragment extends Fragment {
     private FloatingActionButton modificaButton, selezionaFotoButton;
     private ImageView foto;
     private EditText nomeAttivitaEditText, luogoAttivitaEditText, capienzaAttivitaEditText, telefonoAttivitaEditText;
-    private AvvisoAPI avvisoAPI;
     private AlertDialog inserisciAvvisoAlertDialog;
     private static Amministratore amministratore = getAdmin();
     private Button creaAvvisoButton, logoutButton;
-    private RetrofitService retrofitService;
     private static Attivita attivita;
     private Controller controllerAdmin;
 
@@ -73,7 +46,7 @@ public class HomeAdminFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static HomeAdminFragment newInstance(String param1, String param2) {
+    public static HomeAdminFragment newInstance() {
         HomeAdminFragment fragment = new HomeAdminFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -83,8 +56,6 @@ public class HomeAdminFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -105,9 +76,6 @@ public class HomeAdminFragment extends Fragment {
         creaAvvisoButton = v.findViewById(R.id.creaAvvisoButton);
         logoutButton = v.findViewById(R.id.logoutButton);
         controllerAdmin = new Controller(getActivity().toString());
-
-        retrofitService = new RetrofitService();
-        avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
 
         if(amministratore.getNomeAttivita() != null){
             String nome = amministratore.getNomeAttivita();
@@ -247,38 +215,6 @@ public class HomeAdminFragment extends Fragment {
                 (dialog, id) -> dialog.cancel());
 
         return inserisciAvvisoAlertDialogBuilder.create();
-    }
-
-    /*AlertDialog creaCreazioneAvvisoAlertDialog() {
-
-        AlertDialog.Builder creazioneAvvisoAlertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
-        creazioneAvvisoAlertDialogBuilder.setMessage("Sei sicuro di voler creare l'avviso?");
-
-        creazioneAvvisoAlertDialogBuilder.setPositiveButton(
-                "Conferma",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        creazioneAvvisoAlertDialogBuilder.setNegativeButton(
-                "Annulla",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        inserisciAvvisoAlertDialog.show();
-                    }
-                });
-
-        return creazioneAvvisoAlertDialogBuilder.create();
-    }*/
-    public static Attivita getAttivita(){
-        return attivita;
-    }
-
-    private void sendAvvisi(Avviso avviso){
-        addAvvisiAddettoSala(avviso);
-        addAvvisoSupervisore(avviso);
     }
 
 }
