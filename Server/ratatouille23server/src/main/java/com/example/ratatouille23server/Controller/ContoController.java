@@ -5,10 +5,7 @@ import com.example.ratatouille23server.Entity.Amministratore.AmministratoreDAO;
 import com.example.ratatouille23server.Entity.Conto.Conto;
 import com.example.ratatouille23server.Entity.Conto.ContoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +23,11 @@ public class ContoController {
     @PostMapping("/conto/save")
     public Conto save(@RequestBody Conto conto){
         return contoDAO.save(conto);
+    }
+
+    @PostMapping("/conto/save-importo")
+    public Conto save(@RequestParam("importo") Double importo, @RequestParam("id") int id){
+        return contoDAO.saveByImporto(importo, id);
     }
 
 }

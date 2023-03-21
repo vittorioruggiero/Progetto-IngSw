@@ -1,5 +1,6 @@
 package com.example.ratatouille23server.Entity.Ordinazione;
 
+import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,22 @@ public class OrdinazioneDAO {
         catch(NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+    public ResponseEntity<Ordinazione> getByTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo){
+        try{
+            for(Ordinazione ordinazione : repository.findAll()){
+                if(ordinazione.getNomeAttivita() != null){
+                    if(ordinazione.getNomeAttivita().equals(nomeAttivita) && ordinazione.getIndirizzoAttivita().equals(indirizzoAttivita)
+                            && ordinazione.getNumeroTavolo() == numeroTavolo){
+                        return new ResponseEntity<>(ordinazione, HttpStatus.OK);
+                    }
+                }
+            }
+
+        }catch(NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

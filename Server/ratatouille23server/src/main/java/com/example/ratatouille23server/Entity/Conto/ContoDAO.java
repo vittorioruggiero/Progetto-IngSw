@@ -39,4 +39,14 @@ public class ContoDAO {
         return repository.findById(contoPkey);
     }
 
+    public Conto saveByImporto(Double importo, int id){
+        for(Conto conto : repository.findAll()){
+            if(conto.getId_conto() == id){
+                conto.setImporto(importo);
+                return repository.save(conto);
+            }
+        }
+        return null;
+    }
+
 }

@@ -19,14 +19,21 @@ public class OrdinazioneController {
         return ordinazioneDAO.getAll();
     }
 
-    @RequestMapping(value = "/ordinazione/get-all-by-attivita", method = RequestMethod.GET)
-    public ResponseEntity<List<Ordinazione>> getAllOrdinazioniByAttivita(@RequestParam("nomeAttivita") String nomeAttivita, @RequestParam("indirizzoAttivita") String indirizzoAttivita) {
-        return ordinazioneDAO.getAllByAttivita(nomeAttivita, indirizzoAttivita);
+    @RequestMapping(value = "/ordinazione/get-by-tavolo", method = RequestMethod.GET)
+    public ResponseEntity<Ordinazione> getOrdinazioneByTavolo(@RequestParam("nomeAttivita") String nomeAttivita,
+                                                                    @RequestParam("indirizzoAttivita") String indirizzoAttivita,
+                                                                    @RequestParam("numeroTavolo") int numeroTavolo) {
+        return ordinazioneDAO.getByTavolo(nomeAttivita, indirizzoAttivita, numeroTavolo);
     }
 
     @PostMapping("/ordinazione/save")
     public Ordinazione save(@RequestBody Ordinazione ordinazione){
         return ordinazioneDAO.save(ordinazione);
+    }
+
+    @RequestMapping(value = "/ordinazione/delete-by-id", method = RequestMethod.DELETE)
+    public void deleteById(@RequestParam("id") int id){
+        ordinazioneDAO.deleteById(id);
     }
 
 }
