@@ -8,7 +8,6 @@ public class Ordinazione {
     private int id_ordinazione;
     private int numeroTavolo;
     private int numeroCommensali;
-    private int id_conto;
     private String nomeAttivita;
     private String indirizzoAttivita;
     private List<SingoloOrdine> listaProdotti;
@@ -56,14 +55,6 @@ public class Ordinazione {
         this.id_ordinazione = id_ordinazione;
     }
 
-    public int getId_conto() {
-        return id_conto;
-    }
-
-    public void setId_conto(int id_conto) {
-        this.id_conto = id_conto;
-    }
-
     public String getNomeAttivita() {
         return nomeAttivita;
     }
@@ -107,7 +98,6 @@ public class Ordinazione {
                 "id_ordinazione=" + id_ordinazione +
                 ", numeroTavolo=" + numeroTavolo +
                 ", numeroCommensali=" + numeroCommensali +
-                ", id_conto=" + id_conto +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
                 ", listaProdotti=" + listaProdotti +

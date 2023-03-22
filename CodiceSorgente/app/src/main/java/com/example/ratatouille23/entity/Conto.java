@@ -1,25 +1,21 @@
 package com.example.ratatouille23.entity;
 
-import java.time.LocalDateTime;
 
 public class Conto {
 
     private int id_conto;
     private java.sql.Date data;
     private Double importo;
-    private Boolean stato;
 
-    public Conto(int id_conto, java.sql.Date data, Double importo, Boolean stato) {
+    public Conto(int id_conto, java.sql.Date data, Double importo) {
         this.id_conto = id_conto;
         this.data = data;
         this.importo = importo;
-        this.stato = stato;
     }
 
-    public Conto(java.sql.Date data, Double importo, Boolean stato) {
+    public Conto(java.sql.Date data, Double importo) {
         this.data = data;
         this.importo = importo;
-        this.stato = stato;
     }
 
     public int getId_conto() {
@@ -46,11 +42,12 @@ public class Conto {
         this.importo = importo;
     }
 
-    public Boolean getStato() {
-        return stato;
-    }
-
-    public void setStato(Boolean stato) {
-        this.stato = stato;
+    @Override
+    public String toString() {
+        return "Conto{" +
+                "id_conto=" + id_conto +
+                ", data=" + data +
+                ", importo=" + importo +
+                '}';
     }
 }

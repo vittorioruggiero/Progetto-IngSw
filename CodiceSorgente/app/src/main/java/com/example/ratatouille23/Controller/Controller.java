@@ -47,8 +47,11 @@ import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -460,6 +463,7 @@ public class Controller {
                         }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                             contiFragment.setSingoliOrdiniRecyclerAdapter(null);
+                            //contiFragment.notifyDataChanged();
                             contiFragment.setTextView("", "");
                         }
                     }
@@ -498,35 +502,70 @@ public class Controller {
         if(prodottoMenuAPI == null){
             prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
         }
-        for(SingoloOrdine singoloOrdine : singoliOrdini){
-            prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
-                    .enqueue(new Callback<ProdottoMenu>() {
-                        @Override
-                        public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
-                            if(response.body() != null){
-                                singoloOrdine.setProdottoMenu(response.body());
-                            }else{
-                                Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+        Iterator<SingoloOrdine> iterator = singoliOrdini.iterator();
+
+        while(iterator.hasNext()){
+            SingoloOrdine singoloOrdine = iterator.next();
+            if(iterator.hasNext()){
+                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                        .enqueue(new Callback<ProdottoMenu>() {
+                            @Override
+                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                                if (response.body() != null) {
+                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
+                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+                                    prodottoMenu.setCosto(response.body().getCosto());
+                                    singoloOrdine.setProdottoMenu(prodottoMenu);
+                                    contiFragment.setSingoliOrdiniRecyclerAdapter(singoliOrdini);
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
+
+                                } else {
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                                }
                             }
-                            contiFragment.setSingoliOrdiniRecyclerAdapter(singoliOrdini);
-                            contiFragment.notifyDataChanged();
-                            ordinazione.setListaProdotti(singoliOrdini);
-                            contiFragment.setTextView(String.valueOf(ordinazione.getNumeroCommensali()), String.valueOf(ordinazione.calcolaTotale()));
 
-                        }
+                            @Override
+                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
 
-                        @Override
-                        public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+                            }
 
-                        }
-                    });
+                        });
+            }else{
+                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                        .enqueue(new Callback<ProdottoMenu>() {
+                            @Override
+                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                                if (response.body() != null) {
+                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
+                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+                                    prodottoMenu.setCosto(response.body().getCosto());
+                                    singoloOrdine.setProdottoMenu(prodottoMenu);
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
+                                    contiFragment.notifyDataChanged();
+                                    ordinazione.setListaProdotti(singoliOrdini);
+                                    contiFragment.setTextView(String.valueOf(ordinazione.getNumeroCommensali()), String.valueOf(ordinazione.calcolaTotale()));
+                                    contiFragment.setChiusuraContoAlertDialog(contiFragment.creaChiusuraContoAlertDialog(singoliOrdini));
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+
+                                } else {
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+
+                            }
+                        });
+            }
 
 
         }
 
     }
 
-    public void chiusuraConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita){
+    public void chiusuraConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita, Double totale){
         retrofitService = new RetrofitService();
 
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
@@ -535,8 +574,9 @@ public class Controller {
                     @Override
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
                         if(response.body() != null){
-                            Toast.makeText(contiFragment.getActivity(), "OK: " + response.body().calcolaTotale(), Toast.LENGTH_SHORT).show();
-                            salvaContoEdEliminaOrdinazione(contiFragment, response.body());
+                            //Toast.makeText(contiFragment.getActivity(), "OK: " + response.body().calcolaTotale(), Toast.LENGTH_SHORT).show();
+                            //setProdottiOrdinazioneFinale(response.body(), contiFragment);
+                            salvaContoEdEliminaOrdinazione(contiFragment, response.body(), totale);
                         }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                             Toast.makeText(contiFragment.getActivity(), "Nessun conto da chiudere", Toast.LENGTH_SHORT).show();
@@ -550,23 +590,141 @@ public class Controller {
                 });
     }
 
-    public void salvaContoEdEliminaOrdinazione(ContiFragment contiFragment, Ordinazione ordinazione){
+    public void visualizzaConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita){
+        retrofitService = new RetrofitService();
+
+        OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+                .enqueue(new Callback<Ordinazione>() {
+                    @Override
+                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                        if(response.body() != null){
+                            //Toast.makeText(contiFragment.getActivity(), "OK: " + response.body().calcolaTotale(), Toast.LENGTH_SHORT).show();
+                            setProdottiOrdinazioneVisualizza(response.body(), contiFragment);
+                            //salvaContoEdEliminaOrdinazione(contiFragment, response.body(), totale);
+                        }else{
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            Toast.makeText(contiFragment.getActivity(), "Nessun conto da chiudere", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ordinazione> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void setProdottiOrdinazioneVisualizza(Ordinazione ordinazione, ContiFragment contiFragment){
+        retrofitService = new RetrofitService();
+
+        SingoloOrdineAPI singoloOrdineAPI = retrofitService.getRetrofit().create(SingoloOrdineAPI.class);
+        singoloOrdineAPI.getAllSingoliOrdiniByOrdinazione(ordinazione.getId_ordinazione())
+                .enqueue(new Callback<List<SingoloOrdine>>() {
+                    @Override
+                    public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
+                        if(response.body() != null){
+                            setProdottiSingoloOrdineVisualizza(response.body(), contiFragment, ordinazione);
+                        }else{
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<List<SingoloOrdine>> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void setProdottiSingoloOrdineVisualizza(List<SingoloOrdine> singoliOrdini, ContiFragment contiFragment, Ordinazione ordinazione){
+        if(prodottoMenuAPI == null){
+            prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+        }
+        Iterator<SingoloOrdine> iterator = singoliOrdini.iterator();
+
+        while(iterator.hasNext()){
+            SingoloOrdine singoloOrdine = iterator.next();
+            if(iterator.hasNext()){
+                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                        .enqueue(new Callback<ProdottoMenu>() {
+                            @Override
+                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                                if (response.body() != null) {
+                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
+                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+                                    prodottoMenu.setCosto(response.body().getCosto());
+                                    singoloOrdine.setProdottoMenu(prodottoMenu);
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
+
+                                } else {
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+
+                            }
+
+                        });
+            }else{
+                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                        .enqueue(new Callback<ProdottoMenu>() {
+                            @Override
+                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                                if (response.body() != null) {
+                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
+                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+                                    prodottoMenu.setCosto(response.body().getCosto());
+                                    singoloOrdine.setProdottoMenu(prodottoMenu);
+                                    ordinazione.setListaProdotti(singoliOrdini);
+                                    contiFragment.sostituisciFragment(contiFragment.preparaBundle(singoliOrdini));
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+
+                                } else {
+                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+
+                            }
+                        });
+            }
+
+
+        }
+
+    }
+
+    public void salvaContoEdEliminaOrdinazione(ContiFragment contiFragment, Ordinazione ordinazione, Double totale){
         retrofitService = new RetrofitService();
 
         LocalDate dataCorrente = LocalDate.from(java.time.LocalDateTime.now());
-        Conto conto = new Conto(ordinazione.getId_conto(), java.sql.Date.valueOf(dataCorrente.toString()), ordinazione.calcolaTotale(), false);
 
         ContoAPI contoAPI = retrofitService.getRetrofit().create(ContoAPI.class);
-        contoAPI.save(conto)
+        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "CAMPI: " + java.sql.Date.valueOf(dataCorrente.toString()) + " " + totale);
+
+        contoAPI.saveConCampi(java.sql.Date.valueOf(dataCorrente.toString()), totale)
                 .enqueue(new Callback<Conto>() {
                     @Override
                     public void onResponse(Call<Conto> call, Response<Conto> response) {
-                        eliminaOrdinazione(contiFragment, ordinazione.getId_ordinazione());
+                        if(response.body() != null){
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            eliminaOrdinazione(contiFragment, ordinazione.getId_ordinazione());
+                        }else{
+                            Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "ERROR: " + response.body());
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<Conto> call, Throwable t) {
-                        Toast.makeText(contiFragment.getActivity(), "Controlla connessione", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(contiFragment.getActivity(), "Controlla connessione1", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "ERROR: ", t);
                     }
                 });
 
@@ -580,6 +738,7 @@ public class Controller {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Toast.makeText(contiFragment.getActivity(), "Ordinazione eliminata e conto salvato correttamente", Toast.LENGTH_SHORT).show();
+                        contiFragment.notifyDataChanged();
                     }
 
                     @Override

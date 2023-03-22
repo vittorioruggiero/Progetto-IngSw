@@ -78,8 +78,6 @@ public class ContiFragment extends Fragment {
 
         controller = new Controller(getActivity().toString());
 
-        //findViewById
-
         visualizzaContoButton = inflatedView.findViewById(R.id.visualizzaContoButton);
         chiudiContoButton = inflatedView.findViewById(R.id.chiudiContoButton);
         selezionaTavoloSpinner = inflatedView.findViewById(R.id.selezionaTavoloSpinner);
@@ -98,7 +96,6 @@ public class ContiFragment extends Fragment {
         selezionaTavoloSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //controller.setOrdinazioneInConti(ContiFragment.this, getSupervisore().getNomeAttivita(), getSupervisore().getIndirizzoAttivita(), i+1);
                 controller.getOrdinazioneByTavolo(ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita(), i+1);
             }
 
@@ -111,22 +108,22 @@ public class ContiFragment extends Fragment {
 
         visualizzaContoButton.setOnClickListener(view -> {
 
-            if(ordinazione != null){
-                sostituisciFragment(preparaBundle(ordinazione.getListaProdotti()));
-            }else{
+            if(numeroCommensaliCifraTextView.getText().toString().equals("")){
                 Toast.makeText(getActivity(), "Nessuna ordinazione!", Toast.LENGTH_SHORT).show();
+            }else{
+                controller.visualizzaConto(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
+                        ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita());
             }
         });
 
         chiudiContoButton.setOnClickListener(view -> {
 
-            //controller.chiusuraConto(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita());
-
-            if(ordinazione != null){
-                chiusuraContoAlertDialog.show();
-            }else{
+            if(numeroCommensaliCifraTextView.getText().toString().equals("")){
                 Toast.makeText(getActivity(), "Nessuna ordinazione!", Toast.LENGTH_SHORT).show();
+            }else{
+                chiusuraContoAlertDialog.show();
             }
+
         });
 
         return inflatedView;
@@ -155,7 +152,7 @@ public class ContiFragment extends Fragment {
         chiusuraContoAlertDialog = alertDialog;
     }
 
-    public AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti, SingoliOrdiniAdapter singoliOrdiniAdapter) {
+    public AlertDialog creaChiusuraContoAlertDialog(List<SingoloOrdine> listaProdotti) {
 
         AlertDialog.Builder chiusuraContoAlertDialogBuilder = new AlertDialog.Builder(getContext());
         chiusuraContoAlertDialogBuilder.setMessage("Sei sicuro di voler chiudere il conto?");
@@ -164,11 +161,14 @@ public class ContiFragment extends Fragment {
         chiusuraContoAlertDialogBuilder.setPositiveButton(
                 "Conferma",
                 (dialog, id) -> {
+                    controller.chiusuraConto(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
+                            ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita(),
+                            Double.parseDouble(totaleCifraTextView.getText().toString()));
                     sostituisciFragment(preparaBundle(listaProdotti));
-                    ordinazione.setNumeroCommensali(0);
-                    ordinazione.setNumeroTavolo(0);
+                    numeroCommensaliCifraTextView.setText("");
+                    totaleCifraTextView.setText("");
                     listaProdotti.clear();
-                    singoliOrdiniAdapter.notifyDataSetChanged();
+                    notifyDataChanged();
                     dialog.cancel();
                 });
 
