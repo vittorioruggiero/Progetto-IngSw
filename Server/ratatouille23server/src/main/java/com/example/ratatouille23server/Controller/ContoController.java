@@ -25,9 +25,10 @@ public class ContoController {
         return contoDAO.save(conto);
     }
 
-    @PostMapping("/conto/save-importo")
-    public Conto save(@RequestParam("importo") Double importo, @RequestParam("id") int id){
-        return contoDAO.saveByImporto(importo, id);
+    @PostMapping("/conto/save-con-campi")
+    public Conto save(@RequestParam("data") java.sql.Date data,
+                      @RequestParam("importo") Double importo){
+        return contoDAO.saveConCampi(data, importo);
     }
 
 }

@@ -15,11 +15,9 @@ public class Conto {
     private java.sql.Date data;
     @Column(nullable = false)
     private Double importo;
-    @Column(nullable = false)
-    private Boolean stato;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "conto")
-    private Ordinazione ordinazione;
+    /*@OneToOne(fetch = FetchType.LAZY, mappedBy = "conto")
+    private Ordinazione ordinazione;*/
 
     public int getId_conto() {
         return id_conto;
@@ -45,21 +43,12 @@ public class Conto {
         this.importo = importo;
     }
 
-    public Boolean getStato() {
-        return stato;
-    }
-
-    public void setStato(Boolean stato) {
-        this.stato = stato;
-    }
-
     @Override
     public String toString() {
         return "Conto{" +
                 "id_conto=" + id_conto +
                 ", data=" + data +
                 ", importo=" + importo +
-                ", stato=" + stato +
                 '}';
     }
 }

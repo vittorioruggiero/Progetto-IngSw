@@ -20,8 +20,6 @@ public class Ordinazione {
     private int numeroTavolo;
     @Column(nullable = false)
     private int numeroCommensali;
-    @Column(name = "id_conto")
-    private int id_conto;
     @Column(name = "nomeAttivita")
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
@@ -35,10 +33,10 @@ public class Ordinazione {
     })
     private Attivita attivitaOrdinazione;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    /*@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_conto", referencedColumnName = "id_conto",
             foreignKey = @ForeignKey(name = "conto_fkey"), insertable = false, updatable = false)
-    private Conto conto;
+    private Conto conto;*/
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordinazioneSingoloOrdine")
     List<SingoloOrdine> singoliOrdiniOrdinazione;
@@ -79,26 +77,14 @@ public class Ordinazione {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
-    public int getId_conto() {
-        return id_conto;
-    }
-
-    public void setId_conto(int id_conto) {
-        this.id_conto = id_conto;
-    }
-
     @Override
     public String toString() {
         return "Ordinazione{" +
                 "id_ordinazione=" + id_ordinazione +
                 ", numeroTavolo=" + numeroTavolo +
                 ", numeroCommensali=" + numeroCommensali +
-                ", id_conto=" + id_conto +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
-                ", attivitaOrdinazione=" + attivitaOrdinazione +
-                ", conto=" + conto +
-                ", singoliOrdiniOrdinazione=" + singoliOrdiniOrdinazione +
                 '}';
     }
 }

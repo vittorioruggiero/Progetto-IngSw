@@ -3,6 +3,9 @@ package com.example.ratatouille23server.Entity.SingoloOrdine;
 import com.example.ratatouille23server.Entity.Ordinazione.Ordinazione;
 import com.example.ratatouille23server.Entity.ProdottoMenu.ProdottoMenu;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "singoloordine")
 public class SingoloOrdine {
@@ -17,9 +20,10 @@ public class SingoloOrdine {
     @Column(name = "nomeProdotto")
     private String nomeProdotto;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ordinazione", referencedColumnName = "id_ordinazione",
             foreignKey = @ForeignKey(name = "ordinazione_fkey"), insertable = false, updatable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Ordinazione ordinazioneSingoloOrdine;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,6 +31,10 @@ public class SingoloOrdine {
             foreignKey = @ForeignKey(name = "prodotto_fkey"), insertable = false, updatable = false)
     private ProdottoMenu prodottoMenuSingoloOrdine;
 
+
+    public void setId_singolo_ordine(int id_singolo_ordine) {
+        this.id_singolo_ordine = id_singolo_ordine;
+    }
 
     public int getId_singolo_ordine() {
         return id_singolo_ordine;
