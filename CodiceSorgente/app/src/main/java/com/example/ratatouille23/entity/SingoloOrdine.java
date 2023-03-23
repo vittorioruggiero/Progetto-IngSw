@@ -16,6 +16,12 @@ public class SingoloOrdine {
         this.quantita = quantita;
     }
 
+    public SingoloOrdine(ProdottoMenu prodottoMenu, String nomeProdotto, int quantita) {
+        this.prodottoMenu = prodottoMenu;
+        this.nomeProdotto = nomeProdotto;
+        this.quantita = quantita;
+    }
+
     public ProdottoMenu getProdottoMenu() {
         return prodottoMenu;
     }

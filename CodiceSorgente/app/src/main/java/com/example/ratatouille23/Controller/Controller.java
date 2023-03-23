@@ -70,6 +70,7 @@ public class Controller {
     private SezioneMenuAPI sezioneMenuAPI;
     private ProdottoMenuAPI prodottoMenuAPI;
     private SingoloOrdineAPI singoloOrdineAPI;
+    private OrdinazioneAPI ordinazioneAPI;
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
     private AddettoSala addettoSala;
@@ -1098,4 +1099,80 @@ public class Controller {
         loginActivity.finish();
     }
 
+    public void checkOrdinazione(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, OrdinazioniFragment ordinazioniFragment,
+                                 String nomeAttivita, String indirizzoAttivita) {
+
+        if(ordinazioneAPI == null){
+            ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+        }
+
+        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+                .enqueue(new Callback<Ordinazione>() {
+                    @Override
+                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                        if(response.body() == null){
+                            salvaOrdinazione(tavolo, commensali, prodottiOrdine, ordinazioniFragment, nomeAttivita, indirizzoAttivita);
+                        }else{
+                            Toast.makeText(ordinazioniFragment.getActivity(), "È già presente un'ordinazione", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ordinazione> call, Throwable t) {
+
+                    }
+                });
+
+
+    }
+
+    private void salvaOrdinazione(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, OrdinazioniFragment ordinazioniFragment,
+                                  String nomeAttivita, String indirizzoAttivita) {
+        if(ordinazioneAPI == null){
+            ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+        }
+
+        ordinazioneAPI.saveConCampi(tavolo, commensali, nomeAttivita, indirizzoAttivita)
+                .enqueue(new Callback<Ordinazione>() {
+                    @Override
+                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                        if(response.body() != null){
+                            salvaSingoliOrdini(prodottiOrdine, response.body().getId_ordinazione(), ordinazioniFragment);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ordinazione> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    private void salvaSingoliOrdini(List<SingoloOrdine> prodottiOrdine, int idOrdinazione, OrdinazioniFragment ordinazioniFragment) {
+
+        if(singoloOrdineAPI == null){
+            singoloOrdineAPI = retrofitService.getRetrofit().create(SingoloOrdineAPI.class);
+        }
+
+        for(SingoloOrdine singoloOrdine : prodottiOrdine){
+            singoloOrdine.setIdOrdinazione(idOrdinazione);
+        }
+
+        singoloOrdineAPI.saveAll(prodottiOrdine)
+                .enqueue(new Callback<List<SingoloOrdine>>() {
+                    @Override
+                    public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
+                        if(response.body() != null){
+                            Toast.makeText(ordinazioniFragment.getActivity(), "Ordinazione salvata correttamente", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<SingoloOrdine>> call, Throwable t) {
+
+                    }
+                });
+
+    }
 }

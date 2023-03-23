@@ -1,5 +1,6 @@
 package com.example.ratatouille23.retrofit.API;
 
+import com.example.ratatouille23.entity.Conto;
 import com.example.ratatouille23.entity.Ordinazione;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public interface OrdinazioneAPI {
 
     @POST("/ordinazione/save")
     Call<Ordinazione> save(@Body Ordinazione ordinazione);
+
+    @POST("/ordinazione/save-con-campi")
+    Call<Ordinazione> saveConCampi(@Query("numeroTavolo") int numeroTavolo,
+                                   @Query("numeroCommensali") int numeroCommensali,
+                                   @Query("nomeAttivita") String nomeAttivita,
+                                   @Query("indirizzoAttivita") String indirizzoAttivita);
 
     @DELETE("/ordinazione/delete-by-id")
     Call<Void> deleteById(@Query("id_ordinazione") int id_ordinazione);

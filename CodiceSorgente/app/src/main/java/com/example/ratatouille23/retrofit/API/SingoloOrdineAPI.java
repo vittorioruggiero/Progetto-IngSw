@@ -22,4 +22,7 @@ public interface SingoloOrdineAPI {
     @POST("/singoloOrdine/save")
     Call<SingoloOrdine> save(@Body SingoloOrdine singoloOrdine);
 
+    @POST("/singoloOrdine/save-all")
+    Call<List<SingoloOrdine>> saveAll(@Body List<SingoloOrdine> prodottiOrdine);
+
 }

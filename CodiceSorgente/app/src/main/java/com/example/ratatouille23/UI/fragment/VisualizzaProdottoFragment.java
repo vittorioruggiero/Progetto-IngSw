@@ -1,6 +1,5 @@
 package com.example.ratatouille23.UI.fragment;
 
-import static com.example.ratatouille23.UI.fragment.OrdinazioniFragment.aggiungiProdottoOrdinazione;
 
 import android.os.Bundle;
 
@@ -22,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VisualizzaProdottoFragment extends Fragment {
 
@@ -40,6 +40,9 @@ public class VisualizzaProdottoFragment extends Fragment {
     private static final String POSIZIONE = "posizione";
     private static final String POSIZIONE_SEZIONE = "posizione_sezione";
     private static final String SEZIONI_VISUALIZZA_PRODOTTO = "sezioni-visualizza-prodotto";
+    private static final String TAVOLO_VISUALIZZA_PRODOTTO = "tavolo-visualizza-prodotto";
+    private static final String COMMENSALI_VISUALIZZA_PRODOTTO = "commensali-visualizza-prodotto";
+    private static final String PRODOTTI_VISUALIZZA_PRODOTTO = "prodotti-visualizza-prodotto";
     private String nomeProdotto;
     private String nomeProdottoSecondaLingua;
     private String ingredienti;
@@ -49,7 +52,10 @@ public class VisualizzaProdottoFragment extends Fragment {
     private int posizione;
     private int posizioneSezione;
     private SingoloOrdine singoloOrdine;
+    private int tavolo;
+    private int commensali;
     private ArrayList<SezioneMenu> sezioni = new ArrayList<>();
+    private List<SingoloOrdine> prodottiOrdine = new ArrayList<>();
 
 
     public VisualizzaProdottoFragment() {
@@ -59,7 +65,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     public static VisualizzaProdottoFragment newInstance(String nomeProdotto, String nomeProdottoSecondaLingua,
                                                          String ingredienti, String ingredientiSecondaLingua,
                                                          double prezzo, int posizione, int posizioneSezione,
-                                                         ArrayList<SezioneMenu> sezioniMenu) {
+                                                         ArrayList<SezioneMenu> sezioniMenu, int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine) {
         VisualizzaProdottoFragment fragment = new VisualizzaProdottoFragment();
         Bundle args = new Bundle();
         Gson gson = new Gson();
@@ -70,8 +76,12 @@ public class VisualizzaProdottoFragment extends Fragment {
         args.putDouble(PREZZO, prezzo);
         args.putInt(POSIZIONE, posizione);
         args.putInt(POSIZIONE_SEZIONE, posizioneSezione);
-        String myJson = gson.toJson(sezioniMenu);
-        args.putString(SEZIONI_VISUALIZZA_PRODOTTO, myJson);
+        args.putInt(TAVOLO_VISUALIZZA_PRODOTTO, tavolo);
+        args.putInt(COMMENSALI_VISUALIZZA_PRODOTTO, commensali);
+        String myJsonSezioni = gson.toJson(sezioniMenu);
+        String myJsonProdotti = gson.toJson(prodottiOrdine);
+        args.putString(SEZIONI_VISUALIZZA_PRODOTTO, myJsonSezioni);
+        args.putString(PRODOTTI_VISUALIZZA_PRODOTTO, myJsonProdotti);
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,7 +98,10 @@ public class VisualizzaProdottoFragment extends Fragment {
             prezzo = getArguments().getDouble(PREZZO);
             posizione = getArguments().getInt(POSIZIONE);
             posizioneSezione = getArguments().getInt(POSIZIONE_SEZIONE);
+            tavolo = getArguments().getInt(TAVOLO_VISUALIZZA_PRODOTTO);
+            commensali = getArguments().getInt(COMMENSALI_VISUALIZZA_PRODOTTO);
             sezioni = gson.fromJson(getArguments().getString(SEZIONI_VISUALIZZA_PRODOTTO), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
+            prodottiOrdine = gson.fromJson(getArguments().getString(PRODOTTI_VISUALIZZA_PRODOTTO), new TypeToken<List<SingoloOrdine>>(){}.getType());
         }
     }
 
@@ -121,21 +134,26 @@ public class VisualizzaProdottoFragment extends Fragment {
         aggiungiProdottoButton.setOnClickListener(view -> {
             try {
                 quantita = Integer.parseInt(quantitaEditText.getText().toString());
-                singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), quantita);
+                singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), sezioni.get(posizioneSezione).getProdottiMenu().get(posizione).getNomeProdotto(), quantita);
                 aggiungiProdottoOrdinazione(singoloOrdine);
-                sostituisciFragment();
+                Fragment fragment = VisualizzaMenuFragment.newInstance(tavolo, commensali, prodottiOrdine);
+                sostituisciFragmentSecond(fragment);
             }catch(NumberFormatException e){
                 Toast.makeText(getActivity(), "Inserire una quantità valida", Toast.LENGTH_SHORT).show();
             }
 
         });
 
-        indietroButton.setOnClickListener(view -> sostituisciFragment());
+        indietroButton.setOnClickListener(view -> {
+            Fragment fragment = VisualizzaMenuFragment.newInstance(tavolo, commensali, prodottiOrdine);
+            sostituisciFragmentSecond(fragment);
+        });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                sostituisciFragment();
+                Fragment fragment = VisualizzaMenuFragment.newInstance(tavolo, commensali, prodottiOrdine);
+                sostituisciFragmentSecond(fragment);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -143,7 +161,27 @@ public class VisualizzaProdottoFragment extends Fragment {
         return v;
     }
 
-    public void sostituisciFragment(){
+    public void sostituisciFragmentSecond(Fragment fragment){
+        FragmentTransaction transaction = null;
+        if (getFragmentManager() != null) {
+            transaction = getFragmentManager().beginTransaction();
+        }
+        try {
+            transaction.remove(this);
+        }catch(NullPointerException e){
+            transaction.commit();
+        }
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.addettoSalaFragmentContainerView, fragment);
+        transaction.commit();
+    }
+
+    public void aggiungiProdottoOrdinazione(SingoloOrdine ordine){
+        prodottiOrdine.add(ordine);
+        //prodottiOrdinazioneAdapter.notifyDataSetChanged();
+    }
+
+    /*public void sostituisciFragment(){
         FragmentTransaction transaction = null;
         if (getFragmentManager() != null) {
             transaction = getFragmentManager().beginTransaction();
@@ -156,5 +194,5 @@ public class VisualizzaProdottoFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.replace(R.id.addettoSalaFragmentContainerView, VisualizzaMenuFragment.class, null);
         transaction.commit();
-    }
+    }*/
 }

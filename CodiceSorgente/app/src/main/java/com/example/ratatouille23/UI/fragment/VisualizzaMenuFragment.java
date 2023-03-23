@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
@@ -20,9 +21,13 @@ import com.example.ratatouille23.adapter.ProdottiVisualizzaMenuAdapter;
 import com.example.ratatouille23.adapter.VisualizzaMenuAdapter;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.example.ratatouille23.entity.SingoloOrdine;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,14 +43,25 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     private FragmentTransaction transaction;
     private Controller controller;
     private ArrayList<SezioneMenu> sezioni;
+    private static final String VISUALIZZA_MENU_TAVOLO = "visualizzaMenuTavolo";
+    private static final String VISUALIZZA_MENU_COMMENSALI = "visualizzaMenuCommensali";
+    private static final String VISUALIZZA_MENU_PRODOTTI = "visualizzaMenuProdotti";
+    private int tavolo;
+    private int commensali;
+    private List<SingoloOrdine> prodottiOrdine = new ArrayList<>();
 
     public VisualizzaMenuFragment() {
         // Required empty public constructor
     }
 
-    public static VisualizzaMenuFragment newInstance(String param1, String param2) {
+    public static VisualizzaMenuFragment newInstance(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine) {
         VisualizzaMenuFragment fragment = new VisualizzaMenuFragment();
         Bundle args = new Bundle();
+        Gson gson = new Gson();
+        String myJson = gson.toJson(prodottiOrdine);
+        args.putString(VISUALIZZA_MENU_PRODOTTI, myJson);
+        args.putInt(VISUALIZZA_MENU_TAVOLO, tavolo);
+        args.putInt(VISUALIZZA_MENU_COMMENSALI, commensali);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +70,10 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            Gson gson = new Gson();
+            tavolo = getArguments().getInt(VISUALIZZA_MENU_TAVOLO);
+            commensali = getArguments().getInt(VISUALIZZA_MENU_COMMENSALI);
+            prodottiOrdine = gson.fromJson(getArguments().getString(VISUALIZZA_MENU_PRODOTTI), new TypeToken<List<SingoloOrdine>>(){}.getType());
         }
     }
 
@@ -93,18 +113,17 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
             }
         });
 
-        indietroButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sostituisciFragment();
-                bottomNavigationView.setVisibility(View.VISIBLE);
-            }
+        indietroButton.setOnClickListener(view -> {
+            Fragment fragment = OrdinazioniFragment.newInstance(tavolo, commensali, prodottiOrdine);
+            sostituisciFragmentSecond(fragment);
+            bottomNavigationView.setVisibility(View.VISIBLE);
         });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                sostituisciFragment();
+                Fragment fragment = OrdinazioniFragment.newInstance(tavolo, commensali, prodottiOrdine);
+                sostituisciFragmentSecond(fragment);
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
         };
@@ -116,7 +135,7 @@ public class VisualizzaMenuFragment extends Fragment implements ProdottiVisualiz
     public void onItemClickVisual(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
         Fragment fragment = VisualizzaProdottoFragment.newInstance(prodottoMenu.getNomeProdotto(), prodottoMenu.getNomeSecondaLingua(),
                 prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(),
-                prodottoMenu.getCosto(), posizione, posizioneSezione, sezioni);
+                prodottoMenu.getCosto(), posizione, posizioneSezione, sezioni, tavolo, commensali, prodottiOrdine);
         sostituisciFragmentSecond(fragment);
     }
 
