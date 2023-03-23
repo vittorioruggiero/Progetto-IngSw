@@ -131,7 +131,7 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
                         Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine, OrdinazioniFragment.this, addettoSala.getNomeAttivita(),
                         addettoSala.getIndirizzoAttivita());
                 //ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
-                Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
             }
@@ -165,6 +165,11 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
             selezionaTavoloSpinner.setAdapter(adapter);
 
         }
+    }
+
+    public void clearProdotti(){
+        prodottiOrdine.clear();
+        prodottiOrdinazioneAdapter.notifyDataSetChanged();
     }
 
 

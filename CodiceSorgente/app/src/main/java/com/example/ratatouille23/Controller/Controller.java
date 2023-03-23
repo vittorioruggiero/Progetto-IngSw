@@ -1066,7 +1066,7 @@ public class Controller {
                     @Override
                     public void onFailure(Call<Avviso> call, Throwable t) {
                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(activity, "Server Spento", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -1119,7 +1119,7 @@ public class Controller {
 
                     @Override
                     public void onFailure(Call<Ordinazione> call, Throwable t) {
-
+                        Toast.makeText(ordinazioniFragment.getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -1143,7 +1143,7 @@ public class Controller {
 
                     @Override
                     public void onFailure(Call<Ordinazione> call, Throwable t) {
-
+                        Toast.makeText(ordinazioniFragment.getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -1165,12 +1165,13 @@ public class Controller {
                     public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
                         if(response.body() != null){
                             Toast.makeText(ordinazioniFragment.getActivity(), "Ordinazione salvata correttamente", Toast.LENGTH_SHORT).show();
+                            ordinazioniFragment.clearProdotti();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<SingoloOrdine>> call, Throwable t) {
-
+                        Toast.makeText(ordinazioniFragment.getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
                     }
                 });
 
