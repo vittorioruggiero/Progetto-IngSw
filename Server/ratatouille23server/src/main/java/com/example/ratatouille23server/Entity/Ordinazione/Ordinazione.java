@@ -41,6 +41,10 @@ public class Ordinazione {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordinazioneSingoloOrdine")
     List<SingoloOrdine> singoliOrdiniOrdinazione;
 
+    public void setId_ordinazione(int id_ordinazione) {
+        this.id_ordinazione = id_ordinazione;
+    }
+
     public int getId_ordinazione() {
         return id_ordinazione;
     }

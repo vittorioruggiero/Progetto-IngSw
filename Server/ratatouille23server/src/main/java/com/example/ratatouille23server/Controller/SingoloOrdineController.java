@@ -29,4 +29,9 @@ public class SingoloOrdineController {
         return singoloOrdineDAO.save(singoloOrdine);
     }
 
+    @PostMapping("/singoloOrdine/save-all")
+    public List<SingoloOrdine> saveAll(@RequestBody List<SingoloOrdine> prodottiOrdine){
+        return singoloOrdineDAO.saveAll(prodottiOrdine);
+    }
+
 }

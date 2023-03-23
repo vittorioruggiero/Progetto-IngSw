@@ -1,5 +1,6 @@
 package com.example.ratatouille23server.Controller;
 
+import com.example.ratatouille23server.Entity.Conto.Conto;
 import com.example.ratatouille23server.Entity.Ordinazione.Ordinazione;
 import com.example.ratatouille23server.Entity.Ordinazione.OrdinazioneDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,19 @@ public class OrdinazioneController {
         return ordinazioneDAO.save(ordinazione);
     }
 
+    @PostMapping("/ordinazione/save-con-campi")
+    public Ordinazione save(@RequestParam("numeroTavolo") int numeroTavolo,
+                      @RequestParam("numeroCommensali") int numeroCommensali,
+                      @RequestParam("nomeAttivita") String nomeAttivita,
+                      @RequestParam("indirizzoAttivita") String indirizzoAttivita){
+        return ordinazioneDAO.saveConCampi(numeroTavolo, numeroCommensali, nomeAttivita, indirizzoAttivita);
+    }
+
     @RequestMapping(value = "/ordinazione/delete-by-id", method = RequestMethod.DELETE)
     public void deleteById(@RequestParam("id_ordinazione") int id_ordinazione){
         ordinazioneDAO.deleteById(id_ordinazione);
     }
+
+
 
 }
