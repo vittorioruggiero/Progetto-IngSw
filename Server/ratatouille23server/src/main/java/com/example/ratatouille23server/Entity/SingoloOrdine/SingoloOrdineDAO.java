@@ -1,5 +1,6 @@
 package com.example.ratatouille23server.Entity.SingoloOrdine;
 
+import com.example.ratatouille23server.Controller.SingoloOrdineController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
@@ -50,5 +51,10 @@ public class SingoloOrdineDAO {
         catch(NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+    public List<SingoloOrdine> saveAll(List<SingoloOrdine> prodottiOrdine) {
+        return repository.saveAll(prodottiOrdine);
+
     }
 }

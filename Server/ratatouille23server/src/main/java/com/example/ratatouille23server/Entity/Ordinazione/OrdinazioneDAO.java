@@ -67,4 +67,15 @@ public class OrdinazioneDAO {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    public Ordinazione saveConCampi(int numeroTavolo, int numeroCommensali, String nomeAttivita, String indirizzoAttivita) {
+
+        Ordinazione ordinazione = new Ordinazione();
+        ordinazione.setNumeroTavolo(numeroTavolo);
+        ordinazione.setNumeroCommensali(numeroCommensali);
+        ordinazione.setNomeAttivita(nomeAttivita);
+        ordinazione.setIndirizzoAttivita(indirizzoAttivita);
+        return repository.save(ordinazione);
+
+    }
 }
