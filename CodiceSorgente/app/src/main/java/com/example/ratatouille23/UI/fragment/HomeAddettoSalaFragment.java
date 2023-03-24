@@ -44,8 +44,6 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
     private RecyclerView recyclerView;
     private AvvisiAdapter avvisiAddettoSalaAdapter;
     private Button logoutButton;
-    private RetrofitService retrofitService;
-    private AvvisoAPI avvisoAPI;
     private List<Avviso> listaAvvisi = new ArrayList<>();
     private Controller controller;
     private AddettoSala addettoSala = getAddettoSala();
@@ -73,8 +71,6 @@ public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.I
                              Bundle savedInstanceState) {
 
         View inflatedView = inflater.inflate(R.layout.fragment_home_addetto_sala, container, false);
-
-        retrofitService = new RetrofitService();
 
         recyclerView = inflatedView.findViewById(R.id.avvisiAddettoSalaRecyclerView);
         controller = new Controller(getActivity().toString());

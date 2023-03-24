@@ -24,11 +24,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Avviso;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HomeAdminFragment extends Fragment {
     private FloatingActionButton modificaButton, selezionaFotoButton;
@@ -186,6 +190,7 @@ public class HomeAdminFragment extends Fragment {
                 if (data != null && result.getResultCode() == Activity.RESULT_OK) {
                     Uri resultUri = data.getData();
                     foto.setImageURI(resultUri);
+                    Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + resultUri);
                 }
             });
 

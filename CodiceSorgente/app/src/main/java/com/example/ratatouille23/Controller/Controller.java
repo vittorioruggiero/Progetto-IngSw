@@ -53,8 +53,6 @@ import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -81,9 +79,6 @@ public class Controller {
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
     private AddettoSala addettoSala;
-    private List<Ordinazione> listaOrdinazioni;
-    private List<SingoloOrdine> listaSingoliOrdini = new ArrayList<>();
-    private SingoliOrdiniAdapter singoliOrdiniAdapter;
     private RetrofitService retrofitService;
     private ArrayList<SezioneMenu> sezioni;
 
@@ -1090,27 +1085,6 @@ public class Controller {
 
                             }
                         });
-
-
-
-        /*avvisoAPI.salvataggioAvviso(avviso)
-                .enqueue(new Callback<Avviso>() {
-                    @Override
-                    public void onResponse(Call<Avviso> call, Response<Avviso> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
-                        }else{
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                            Toast.makeText(activity, "Avviso troppo lungo!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Avviso> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
     }
 
     public void salvaAvvisoAddettoSala(Avviso avviso, Activity activity) {
@@ -1380,7 +1354,6 @@ public class Controller {
 
                     }
                 });
-
 
 
     }
