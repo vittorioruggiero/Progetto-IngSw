@@ -4,6 +4,8 @@ import com.example.ratatouille23server.Entity.AddettoSala.AddettoSala;
 import com.example.ratatouille23server.Entity.AddettoSala.AddettoSalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -56,6 +58,17 @@ public class ContoDAO {
         conto.setImporto(importo);
         conto.setData(data);
         return repository.save(conto);
+
+    }
+
+    public ResponseEntity<List<Conto>> getContoByDate(java.sql.Date dataInizio, java.sql.Date dataFine){
+        List<Conto> conti = new ArrayList<>();
+        conti = repository.findByDataBetween(dataInizio, dataFine);
+        if(!(conti.isEmpty())){
+            return new ResponseEntity<>(conti, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
     }
 }

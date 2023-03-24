@@ -5,6 +5,7 @@ import com.example.ratatouille23server.Entity.Amministratore.AmministratoreDAO;
 import com.example.ratatouille23server.Entity.Conto.Conto;
 import com.example.ratatouille23server.Entity.Conto.ContoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,12 @@ public class ContoController {
     @GetMapping("/conto/get-all")
     public List<Conto> getAllConto(){
         return contoDAO.getAll();
+    }
+
+    @GetMapping("/conto/get-by-date")
+    public ResponseEntity<List<Conto>> getContoByDate(@RequestParam("dataInizio") java.sql.Date dataInizio,
+                                                      @RequestParam("dataFine") java.sql.Date dataFine){
+        return contoDAO.getContoByDate(dataInizio, dataFine);
     }
 
     @PostMapping("/conto/save")
