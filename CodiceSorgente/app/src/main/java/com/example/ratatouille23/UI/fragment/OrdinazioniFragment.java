@@ -121,9 +121,14 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         recyclerView.setAdapter(prodottiOrdinazioneAdapter);
 
         aggiungiProdottoButton.setOnClickListener(view -> {
-            Fragment fragment = VisualizzaMenuFragment.newInstance(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
-                    Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine);
-            sostituisciFragment(fragment);
+            if(!(numeroCommensaliEditText.getText().toString().equals("")) && selezionaTavoloSpinner.getSelectedItem() != null){
+                Fragment fragment = VisualizzaMenuFragment.newInstance(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
+                        Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine);
+                sostituisciFragment(fragment);
+            }else{
+                Toast.makeText(getActivity(), "Inserire i campi correttamente", Toast.LENGTH_SHORT).show();
+            }
+
         });
         salvaOrdinazioneButton.setOnClickListener(view -> {
             if(selezionaTavoloSpinner.getSelectedItem() != null){

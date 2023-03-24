@@ -2,6 +2,7 @@ package com.example.ratatouille23.retrofit.API;
 
 import com.example.ratatouille23.entity.Conto;
 
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,6 +15,10 @@ public interface ContoAPI {
 
     @GET("/conto/get-all")
     Call<List<Conto>> getAllConto();
+
+    @GET("/conto/get-by-date")
+    Call<List<Conto>> getAllContoByDate(@Query("dataInizio") java.sql.Date dataInizio,
+                                        @Query("dataFine") java.sql.Date dataFine);
 
     @POST("/conto/save")
     Call<Conto> save(@Body Conto conto);

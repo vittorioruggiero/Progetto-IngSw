@@ -31,11 +31,13 @@ public class VisualizzaProdottoFragment extends Fragment {
     private EditText ingredientiEditText;
     private EditText ingredientiSecondaLinguaEditText;
     private EditText costoEditText;
+    private EditText allergeniEditText;
     private EditText quantitaEditText;
     private static final String NOME_PRODOTTO = "nomeProdotto";
     private static final String NOME_PRODOTTO_SECONDA_LINGUA = "nomeProdottoSecondaLingua";
     private static final String INGREDIENTI = "ingredienti";
     private static final String INGREDIENTI_SECONDA_LINGUA = "ingredientiSecondaLingua";
+    private static final String ALLERGENI = "allergeni";
     private static final String PREZZO = "prezzo";
     private static final String POSIZIONE = "posizione";
     private static final String POSIZIONE_SEZIONE = "posizione_sezione";
@@ -47,6 +49,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     private String nomeProdottoSecondaLingua;
     private String ingredienti;
     private String ingredientiSecondaLingua;
+    private String allergeni;
     private double prezzo;
     private int quantita;
     private int posizione;
@@ -65,7 +68,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     public static VisualizzaProdottoFragment newInstance(String nomeProdotto, String nomeProdottoSecondaLingua,
                                                          String ingredienti, String ingredientiSecondaLingua,
                                                          double prezzo, int posizione, int posizioneSezione,
-                                                         ArrayList<SezioneMenu> sezioniMenu, int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine) {
+                                                         ArrayList<SezioneMenu> sezioniMenu, int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, String allergeni) {
         VisualizzaProdottoFragment fragment = new VisualizzaProdottoFragment();
         Bundle args = new Bundle();
         Gson gson = new Gson();
@@ -78,6 +81,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         args.putInt(POSIZIONE_SEZIONE, posizioneSezione);
         args.putInt(TAVOLO_VISUALIZZA_PRODOTTO, tavolo);
         args.putInt(COMMENSALI_VISUALIZZA_PRODOTTO, commensali);
+        args.putString(ALLERGENI, allergeni);
         String myJsonSezioni = gson.toJson(sezioniMenu);
         String myJsonProdotti = gson.toJson(prodottiOrdine);
         args.putString(SEZIONI_VISUALIZZA_PRODOTTO, myJsonSezioni);
@@ -100,6 +104,7 @@ public class VisualizzaProdottoFragment extends Fragment {
             posizioneSezione = getArguments().getInt(POSIZIONE_SEZIONE);
             tavolo = getArguments().getInt(TAVOLO_VISUALIZZA_PRODOTTO);
             commensali = getArguments().getInt(COMMENSALI_VISUALIZZA_PRODOTTO);
+            allergeni = getArguments().getString(ALLERGENI);
             sezioni = gson.fromJson(getArguments().getString(SEZIONI_VISUALIZZA_PRODOTTO), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
             prodottiOrdine = gson.fromJson(getArguments().getString(PRODOTTI_VISUALIZZA_PRODOTTO), new TypeToken<List<SingoloOrdine>>(){}.getType());
         }
@@ -119,6 +124,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         costoEditText = v.findViewById(R.id.prezzoVisualizzaEditText);
         quantitaEditText = v.findViewById(R.id.quantitaVisualizzaEditText);
         indietroButton = v.findViewById(R.id.indietroButton);
+        allergeniEditText = v.findViewById(R.id.allergeniVisualizzaEditText);
 
         //ArrayList<SezioneMenu> sezioni = getSezioni();
 
@@ -130,6 +136,8 @@ public class VisualizzaProdottoFragment extends Fragment {
         if(ingredientiSecondaLingua != null)
             ingredientiSecondaLinguaEditText.setText(ingredientiSecondaLingua);
         costoEditText.setText(String.valueOf(prezzo));
+        if(allergeni != null)
+            allergeniEditText.setText(allergeni);
 
         aggiungiProdottoButton.setOnClickListener(view -> {
             try {
@@ -180,19 +188,4 @@ public class VisualizzaProdottoFragment extends Fragment {
         prodottiOrdine.add(ordine);
         //prodottiOrdinazioneAdapter.notifyDataSetChanged();
     }
-
-    /*public void sostituisciFragment(){
-        FragmentTransaction transaction = null;
-        if (getFragmentManager() != null) {
-            transaction = getFragmentManager().beginTransaction();
-        }
-        try {
-            transaction.remove(this);
-        }catch(NullPointerException e){
-            transaction.commit();
-        }
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.addettoSalaFragmentContainerView, VisualizzaMenuFragment.class, null);
-        transaction.commit();
-    }*/
 }

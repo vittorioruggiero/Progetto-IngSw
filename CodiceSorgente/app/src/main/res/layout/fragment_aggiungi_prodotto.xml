@@ -8,6 +8,26 @@
     android:background="@color/DEFAULT_COLOR">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/allergeniLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="220dp"
+        app:layout_constraintBottom_toTopOf="@+id/aggiungiProdottoButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/allergeniEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:hint="@string/allergeni"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nomeProdottoLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -103,8 +123,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="212dp"
-        app:layout_constraintBottom_toTopOf="@+id/aggiungiProdottoButton"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/allergeniLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
@@ -130,7 +150,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.181"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientiProdottoSecondaLinguaLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/allergeniLayout" />
 
     <RelativeLayout
         android:layout_width="300dp"

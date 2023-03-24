@@ -42,6 +42,7 @@ public class ModificaProdottoFragment extends Fragment {
     private EditText nomeProdottoEditText;
     private EditText nomeProdottoSecondaLinguaEditText;
     private EditText ingredientiEditText;
+    private EditText allergeniEditText;
     private EditText ingredientiSecondaLinguaEditText;
     private EditText costoEditText;
     private Spinner tipologiaProdottoModificaSpinner;
@@ -50,6 +51,7 @@ public class ModificaProdottoFragment extends Fragment {
     private static final String NOME_PRODOTTO_SECONDA_LINGUA = "nomeProdottoSecondaLingua";
     private static final String INGREDIENTI = "ingredienti";
     private static final String INGREDIENTI_SECONDA_LINGUA = "ingredientiSecondaLingua";
+    private static final String ALLERGENI = "allergeni";
     private static final String PREZZO = "prezzo";
     private static final String POSIZIONE = "posizione";
     private static final String POSIZIONE_SEZIONE = "posizione_sezione";
@@ -59,6 +61,7 @@ public class ModificaProdottoFragment extends Fragment {
     private String ingredienti;
     private String ingredientiSecondaLingua;
     private double prezzo;
+    private String allergeni;
     private int posizione;
     private int posizioneSezione;
     private Controller controllerAdmin;
@@ -72,7 +75,7 @@ public class ModificaProdottoFragment extends Fragment {
     public static ModificaProdottoFragment newInstance(String nomeProdotto, String nomeProdottoSecondaLingua,
                                                        String ingredienti, String ingredientiSecondaLingua,
                                                        double prezzo, int posizione, int posizioneSezione,
-                                                       ArrayList<SezioneMenu> sezioni){
+                                                       ArrayList<SezioneMenu> sezioni, String allergeni){
         ModificaProdottoFragment fragment = new ModificaProdottoFragment();
         Bundle args = new Bundle();
         Gson gson = new Gson();
@@ -80,6 +83,7 @@ public class ModificaProdottoFragment extends Fragment {
         args.putString(NOME_PRODOTTO_SECONDA_LINGUA, nomeProdottoSecondaLingua);
         args.putString(INGREDIENTI, ingredienti);
         args.putString(INGREDIENTI_SECONDA_LINGUA, ingredientiSecondaLingua);
+        args.putString(ALLERGENI, allergeni);
         args.putDouble(PREZZO, prezzo);
         args.putInt(POSIZIONE, posizione);
         args.putInt(POSIZIONE_SEZIONE, posizioneSezione);
@@ -99,6 +103,7 @@ public class ModificaProdottoFragment extends Fragment {
             ingredienti = getArguments().getString(INGREDIENTI);
             ingredientiSecondaLingua = getArguments().getString(INGREDIENTI_SECONDA_LINGUA);
             prezzo = getArguments().getDouble(PREZZO);
+            allergeni = getArguments().getString(ALLERGENI);
             posizione = getArguments().getInt(POSIZIONE);
             posizioneSezione = getArguments().getInt(POSIZIONE_SEZIONE);
             sezioni = gson.fromJson(getArguments().getString(SEZIONI_MODIFICA_PRODOTTO), new TypeToken<ArrayList<SezioneMenu>>(){}.getType());
@@ -119,6 +124,7 @@ public class ModificaProdottoFragment extends Fragment {
         nomeProdottoSecondaLinguaEditText = v.findViewById(R.id.nomeProdottoSecondaLinguaModificaEditText);
         ingredientiEditText = v.findViewById(R.id.ingredientiModificaEditText);
         ingredientiSecondaLinguaEditText = v.findViewById(R.id.ingredientiSecondaLinguaModificaEditText);
+        allergeniEditText = v.findViewById(R.id.allergeniModificaEditText);
         costoEditText = v.findViewById(R.id.prezzoModificaEditText);
         tipologiaProdottoModificaSpinner = v.findViewById(R.id.tipologiaProdottoModificaSpinner);
         eliminaProdottoButton = v.findViewById(R.id.eliminaProdottoButton);
@@ -138,6 +144,8 @@ public class ModificaProdottoFragment extends Fragment {
         if(ingredientiSecondaLingua != null)
             ingredientiSecondaLinguaEditText.setText(ingredientiSecondaLingua);
         costoEditText.setText(String.valueOf(prezzo));
+        if(allergeni != null)
+            allergeniEditText.setText(allergeni);
 
         ArrayAdapter<SezioneMenu> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, sezioni);
@@ -150,6 +158,7 @@ public class ModificaProdottoFragment extends Fragment {
             String nomeProdottoSecondaLingua = nomeProdottoSecondaLinguaEditText.getText().toString();
             String ingredienti = ingredientiEditText.getText().toString();
             String ingredientiSecondaLingua = ingredientiSecondaLinguaEditText.getText().toString();
+            String allergeni = allergeniEditText.getText().toString();
             double costo;
 
             try {
@@ -161,35 +170,67 @@ public class ModificaProdottoFragment extends Fragment {
 
             if(!(nomeProdotto.equals("")) && !(ingredienti.equals("")) && costo != 0){
                 if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
-                    nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
-                    try {
-                        if(getActivity().toString().contains("Admin")){
-                            controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
-                                    getActivity(), this);
-                        }else{
-                            controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
-                                    getActivity(), this);
+                    if(allergeni.equals("")){
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+                        try {
+                            if(getActivity().toString().contains("Admin")){
+                                controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }else{
+                                controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                         }
-                    }catch(IndexOutOfBoundsException e){
-                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo, allergeni);
+                        try {
+                            if(getActivity().toString().contains("Admin")){
+                                controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }else{
+                                controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                 }
                 else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
                     Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
-                    try {
-                        if(getActivity().toString().contains("Admin")){
-                            controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
-                                    getActivity(), this);
-                        }else{
-                            controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
-                                    getActivity(), this);
+                    if(allergeni.equals("")){
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
+                        try {
+                            if(getActivity().toString().contains("Admin")){
+                                controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }else{
+                                controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
                         }
-                    }catch(IndexOutOfBoundsException e){
-                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo, allergeni);
+                        try {
+                            if(getActivity().toString().contains("Admin")){
+                                controllerAdmin.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }else{
+                                controllerSupervisore.eliminaEdAggiungiProdotto(nuovoProdotto, tipologiaProdottoModificaSpinner.getSelectedItem().toString(), nomeProdottoOriginale,
+                                        getActivity(), this);
+                            }
+                        }catch(IndexOutOfBoundsException e){
+                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                 }
             }else{
                 Toast.makeText(getActivity(), "Compilare i campi correttamente", Toast.LENGTH_SHORT).show();

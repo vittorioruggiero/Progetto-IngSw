@@ -162,4 +162,11 @@
         "Components may have different resting elevations across platforms, depending on the depth "
         "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"</string>
     <string name="logout">Logout</string>
+    <string name="dataInizio">Data Inizio</string>
+    <string name="dataFine">Data Fine</string>
+    <string name="selezionaIntervallo">Seleziona Intervallo Statistiche</string>
+    <string name="cerca">Cerca</string>
+    <string name="incassoTotale">Incasso Totale</string>
+    <string name="incassoMedio">Incasso Medio</string>
+    <string name="allergeni">Allergeni</string>
 </resources>

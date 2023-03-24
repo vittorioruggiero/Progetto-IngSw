@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.ratatouille23.UI.activity.HomeAddettoSalaActivity;
 import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.HomeSupervisoreActivity;
@@ -17,12 +19,14 @@ import com.example.ratatouille23.UI.activity.ReimpostaPasswordActivity;
 import com.example.ratatouille23.UI.fragment.AggiungiProdottoFragment;
 import com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment;
 import com.example.ratatouille23.UI.fragment.ContiFragment;
+import com.example.ratatouille23.UI.fragment.GraficoStatisticaFragment;
 import com.example.ratatouille23.UI.fragment.HomeAdminFragment;
 import com.example.ratatouille23.UI.fragment.ModificaProdottoFragment;
 import com.example.ratatouille23.UI.fragment.ModificaSezioniFragment;
 import com.example.ratatouille23.UI.fragment.OrdinazioniFragment;
 import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
 import com.example.ratatouille23.UI.fragment.VisualizzaMenuFragment;
+import com.example.ratatouille23.UI.fragment.VisualizzaStatisticheFragment;
 import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
@@ -71,6 +75,7 @@ public class Controller {
     private ProdottoMenuAPI prodottoMenuAPI;
     private SingoloOrdineAPI singoloOrdineAPI;
     private OrdinazioneAPI ordinazioneAPI;
+    private ContoAPI contoAPI;
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
     private AddettoSala addettoSala;
@@ -1176,4 +1181,44 @@ public class Controller {
                 });
 
     }
+
+    public void cercaContiPerDate(java.sql.Date dataInizio, java.sql.Date dataFine, VisualizzaStatisticheFragment visualizzaStatisticheFragment) {
+
+        if(contoAPI == null){
+            contoAPI = retrofitService.getRetrofit().create(ContoAPI.class);
+        }
+
+        contoAPI.getAllContoByDate(dataInizio, dataFine)
+                .enqueue(new Callback<List<Conto>>() {
+                    @Override
+                    public void onResponse(Call<List<Conto>> call, Response<List<Conto>> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            Fragment fragment = GraficoStatisticaFragment.newInstance(response.body());
+                            visualizzaStatisticheFragment.sostituisciFragment(fragment);
+                            Double totale = 0.0;
+                            for(Conto conto : response.body()){
+                                totale += conto.getImporto();
+                            }
+                            visualizzaStatisticheFragment.setTextView(String.valueOf(totale), String.valueOf(totale/response.body().size()));
+                            //setStatistiche(response.body(), visualizzaStatisticheFragment);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Conto>> call, Throwable t) {
+
+                    }
+                });
+
+
+
+    }
+
+    /*private void setStatistiche(List<Conto> listaConti, VisualizzaStatisticheFragment visualizzaStatisticheFragment) {
+
+        Fragment fragment = GraficoStatisticaFragment.newInstance(listaConti);
+        visualizzaStatisticheFragment.sostituisciFragment(fragment);
+
+    }*/
 }

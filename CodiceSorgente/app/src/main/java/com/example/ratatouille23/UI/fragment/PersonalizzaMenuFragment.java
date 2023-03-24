@@ -140,7 +140,7 @@ public class PersonalizzaMenuFragment extends Fragment implements ProdottiAdapte
     @Override
     public void onItemClick(ProdottoMenu prodottoMenu, int posizione, int posizioneSezione) {
         Fragment fragment = ModificaProdottoFragment.newInstance(prodottoMenu.getNomeProdotto(), prodottoMenu.getNomeSecondaLingua(),
-                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(), prodottoMenu.getCosto(), posizione, posizioneSezione, sezioni);
+                prodottoMenu.getDescrizione(), prodottoMenu.getDescrizioneSecondaLingua(), prodottoMenu.getCosto(), posizione, posizioneSezione, sezioni, prodottoMenu.getAllergeni());
         sostituisciFragment(fragment);
     }
 

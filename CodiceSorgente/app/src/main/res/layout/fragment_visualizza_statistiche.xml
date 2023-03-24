@@ -10,19 +10,21 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/adminButtonIntervallo"
+        android:id="@+id/cercaButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/scegliIntervallo"
+        android:layout_marginBottom="70dp"
+        android:text="@string/cerca"
         android:textSize="14sp"
         app:backgroundTint="@color/YELLOW_LOGO"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/graficoFragmentContainerView" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView5"
+        android:id="@+id/graficoFragmentContainerView"
         android:name="com.example.ratatouille23.UI.fragment.GraficoStatisticaFragment"
         android:layout_width="391dp"
         android:layout_height="528dp"
@@ -31,6 +33,85 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_grafico_statistica" />
+
+    <Button
+        android:id="@+id/dataInizioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/dataInizio"
+        app:layout_constraintEnd_toStartOf="@+id/dataFineButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/dataFineButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="@color/YELLOW_LOGO"
+        android:text="@string/dataFine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dataInizioButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/intervalloStatisticheTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/selezionaIntervallo"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/incassoTotaleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="60dp"
+        android:text="@string/incassoTotale"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/incassoMedioTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataInizioButton" />
+
+    <TextView
+        android:id="@+id/incassoMedioTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/incassoMedio"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/incassoTotaleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/dataFineButton" />
+
+    <TextView
+        android:id="@+id/valoreIncassoTotaleTextView"
+        android:layout_width="62dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/incassoTotaleTextView" />
+
+    <TextView
+        android:id="@+id/valoreIncassoMedioTextView"
+        android:layout_width="62dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="65dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/incassoMedioTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

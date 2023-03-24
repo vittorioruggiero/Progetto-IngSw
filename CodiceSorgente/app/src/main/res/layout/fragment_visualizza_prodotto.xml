@@ -8,6 +8,26 @@
     tools:context=".UI.fragment.ModificaProdottoFragment">
 
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/allergeniVisualizzaLayout"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/quantitaVisualizzaLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/allergeniVisualizzaEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:hint="@string/allergeni"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/aggiungiProdottoButton"
         android:layout_width="wrap_content"
@@ -99,7 +119,7 @@
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/quantitaVisualizzaLayout"
+        app:layout_constraintBottom_toTopOf="@+id/allergeniVisualizzaLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -127,7 +147,7 @@
         android:id="@+id/quantitaVisualizzaLayout"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="115dp"
+        android:layout_marginBottom="90dp"
         app:layout_constraintBottom_toTopOf="@+id/aggiungiProdottoButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.17"

@@ -40,6 +40,22 @@ public class ProdottoMenu{
         this.costo = prezzo;
     }
 
+    public ProdottoMenu(String nomeProdotto, String descrizione, double costo, String allergeni) {
+        this.nomeProdotto = nomeProdotto;
+        this.descrizione = descrizione;
+        this.costo = costo;
+        this.allergeni = allergeni;
+    }
+
+    public ProdottoMenu(String nomeProdotto, String nomeSecondaLingua, String descrizione, String descrizioneSecondaLingua, double costo, String allergeni) {
+        this.nomeProdotto = nomeProdotto;
+        this.nomeSecondaLingua = nomeSecondaLingua;
+        this.descrizione = descrizione;
+        this.descrizioneSecondaLingua = descrizioneSecondaLingua;
+        this.costo = costo;
+        this.allergeni = allergeni;
+    }
+
     public String getNomeProdotto() {
         return nomeProdotto;
     }
