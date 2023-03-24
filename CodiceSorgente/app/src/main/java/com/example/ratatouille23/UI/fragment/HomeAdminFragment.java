@@ -203,11 +203,20 @@ public class HomeAdminFragment extends Fragment {
         inserisciAvvisoAlertDialogBuilder.setPositiveButton(
                 "Conferma",
                     (dialog, id) -> {
-                    Avviso avviso = new Avviso(testoAvvisoEditText.getText().toString());
-                    controllerAdmin.salvaAvviso(avviso, getActivity());
-                    //sendAvvisi(avviso);
-                    testoAvvisoEditText.setText("");
-                    dialog.cancel();
+                    if(testoAvvisoEditText.getText().toString().equals("")){
+                        Toast.makeText(getActivity(), "Inserire testo avviso", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Avviso avviso = new Avviso();
+                        avviso.setAvviso(testoAvvisoEditText.getText().toString());
+                        avviso.setNomeAttivita(amministratore.getNomeAttivita());
+                        avviso.setIndirizzoAttivita(amministratore.getIndirizzoAttivita());
+                        controllerAdmin.salvaAvvisoSupervisore(avviso, getActivity());
+                        controllerAdmin.salvaAvvisoAddettoSala(avviso, getActivity());
+                        //sendAvvisi(avviso);
+                        testoAvvisoEditText.setText("");
+                        dialog.cancel();
+                    }
+
                 });
 
         inserisciAvvisoAlertDialogBuilder.setNegativeButton(

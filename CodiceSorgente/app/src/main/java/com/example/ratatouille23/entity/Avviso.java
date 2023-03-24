@@ -6,6 +6,11 @@ public class Avviso {
     private String avviso;
     private String nomeAttivita;
     private String indirizzoAttivita;
+    private String email;
+
+    public Avviso(){
+
+    }
 
     public Avviso(String avviso, String nomeAttivita, String indirizzoAttivita){
         this.avviso = avviso;
@@ -49,6 +54,14 @@ public class Avviso {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Avviso{" +
@@ -56,6 +69,7 @@ public class Avviso {
                 ", avviso='" + avviso + '\'' +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

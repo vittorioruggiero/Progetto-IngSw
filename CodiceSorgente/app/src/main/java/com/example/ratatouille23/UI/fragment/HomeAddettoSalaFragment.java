@@ -18,11 +18,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.UI.activity.HomeAddettoSalaActivity;
 import com.example.ratatouille23.UI.activity.HomeSupervisoreActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.adapter.AvvisiAdapter;
+import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Avviso;
 import com.example.ratatouille23.retrofit.API.AvvisoAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
@@ -37,19 +39,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeAddettoSalaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeAddettoSalaFragment extends Fragment {
+public class HomeAddettoSalaFragment extends Fragment implements AvvisiAdapter.ItemClickListenerAvvisi{
 
     private RecyclerView recyclerView;
     private AvvisiAdapter avvisiAddettoSalaAdapter;
     private Button logoutButton;
     private RetrofitService retrofitService;
     private AvvisoAPI avvisoAPI;
-    private List<Avviso> listaAvvisi;
+    private List<Avviso> listaAvvisi = new ArrayList<>();
+    private Controller controller;
+    private AddettoSala addettoSala = getAddettoSala();
 
     public HomeAddettoSalaFragment() {
         // Required empty public constructor
@@ -78,29 +77,9 @@ public class HomeAddettoSalaFragment extends Fragment {
         retrofitService = new RetrofitService();
 
         recyclerView = inflatedView.findViewById(R.id.avvisiAddettoSalaRecyclerView);
+        controller = new Controller(getActivity().toString());
 
-        avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
-        avvisoAPI.getAllAvvisiByAttivita(getAddettoSala().getNomeAttivita(), getAddettoSala().getIndirizzoAttivita())
-                .enqueue(new Callback<List<Avviso>>() {
-                    @Override
-                    public void onResponse(Call<List<Avviso>> call, Response<List<Avviso>> response) {
-                        if(response.body() != null){
-                            Logger.getLogger(HomeAddettoSalaActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body().toString());
-                            listaAvvisi = response.body();
-                            avvisiAddettoSalaAdapter = new AvvisiAdapter(listaAvvisi, getContext());
-                            recyclerView.setAdapter(avvisiAddettoSalaAdapter);
-                            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-                        }else{
-                            Logger.getLogger(HomeAddettoSalaActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Avviso>> call, Throwable t) {
-                        Logger.getLogger(HomeAddettoSalaActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(getContext(), "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        controller.checkAvvisiAddettoSala(addettoSala.getEmail(), this);
 
         logoutButton = inflatedView.findViewById(R.id.logoutButtonAddettoSala);
         logoutButton.setOnClickListener(view -> {
@@ -122,5 +101,21 @@ public class HomeAddettoSalaFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return inflatedView;
+    }
+
+    @Override
+    public void onItemClickAvviso(int posizione) {
+        controller.eliminaAvvisoAddettoSala(listaAvvisi.get(posizione), this, addettoSala.getEmail());
+    }
+
+    public void notifyDataChanged(){
+        avvisiAddettoSalaAdapter.notifyDataSetChanged();
+    }
+
+    public void setAvvisiRecyclerView(List<Avviso> avvisi) {
+        listaAvvisi = avvisi;
+        avvisiAddettoSalaAdapter = new AvvisiAdapter(listaAvvisi, getContext(), HomeAddettoSalaFragment.this);
+        recyclerView.setAdapter(avvisiAddettoSalaAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     }
 }

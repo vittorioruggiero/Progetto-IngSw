@@ -20,7 +20,9 @@ import com.example.ratatouille23.UI.fragment.AggiungiProdottoFragment;
 import com.example.ratatouille23.UI.fragment.AggiungiSezioneFragment;
 import com.example.ratatouille23.UI.fragment.ContiFragment;
 import com.example.ratatouille23.UI.fragment.GraficoStatisticaFragment;
+import com.example.ratatouille23.UI.fragment.HomeAddettoSalaFragment;
 import com.example.ratatouille23.UI.fragment.HomeAdminFragment;
+import com.example.ratatouille23.UI.fragment.HomeSupervisoreFragment;
 import com.example.ratatouille23.UI.fragment.ModificaProdottoFragment;
 import com.example.ratatouille23.UI.fragment.ModificaSezioniFragment;
 import com.example.ratatouille23.UI.fragment.OrdinazioniFragment;
@@ -1047,16 +1049,51 @@ public class Controller {
 
 
 
-    public void salvaAvviso(Avviso avviso, Activity activity){
+    public void salvaAvvisoSupervisore(Avviso avviso, Activity activity){
 
         if(avvisoAPI == null){
             avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+
         }
+        supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
 
-        avviso.setNomeAttivita(admin.getNomeAttivita());
-        avviso.setIndirizzoAttivita(admin.getIndirizzoAttivita());
+        supervisoreAPI.getAllSupervisore()
+                        .enqueue(new Callback<List<Supervisore>>() {
+                            @Override
+                            public void onResponse(Call<List<Supervisore>> call, Response<List<Supervisore>> response) {
+                                if(response.body() != null){
+                                    for(Supervisore supervisore : response.body()){
+                                        avviso.setEmail(supervisore.getEmail());
+                                        avvisoAPI.salvataggioAvviso(avviso)
+                                                .enqueue(new Callback<Avviso>() {
+                                                    @Override
+                                                    public void onResponse(Call<Avviso> call, Response<Avviso> response) {
 
-        avvisoAPI.salvataggioAvviso(avviso)
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Avviso> call, Throwable t) {
+
+                                                    }
+                                                });
+                                    }
+                                }
+                                    //avvisoAPI.saveAll(response.body(), avviso);
+                                else{
+                                    Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                                    //Toast.makeText(activity, "Avviso troppo lungo!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Supervisore>> call, Throwable t) {
+
+                            }
+                        });
+
+
+
+        /*avvisoAPI.salvataggioAvviso(avviso)
                 .enqueue(new Callback<Avviso>() {
                     @Override
                     public void onResponse(Call<Avviso> call, Response<Avviso> response) {
@@ -1073,8 +1110,141 @@ public class Controller {
                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
                         Toast.makeText(activity, "Controlla la connessione", Toast.LENGTH_SHORT).show();
                     }
+                });*/
+    }
+
+    public void salvaAvvisoAddettoSala(Avviso avviso, Activity activity) {
+
+        if (avvisoAPI == null) {
+            avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+
+        }
+        addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
+
+        addettoSalaAPI.getAllAddettoSala()
+                .enqueue(new Callback<List<AddettoSala>>() {
+                    @Override
+                    public void onResponse(Call<List<AddettoSala>> call, Response<List<AddettoSala>> response) {
+                        if (response.body() != null){
+                            for(AddettoSala addettoSala : response.body()){
+                                avviso.setEmail(addettoSala.getEmail());
+                                avvisoAPI.salvataggioAvviso(avviso)
+                                        .enqueue(new Callback<Avviso>() {
+                                            @Override
+                                            public void onResponse(Call<Avviso> call, Response<Avviso> response) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Avviso> call, Throwable t) {
+
+                                            }
+                                        });
+                            }
+                        }else {
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<AddettoSala>> call, Throwable t) {
+
+                    }
                 });
     }
+
+    public void checkAvvisiAddettoSala(String email, HomeAddettoSalaFragment homeAddettoSalaFragment){
+
+        if(avvisoAPI == null){
+            avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+        }
+
+        avvisoAPI.getAllAvvisiByEmail(email)
+                .enqueue(new Callback<List<Avviso>>() {
+                    @Override
+                    public void onResponse(Call<List<Avviso>> call, Response<List<Avviso>> response) {
+                        if(response.body() != null){
+                            homeAddettoSalaFragment.setAvvisiRecyclerView(response.body());
+                            homeAddettoSalaFragment.notifyDataChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Avviso>> call, Throwable t) {
+
+                    }
+                });
+
+
+    }
+
+    public void checkAvvisiSupervisore(String email, HomeSupervisoreFragment homeSupervisoreFragment){
+
+        if(avvisoAPI == null){
+            avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+        }
+
+        avvisoAPI.getAllAvvisiByEmail(email)
+                .enqueue(new Callback<List<Avviso>>() {
+                    @Override
+                    public void onResponse(Call<List<Avviso>> call, Response<List<Avviso>> response) {
+                        if(response.body() != null){
+                            homeSupervisoreFragment.setAvvisiRecyclerView(response.body());
+                            homeSupervisoreFragment.notifyDataChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Avviso>> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    public void eliminaAvvisoSupervisore(Avviso avviso, HomeSupervisoreFragment fragment, String email) {
+
+        if(avvisoAPI == null){
+            avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+        }
+
+        avvisoAPI.deleteById(avviso.getId())
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        checkAvvisiSupervisore(email, fragment);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    public void eliminaAvvisoAddettoSala(Avviso avviso, HomeAddettoSalaFragment fragment, String email) {
+
+        if(avvisoAPI == null){
+            avvisoAPI = retrofitService.getRetrofit().create(AvvisoAPI.class);
+        }
+
+        avvisoAPI.deleteById(avviso.getId())
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        checkAvvisiAddettoSala(email, fragment);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+
 
 
     public void mostraReimpostaPasswordActivity(LoginActivity loginActivity) {
@@ -1215,10 +1385,5 @@ public class Controller {
 
     }
 
-    /*private void setStatistiche(List<Conto> listaConti, VisualizzaStatisticheFragment visualizzaStatisticheFragment) {
 
-        Fragment fragment = GraficoStatisticaFragment.newInstance(listaConti);
-        visualizzaStatisticheFragment.sostituisciFragment(fragment);
-
-    }*/
 }

@@ -21,12 +21,14 @@ public class AvvisiAdapter extends RecyclerView.Adapter<AvvisiAdapter.ViewHolder
     private Context context;
     private List<Avviso> avvisi;
     private static Bundle myBundle = new Bundle();
+    private AvvisiAdapter.ItemClickListenerAvvisi clickListener;
 
 
 
-    public AvvisiAdapter(List<Avviso> avvisi, Context context) {
+    public AvvisiAdapter(List<Avviso> avvisi, Context context, AvvisiAdapter.ItemClickListenerAvvisi clickListener) {
         this.avvisi = avvisi;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -44,6 +46,9 @@ public class AvvisiAdapter extends RecyclerView.Adapter<AvvisiAdapter.ViewHolder
         String avviso = avvisi.get(position).getAvviso();
 
         holder.avvisoTextView.setText(avviso);
+        holder.avvisoVisualizzatoButton.setOnClickListener(view ->
+                clickListener.onItemClickAvviso(holder.getAdapterPosition())
+        );
 
     }
 
@@ -60,16 +65,22 @@ public class AvvisiAdapter extends RecyclerView.Adapter<AvvisiAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView avvisoTextView;
+        FloatingActionButton avvisoVisualizzatoButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             avvisoTextView = itemView.findViewById(R.id.avvisoTextView);
+            avvisoVisualizzatoButton = itemView.findViewById(R.id.visualizzatoButton);
         }
     }
 
     public static Bundle getBundle(){
         return myBundle;
+    }
+
+    public interface ItemClickListenerAvvisi{
+        void onItemClickAvviso(int posizione);
     }
 }
 
