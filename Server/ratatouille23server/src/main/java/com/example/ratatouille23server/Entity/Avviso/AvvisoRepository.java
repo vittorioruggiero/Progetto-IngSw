@@ -10,4 +10,6 @@ import java.util.List;
 public interface AvvisoRepository extends JpaRepository<Avviso, Integer> {
 
     List<Avviso> findAllByNomeAttivitaAndIndirizzoAttivita(String nomeAttivita, String indirizzoAttivita);
+
+    List<Avviso> findAllByEmail(String email);
 }

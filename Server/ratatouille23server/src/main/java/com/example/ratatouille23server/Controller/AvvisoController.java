@@ -33,9 +33,19 @@ public class AvvisoController {
         return avvisoDAO.getAllByAttivita(nomeAttivita, indirizzoAttivita);
     }
 
+    @RequestMapping(value = "/avviso/get-by-email", method = RequestMethod.GET)
+    public ResponseEntity<List<Avviso>> getAllAvvisiByEmail(@RequestParam("email") String email){
+        return avvisoDAO.getAllByEmail(email);
+    }
+
     @PostMapping("/avviso/salvataggioAvviso")
     public Avviso salvataggioAvviso(@RequestBody Avviso avviso){
         return avvisoDAO.salvataggioAvviso(avviso);
+    }
+
+    @RequestMapping(value = "/avviso/delete-by-id", method = RequestMethod.DELETE)
+    public void deleteById(@RequestParam("id") int id){
+        avvisoDAO.deleteById(id);
     }
 
 }

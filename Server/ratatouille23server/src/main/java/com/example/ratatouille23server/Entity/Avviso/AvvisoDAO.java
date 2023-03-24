@@ -41,12 +41,26 @@ public class AvvisoDAO {
         }
     }
 
+    public ResponseEntity<List<Avviso>> getAllByEmail(String email){
+        List<Avviso> listaAvvisi;
+        try{
+            listaAvvisi = repository.findAllByEmail(email);
+            return new ResponseEntity<>(listaAvvisi, HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
     public void delete(Avviso avviso){
         repository.delete(avviso);
     }
 
     public Optional<Avviso> getById(Integer avvisoPkey){
         return repository.findById(avvisoPkey);
+    }
+
+    public void deleteById(Integer id){
+        repository.deleteById(id);
     }
 
 

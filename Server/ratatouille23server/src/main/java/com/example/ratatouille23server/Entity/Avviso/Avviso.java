@@ -16,6 +16,8 @@ public class Avviso {
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
     private String indirizzoAttivita;
+    @Column(name = "email")
+    private String email;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
@@ -58,6 +60,14 @@ public class Avviso {
         this.indirizzoAttivita = indirizzoAttivita;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Avviso{" +
@@ -65,6 +75,7 @@ public class Avviso {
                 ", avviso='" + avviso + '\'' +
                 ", nomeAttivita='" + nomeAttivita + '\'' +
                 ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
