@@ -22,10 +22,11 @@ public class SingoloOrdineDAO {
     }
 
     public List<SingoloOrdine> getAll(){
-        List<SingoloOrdine> singoliOrdini = new ArrayList<>();
+        /*List<SingoloOrdine> singoliOrdini = new ArrayList<>();
         Streamable.of(repository.findAll())
                 .forEach(singoliOrdini::add);
-        return singoliOrdini;
+        return singoliOrdini;*/
+        return repository.findAll();
     }
 
 

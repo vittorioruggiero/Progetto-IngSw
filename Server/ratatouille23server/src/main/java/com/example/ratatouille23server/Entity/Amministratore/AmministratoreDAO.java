@@ -1,19 +1,13 @@
 package com.example.ratatouille23server.Entity.Amministratore;
 
-import com.example.ratatouille23server.Entity.AddettoSala.AddettoSala;
-import com.example.ratatouille23server.Entity.AddettoSala.AddettoSalaRepository;
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

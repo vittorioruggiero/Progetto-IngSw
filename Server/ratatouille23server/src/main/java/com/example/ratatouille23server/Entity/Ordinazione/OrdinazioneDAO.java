@@ -22,10 +22,11 @@ public class OrdinazioneDAO {
     }
 
     public List<Ordinazione> getAll(){
-        List<Ordinazione> ordinazioniList = new ArrayList<>();
+        /*List<Ordinazione> ordinazioniList = new ArrayList<>();
         Streamable.of(repository.findAll())
                 .forEach(ordinazioniList::add);
-        return ordinazioniList;
+        return ordinazioniList;*/
+        return repository.findAll();
     }
 
     public void delete(Ordinazione ordinazione){
@@ -52,20 +53,13 @@ public class OrdinazioneDAO {
     }
 
     public ResponseEntity<Ordinazione> getByTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo){
+        Ordinazione ordinazione;
         try{
-            for(Ordinazione ordinazione : repository.findAll()){
-                if(ordinazione.getNomeAttivita() != null){
-                    if(ordinazione.getNomeAttivita().equals(nomeAttivita) && ordinazione.getIndirizzoAttivita().equals(indirizzoAttivita)
-                            && ordinazione.getNumeroTavolo() == numeroTavolo){
-                        return new ResponseEntity<>(ordinazione, HttpStatus.OK);
-                    }
-                }
-            }
-
+            ordinazione = repository.findByNomeAttivitaAndIndirizzoAttivitaAndNumeroTavolo(nomeAttivita, indirizzoAttivita, numeroTavolo);
+            return new ResponseEntity<>(ordinazione, HttpStatus.OK);
         }catch(NullPointerException e){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     public Ordinazione saveConCampi(int numeroTavolo, int numeroCommensali, String nomeAttivita, String indirizzoAttivita) {

@@ -35,7 +35,7 @@ public class ProdottoMenuController {
 
     @RequestMapping(value = "/prodottoMenu/get-by-sezione", method = RequestMethod.GET)
     public ResponseEntity<List<ProdottoMenu>> getProdottiBySezione(@RequestParam("nomeSezione") String nomeSezione){
-        return prodottoMenuDAO.findBySezione(nomeSezione);
+        return prodottoMenuDAO.findAllBySezione(nomeSezione);
     }
 
     @RequestMapping(value = "/prodottoMenu/delete-by-id", method = RequestMethod.DELETE)

@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface OrdinazioneRepository extends JpaRepository<Ordinazione, Integer> {
     List<Ordinazione> findAllByNomeAttivitaAndIndirizzoAttivita(String nomeAttivita, String indirizzoAttivita);
+
+    Ordinazione findByNomeAttivitaAndIndirizzoAttivitaAndNumeroTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo);
 }

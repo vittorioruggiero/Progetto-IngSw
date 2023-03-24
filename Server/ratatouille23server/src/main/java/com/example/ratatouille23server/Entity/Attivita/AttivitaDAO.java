@@ -20,10 +20,7 @@ public class AttivitaDAO {
     }
 
     public List<Attivita> getAll(){
-        List<Attivita> attivitaList = new ArrayList<>();
-        Streamable.of(repository.findAll())
-                .forEach(attivitaList::add);
-        return attivitaList;
+        return repository.findAll();
     }
 
 

@@ -24,10 +24,11 @@ public class SupervisoreDAO {
     }
 
     public List<Supervisore> getAll(){
-        List<Supervisore> supervisoriList = new ArrayList<>();
+        /*List<Supervisore> supervisoriList = new ArrayList<>();
         Streamable.of(repository.findAll())
                 .forEach(supervisoriList::add);
-        return supervisoriList;
+        return supervisoriList;*/
+        return repository.findAll();
     }
 
     public void delete(Supervisore supervisore){

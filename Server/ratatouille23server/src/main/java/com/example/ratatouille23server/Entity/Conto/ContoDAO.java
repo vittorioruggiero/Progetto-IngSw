@@ -24,10 +24,7 @@ public class ContoDAO {
     }
 
     public List<Conto> getAll(){
-        List<Conto> contiList = new ArrayList<>();
-        Streamable.of(repository.findAll())
-                .forEach(contiList::add);
-        return contiList;
+        return repository.findAll();
     }
 
     public void delete(Conto conto){
@@ -62,11 +59,11 @@ public class ContoDAO {
     }
 
     public ResponseEntity<List<Conto>> getContoByDate(java.sql.Date dataInizio, java.sql.Date dataFine){
-        List<Conto> conti = new ArrayList<>();
-        conti = repository.findByDataBetween(dataInizio, dataFine);
-        if(!(conti.isEmpty())){
+        List<Conto> conti;
+        try{
+            conti = repository.findByDataBetween(dataInizio, dataFine);
             return new ResponseEntity<>(conti, HttpStatus.OK);
-        }else{
+        }catch (NullPointerException e){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 

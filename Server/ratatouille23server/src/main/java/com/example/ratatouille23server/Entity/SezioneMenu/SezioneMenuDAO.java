@@ -44,16 +44,9 @@ public class SezioneMenuDAO{
         }
 
         public ResponseEntity<ArrayList<SezioneMenu>> findByAttivita(String nomeAttivita, String indirizzoAttivita){
-                ArrayList<SezioneMenu> sezioni = new ArrayList<>();
+                ArrayList<SezioneMenu> sezioni;
                 try{
-                        for(SezioneMenu sezioneMenu : repository.findAll()){
-                                if(sezioneMenu.getNomeAttivita() != null){
-                                        if(sezioneMenu.getNomeAttivita().equals(nomeAttivita) && sezioneMenu.getIndirizzoAttivita().equals(indirizzoAttivita)){
-                                                sezioni.add(sezioneMenu);
-                                        }
-                                }
-
-                        }
+                        sezioni = repository.findAllByNomeAttivitaAndIndirizzoAttivita(nomeAttivita, indirizzoAttivita);
                         return new ResponseEntity<>(sezioni, HttpStatus.OK);
                 }catch(NullPointerException e){
                         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

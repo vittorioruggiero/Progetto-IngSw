@@ -44,7 +44,7 @@ public class AvvisoDAO {
     public ResponseEntity<List<Avviso>> getAllByEmail(String email){
         List<Avviso> listaAvvisi;
         try{
-            listaAvvisi = repository.findAllByEmail(email);
+            listaAvvisi = repository.findAllByEmailOrderByIdDesc(email);
             return new ResponseEntity<>(listaAvvisi, HttpStatus.OK);
         }catch (NullPointerException e){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -11,5 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ProdottoMenuRepository extends JpaRepository<ProdottoMenu, String> {
+
+    List<ProdottoMenu> findAllByNomeSezione(String nomeSezione);
     //List<ProdottoMenu> findBySezione(String nomeSezione);
 }
