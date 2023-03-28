@@ -24,7 +24,7 @@ public class RetrofitService {
                 .setDateFormat("yyyy-MM-dd")
                 .create();
 
-        retrofit = new Retrofit.Builder().baseUrl("http://" + ipPCAnielloPortatile + ":8080")
+        retrofit = new Retrofit.Builder().baseUrl("http://" + ipVittorio + ":8080")
                 .addConverterFactory(new NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))

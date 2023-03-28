@@ -243,7 +243,7 @@ public class HomeAdminFragment extends Fragment {
                 if (data != null && result.getResultCode() == Activity.RESULT_OK) {
                     Uri resultUri = data.getData();
                     foto.setImageURI(resultUri);
-                    controllerAdmin.salvaImmagine(resultUri, amministratore.getIdAttivita());
+                    controllerAdmin.salvaImmagine(resultUri, amministratore.getIdAttivita(), getActivity());
                     Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + resultUri);
                 }
             });

@@ -10,6 +10,7 @@ import static com.example.ratatouille23.UI.activity.LoginActivity.setSupervisore
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.API.SingoloOrdineAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -136,6 +138,11 @@ public class Controller {
                                 }else{
                                     if(username.equals(addettoSala.getNomeUtente())
                                             && password.equals(addettoSala.getPassword())){
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString(FirebaseAnalytics.Param.METHOD, "login addetto alla sala");
+                                        FirebaseAnalytics.getInstance(loginActivity).logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+
                                         loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
                                         mostraHomeAddettoSalaActivity(loginActivity);
                                     }else{
@@ -180,6 +187,11 @@ public class Controller {
                                 }else{
                                     if(username.equals(supervisore.getNomeUtente())
                                             && password.equals(supervisore.getPassword())){
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString(FirebaseAnalytics.Param.METHOD, "login supervisore");
+                                        FirebaseAnalytics.getInstance(loginActivity).logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+
                                         loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
                                         mostraHomeSupervisoreActivity(loginActivity);
                                     }else{
@@ -221,6 +233,11 @@ public class Controller {
                             if(admin != null){
                                 if(username.equals(admin.getNomeUtente())
                                         && password.equals(admin.getPassword())){
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(FirebaseAnalytics.Param.METHOD, "login admin");
+                                    FirebaseAnalytics.getInstance(loginActivity).logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+
                                     mostraHomeAdminActivity(loginActivity, admin);
                                     loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
                                 }
@@ -724,6 +741,10 @@ public class Controller {
                                     singoloOrdine.setProdottoMenu(prodottoMenu);
                                     ordinazione.setListaProdotti(singoliOrdini);
                                     contiFragment.sostituisciFragment(contiFragment.preparaBundle(singoliOrdini));
+
+                                    Bundle bundle = new Bundle();
+                                    FirebaseAnalytics.getInstance(contiFragment.getActivity()).logEvent("conto_visualizzato", bundle);
+
                                     Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
 
                                 } else {
@@ -780,6 +801,10 @@ public class Controller {
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        Bundle bundle = new Bundle();
+                        FirebaseAnalytics.getInstance(contiFragment.getActivity()).logEvent("conto_chiuso", bundle);
+
                         Toast.makeText(contiFragment.getActivity(), "Ordinazione eliminata e conto salvato correttamente", Toast.LENGTH_SHORT).show();
                         contiFragment.notifyDataChanged();
                     }
@@ -805,6 +830,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<SezioneMenu> call, Response<SezioneMenu> response) {
                         if(response.body() != null){
+
+                            Bundle bundle = new Bundle();
+                            FirebaseAnalytics.getInstance(activity).logEvent("sezione_aggiunta", bundle);
+
                             Toast.makeText(activity, "Sezione Salvata Correttamente", Toast.LENGTH_SHORT).show();
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
@@ -834,6 +863,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<SezioneMenu> call, Response<SezioneMenu> response) {
                         if(response.body() != null){
+
+                            Bundle bundle = new Bundle();
+                            FirebaseAnalytics.getInstance(activity).logEvent("sezione_aggiunta", bundle);
+
                             Toast.makeText(activity, "Sezione Salvata Correttamente", Toast.LENGTH_SHORT).show();
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
@@ -861,6 +894,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
                         if(response.body() != null){
+
+                            Bundle bundle = new Bundle();
+                            FirebaseAnalytics.getInstance(activity).logEvent("prodotto_aggiunto", bundle);
+
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             Toast.makeText(activity, "Prodotto aggiunto correttamente", Toast.LENGTH_SHORT).show();
                         }
@@ -886,6 +923,10 @@ public class Controller {
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        Bundle bundle = new Bundle();
+                        FirebaseAnalytics.getInstance(activity).logEvent("prodotto_eliminato", bundle);
+
                         Toast.makeText(activity, "Prodotto eliminato correttamente", Toast.LENGTH_SHORT).show();
                         modificaProdottoFragment.sostituisciFragment();
                     }
@@ -949,6 +990,10 @@ public class Controller {
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        Bundle bundle = new Bundle();
+                        FirebaseAnalytics.getInstance(activity).logEvent("sezione_eliminata", bundle);
+
                         Toast.makeText(activity, "Sezione Eliminata Correttamente", Toast.LENGTH_SHORT).show();
                         modificaSezioniFragment.sostituisciFragment();
                     }
@@ -977,6 +1022,11 @@ public class Controller {
                         @Override
                         public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
                             if(response.body() != null){
+
+                                Bundle bundle = new Bundle();
+                                bundle.putString("tipologia_utente", "addetto alla sala");
+                                FirebaseAnalytics.getInstance(activity).logEvent("utente_creato", bundle);
+
                                 Toast.makeText(activity, "Addetto Sala salvato correttamente", Toast.LENGTH_SHORT).show();
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
                             }
@@ -1010,6 +1060,11 @@ public class Controller {
                         @Override
                         public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
                             if(response.body() != null){
+
+                                Bundle bundle = new Bundle();
+                                bundle.putString("tipologia_utente", "supervisore");
+                                FirebaseAnalytics.getInstance(activity).logEvent("utente_creato", bundle);
+
                                 Toast.makeText(activity, "Supervisore salvato correttamente", Toast.LENGTH_SHORT).show();
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
                             }
@@ -1061,6 +1116,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
                         if (response.body() != null) {
+
+                            Bundle bundle = new Bundle();
+                            FirebaseAnalytics.getInstance(activity).logEvent("attività_modificata", bundle);
+
                             Toast.makeText(activity, "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
                             if(admin.getIdAttivita() == 0 || !(admin.getIdAttivita() == response.body().getId())){
                                 admin.setIdAttivita(response.body().getId());
@@ -1110,6 +1169,9 @@ public class Controller {
                                                     @Override
                                                     public void onResponse(Call<Avviso> call, Response<Avviso> response) {
 
+                                                        Bundle bundle = new Bundle();
+                                                        FirebaseAnalytics.getInstance(activity).logEvent("avviso_creato", bundle);
+
                                                     }
 
                                                     @Override
@@ -1152,7 +1214,8 @@ public class Controller {
                                         .enqueue(new Callback<Avviso>() {
                                             @Override
                                             public void onResponse(Call<Avviso> call, Response<Avviso> response) {
-
+                                                Bundle bundle = new Bundle();
+                                                FirebaseAnalytics.getInstance(activity).logEvent("avviso_creato", bundle);
                                             }
 
                                             @Override
@@ -1209,6 +1272,8 @@ public class Controller {
                     @Override
                     public void onResponse(Call<List<Avviso>> call, Response<List<Avviso>> response) {
                         if(response.body() != null){
+
+
                             homeSupervisoreFragment.setAvvisiRecyclerView(response.body());
                             homeSupervisoreFragment.notifyDataChanged();
                         }
@@ -1232,6 +1297,11 @@ public class Controller {
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("utente", "supervisore");
+                        FirebaseAnalytics.getInstance(fragment.getActivity()).logEvent("avviso_visualizzato", bundle);
+
                         checkAvvisiSupervisore(email, fragment);
                     }
 
@@ -1253,6 +1323,11 @@ public class Controller {
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("utente", "addetto alla sala");
+                        FirebaseAnalytics.getInstance(fragment.getActivity()).logEvent("avviso_visualizzato", bundle);
+
                         checkAvvisiAddettoSala(email, fragment);
                     }
 
@@ -1359,6 +1434,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
                         if(response.body() != null){
+
+                            Bundle bundle = new Bundle();
+                            FirebaseAnalytics.getInstance(ordinazioniFragment.getActivity()).logEvent("ordinazione_creata", bundle);
+
                             Toast.makeText(ordinazioniFragment.getActivity(), "Ordinazione salvata correttamente", Toast.LENGTH_SHORT).show();
                             ordinazioniFragment.clearProdotti();
                         }
@@ -1386,6 +1465,10 @@ public class Controller {
                             Double totale = 0.0;
                             Double valoreMedio = 0.0;
                             if(!(response.body().isEmpty())){
+
+                                Bundle bundle = new Bundle();
+                                FirebaseAnalytics.getInstance(visualizzaStatisticheFragment.getActivity()).logEvent("statistiche_visualizzate", bundle);
+
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                                 Fragment fragment = GraficoStatisticaFragment.newInstance(response.body());
                                 visualizzaStatisticheFragment.sostituisciFragment(fragment);
@@ -1416,7 +1499,7 @@ public class Controller {
     }
 
 
-    public void salvaImmagine(Uri resultUri, int idAttivita) {
+    public void salvaImmagine(Uri resultUri, int idAttivita, Activity activity) {
 
         if(immagineAPI == null){
             immagineAPI = retrofitService.getRetrofit().create(ImmagineAPI.class);
@@ -1429,6 +1512,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<Immagine> call, Response<Immagine> response) {
                         if(response.body() != null){
+
+                            Bundle bundle = new Bundle();
+                            FirebaseAnalytics.getInstance(activity).logEvent("immagine_caricata", bundle);
+
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             //homeAdminFragment.setUri(response.body());
 

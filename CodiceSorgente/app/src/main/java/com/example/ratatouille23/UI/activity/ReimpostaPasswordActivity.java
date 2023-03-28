@@ -21,6 +21,7 @@ import com.example.ratatouille23.retrofit.API.AddettoSalaAPI;
 import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,6 +82,11 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
                                     if(response.body() != null){
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("utente", "addetto alla sala");
+                                        FirebaseAnalytics.getInstance(ReimpostaPasswordActivity.this).logEvent("password_cambiata", bundle);
+
                                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                                         Toast.makeText(ReimpostaPasswordActivity.this, "Password cambiata con successo", Toast.LENGTH_SHORT).show();
                                         campiNonCompilatiTextView.setVisibility(View.INVISIBLE);
@@ -107,6 +113,11 @@ public class ReimpostaPasswordActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
                                     if(response.body() != null){
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("utente", "supervisore");
+                                        FirebaseAnalytics.getInstance(ReimpostaPasswordActivity.this).logEvent("password_cambiata", bundle);
+
                                         Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                                         Toast.makeText(ReimpostaPasswordActivity.this, "Password cambiata con successo", Toast.LENGTH_SHORT).show();
                                         campiNonCompilatiTextView.setVisibility(View.INVISIBLE);

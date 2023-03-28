@@ -25,6 +25,7 @@ import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private AddettoSalaAPI addettoSalaAPI;
     private SupervisoreAPI supervisoreAPI;*/
     private RetrofitService retrofitService;
+    private FirebaseAnalytics mFirebaseAnalytics;
     private static Amministratore admin;
     private static AddettoSala addettoSala;
     private static Supervisore supervisore;
@@ -56,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
 
         controller = new Controller();
         retrofitService = new RetrofitService();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         /*amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
         supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
         addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);*/
