@@ -8,8 +8,7 @@ import java.util.List;
 public class SezioneMenu {
 
     private String nome;
-    private String nomeAttivita;
-    private String indirizzoAttivita;
+    private int idAttivita;
     private List<ProdottoMenu> prodottiMenu;
 
     public SezioneMenu(String nome, List<ProdottoMenu> prodottiMenu) {
@@ -48,20 +47,12 @@ public class SezioneMenu {
         prodottiMenu.add(prodottoMenu);
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     @Override

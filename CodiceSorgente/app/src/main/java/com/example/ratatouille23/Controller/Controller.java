@@ -3,6 +3,9 @@ package com.example.ratatouille23.Controller;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
+import static com.example.ratatouille23.UI.activity.LoginActivity.setAddettoSala;
+import static com.example.ratatouille23.UI.activity.LoginActivity.setAdmin;
+import static com.example.ratatouille23.UI.activity.LoginActivity.setSupervisore;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +32,6 @@ import com.example.ratatouille23.UI.fragment.OrdinazioniFragment;
 import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
 import com.example.ratatouille23.UI.fragment.VisualizzaMenuFragment;
 import com.example.ratatouille23.UI.fragment.VisualizzaStatisticheFragment;
-import com.example.ratatouille23.adapter.SingoliOrdiniAdapter;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
@@ -118,7 +120,7 @@ public class Controller {
                         if(response.body() != null){
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             addettoSala = response.body();
-                            loginActivity.setAddettoSala(addettoSala);
+                            setAddettoSala(addettoSala);
                             if(addettoSala != null){
                                 if(addettoSala.getPrimoAccesso() && addettoSala.getPassword().equals(password)){
                                     mostraReimpostaPasswordActivity(loginActivity);
@@ -162,7 +164,7 @@ public class Controller {
                         if(response.body() != null){
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             supervisore = response.body();
-                            loginActivity.setSupervisore(supervisore);
+                            setSupervisore(supervisore);
                             if(supervisore != null){
                                 if(supervisore.getPrimoAccesso() && supervisore.getPassword().equals(password)){
                                     mostraReimpostaPasswordActivity(loginActivity);
@@ -206,10 +208,10 @@ public class Controller {
                         if(response.body() != null){
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             admin = response.body();
-                            loginActivity.setAdmin(admin);
+                            setAdmin(admin);
                             if(admin != null){
-                                if(username.equals(admin.getNomeUtenteAmministratore())
-                                        && password.equals(admin.getPasswordAmministratore())){
+                                if(username.equals(admin.getNomeUtente())
+                                        && password.equals(admin.getPassword())){
                                     mostraHomeAdminActivity(loginActivity, admin);
                                     loginActivity.setCampiErratiTextViewVisibility(View.INVISIBLE);
                                 }
@@ -238,7 +240,7 @@ public class Controller {
             sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
         }
 
-        sezioneMenuAPI.getSezioniByAttivita(admin.getNomeAttivita(), admin.getIndirizzoAttivita())
+        sezioneMenuAPI.getSezioniByAttivita(admin.getIdAttivita())
                 .enqueue(new Callback<ArrayList<SezioneMenu>>() {
                     @Override
                     public void onResponse(Call<ArrayList<SezioneMenu>> call, Response<ArrayList<SezioneMenu>> response) {
@@ -294,7 +296,7 @@ public class Controller {
             sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
         }
 
-        sezioneMenuAPI.getSezioniByAttivita(supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita())
+        sezioneMenuAPI.getSezioniByAttivita(supervisore.getIdAttivita())
                 .enqueue(new Callback<ArrayList<SezioneMenu>>() {
                     @Override
                     public void onResponse(Call<ArrayList<SezioneMenu>> call, Response<ArrayList<SezioneMenu>> response) {
@@ -322,7 +324,7 @@ public class Controller {
             sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
         }
 
-        sezioneMenuAPI.getSezioniByAttivita(addettoSala.getNomeAttivita(), addettoSala.getIndirizzoAttivita())
+        sezioneMenuAPI.getSezioniByAttivita(addettoSala.getIdAttivita())
                 .enqueue(new Callback<ArrayList<SezioneMenu>>() {
                     @Override
                     public void onResponse(Call<ArrayList<SezioneMenu>> call, Response<ArrayList<SezioneMenu>> response) {
@@ -344,13 +346,13 @@ public class Controller {
 
     }
 
-    public void checkAttivita(String nome, String indirizzo, HomeAdminFragment homeAdminFragment){
+    public void checkAttivita(int idAttivita, HomeAdminFragment homeAdminFragment){
 
         if(attivitaAPI == null){
             attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
         }
 
-        attivitaAPI.getAttivitaById(nome, indirizzo)
+        attivitaAPI.getAttivitaById(idAttivita)
                 .enqueue(new Callback<Attivita>() {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
@@ -370,13 +372,13 @@ public class Controller {
 
     }
 
-    public void checkAttivitaAddettoSala(String nome, String indirizzo, OrdinazioniFragment ordinazioniFragment){
+    public void checkAttivitaAddettoSala(int idAttivita, OrdinazioniFragment ordinazioniFragment){
 
         if(attivitaAPI == null){
             attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
         }
 
-        attivitaAPI.getAttivitaById(nome, indirizzo)
+        attivitaAPI.getAttivitaById(idAttivita)
                 .enqueue(new Callback<Attivita>() {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
@@ -397,13 +399,13 @@ public class Controller {
     }
 
 
-    public void checkAttivitaSupervisore(String nome, String indirizzo, ContiFragment contiFragment){
+    public void checkAttivitaSupervisore(int idAttivita, ContiFragment contiFragment){
 
         if(attivitaAPI == null){
             attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
         }
 
-        attivitaAPI.getAttivitaById(nome, indirizzo)
+        attivitaAPI.getAttivitaById(idAttivita)
                 .enqueue(new Callback<Attivita>() {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
@@ -453,11 +455,11 @@ public class Controller {
 
     }
 
-    public void getOrdinazioneByTavolo(ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita, int tavolo){
+    public void getOrdinazioneByTavolo(ContiFragment contiFragment, int idAttivita, int tavolo){
         retrofitService = new RetrofitService();
 
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
-        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+        ordinazioneAPI.getOrdinazioneByTavolo(idAttivita, tavolo)
                 .enqueue(new Callback<Ordinazione>() {
                     @Override
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
@@ -568,11 +570,11 @@ public class Controller {
 
     }
 
-    public void chiusuraConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita, Double totale){
+    public void chiusuraConto(int tavolo, ContiFragment contiFragment, int idAttivita, Double totale){
         retrofitService = new RetrofitService();
 
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
-        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+        ordinazioneAPI.getOrdinazioneByTavolo(idAttivita, tavolo)
                 .enqueue(new Callback<Ordinazione>() {
                     @Override
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
@@ -593,11 +595,11 @@ public class Controller {
                 });
     }
 
-    public void visualizzaConto(int tavolo, ContiFragment contiFragment, String nomeAttivita, String indirizzoAttivita){
+    public void visualizzaConto(int tavolo, ContiFragment contiFragment, int idAttivita){
         retrofitService = new RetrofitService();
 
         OrdinazioneAPI ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
-        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+        ordinazioneAPI.getOrdinazioneByTavolo(idAttivita, tavolo)
                 .enqueue(new Callback<Ordinazione>() {
                     @Override
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
@@ -758,8 +760,7 @@ public class Controller {
             sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
         }
 
-        nuovaSezione.setNomeAttivita(admin.getNomeAttivita());
-        nuovaSezione.setIndirizzoAttivita(admin.getIndirizzoAttivita());
+        nuovaSezione.setIdAttivita(admin.getIdAttivita());
 
         sezioneMenuAPI.save(nuovaSezione)
                 .enqueue(new Callback<SezioneMenu>() {
@@ -788,8 +789,7 @@ public class Controller {
             sezioneMenuAPI = retrofitService.getRetrofit().create(SezioneMenuAPI.class);
         }
 
-        nuovaSezione.setNomeAttivita(supervisore.getNomeAttivita());
-        nuovaSezione.setIndirizzoAttivita(supervisore.getIndirizzoAttivita());
+        nuovaSezione.setIdAttivita(supervisore.getIdAttivita());
 
         sezioneMenuAPI.save(nuovaSezione)
                 .enqueue(new Callback<SezioneMenu>() {
@@ -932,27 +932,29 @@ public class Controller {
         }
 
         AddettoSala addettoSala = new AddettoSala(email, nomeUtente, password);
-        if(admin.getNomeAttivita() != null){
-            addettoSala.setNomeAttivita(admin.getNomeAttivita());
-            addettoSala.setIndirizzoAttivita(admin.getIndirizzoAttivita());
+        if(admin.getIdAttivita() != 0){
+            addettoSala.setIdAttivita(admin.getIdAttivita());
+            addettoSalaAPI.save(addettoSala)
+                    .enqueue(new Callback<AddettoSala>() {
+                        @Override
+                        public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
+                            if(response.body() != null){
+                                Toast.makeText(activity, "Addetto Sala salvato correttamente", Toast.LENGTH_SHORT).show();
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddettoSala> call, Throwable t) {
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                            Toast.makeText(activity, "Server Spento", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            Toast.makeText(activity, "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
         }
 
-        addettoSalaAPI.save(addettoSala)
-                .enqueue(new Callback<AddettoSala>() {
-                    @Override
-                    public void onResponse(Call<AddettoSala> call, Response<AddettoSala> response) {
-                        if(response.body() != null){
-                            Toast.makeText(activity, "Addetto Sala salvato correttamente", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<AddettoSala> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(activity, "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
     }
 
@@ -963,27 +965,29 @@ public class Controller {
         }
 
         Supervisore supervisore = new Supervisore(email, nomeUtente, password);
-        if(admin.getNomeAttivita() != null){
-            supervisore.setNomeAttivita(admin.getNomeAttivita());
-            supervisore.setIndirizzoAttivita(admin.getIndirizzoAttivita());
+        if(admin.getIdAttivita() != 0){
+            supervisore.setIdAttivita(admin.getIdAttivita());
+            supervisoreAPI.salvataggioSupervisore(supervisore)
+                    .enqueue(new Callback<Supervisore>() {
+                        @Override
+                        public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
+                            if(response.body() != null){
+                                Toast.makeText(activity, "Supervisore salvato correttamente", Toast.LENGTH_SHORT).show();
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Supervisore> call, Throwable t) {
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
+                            Toast.makeText(activity, "Server Spento", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            Toast.makeText(activity, "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
         }
 
-        supervisoreAPI.salvataggioSupervisore(supervisore)
-                .enqueue(new Callback<Supervisore>() {
-                    @Override
-                    public void onResponse(Call<Supervisore> call, Response<Supervisore> response) {
-                        if(response.body() != null){
-                            Toast.makeText(activity, "Supervisore salvato correttamente", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<Supervisore> call, Throwable t) {
-                        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: ", t);
-                        Toast.makeText(activity, "Server Spento", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
     }
 
@@ -1008,22 +1012,26 @@ public class Controller {
 
     }
 
-    public void salvaAttivita(Attivita nuovaAttivita, Activity activity) {
+    public void salvaAttivita(int id, String nome, String indirizzo, String telefono, int capienza, Activity activity) {
 
         if(attivitaAPI == null){
             attivitaAPI = retrofitService.getRetrofit().create(AttivitaAPI.class);
         }
 
-        attivitaAPI.save(nuovaAttivita)
+        attivitaAPI.update(id, nome, indirizzo, telefono, capienza)
                 .enqueue(new Callback<Attivita>() {
                     @Override
                     public void onResponse(Call<Attivita> call, Response<Attivita> response) {
-                        Toast.makeText(activity, "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
-                        if(admin.getNomeAttivita() == null || !(admin.getNomeAttivita().equals(response.body().getNome()))){
-                            admin.setNomeAttivita(response.body().getNome());
-                            admin.setIndirizzoAttivita(response.body().getIndirizzo());
-                            salvaAdmin(admin);
+                        if (response.body() != null) {
+                            Toast.makeText(activity, "Salvataggio Completato Correttamente", Toast.LENGTH_SHORT).show();
+                            if(admin.getIdAttivita() == 0 || !(admin.getIdAttivita() == response.body().getId())){
+                                admin.setIdAttivita(response.body().getId());
+                                salvaAdmin(admin);
+                            }
+                        }else{
+                            Toast.makeText(activity, "Attività già esistente", Toast.LENGTH_SHORT).show();
                         }
+
                     }
 
                     @Override
@@ -1036,9 +1044,9 @@ public class Controller {
 
     }
 
-    public void salvaAttivitaEdAdmin(Attivita attivita, Activity activity){
+    public void salvaAttivitaEdAdmin(int id, String nome, String indirizzo, String telefono, int capienza, Activity activity){
 
-        salvaAttivita(attivita, activity);
+        salvaAttivita(id, nome, indirizzo, telefono, capienza, activity);
 
     }
 
@@ -1249,18 +1257,18 @@ public class Controller {
     }
 
     public void checkOrdinazione(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, OrdinazioniFragment ordinazioniFragment,
-                                 String nomeAttivita, String indirizzoAttivita) {
+                                 int idAttivita) {
 
         if(ordinazioneAPI == null){
             ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
         }
 
-        ordinazioneAPI.getOrdinazioneByTavolo(nomeAttivita, indirizzoAttivita, tavolo)
+        ordinazioneAPI.getOrdinazioneByTavolo(idAttivita, tavolo)
                 .enqueue(new Callback<Ordinazione>() {
                     @Override
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
                         if(response.body() == null){
-                            salvaOrdinazione(tavolo, commensali, prodottiOrdine, ordinazioniFragment, nomeAttivita, indirizzoAttivita);
+                            salvaOrdinazione(tavolo, commensali, prodottiOrdine, ordinazioniFragment, idAttivita);
                         }else{
                             Toast.makeText(ordinazioniFragment.getActivity(), "È già presente un'ordinazione", Toast.LENGTH_SHORT).show();
                         }
@@ -1276,12 +1284,12 @@ public class Controller {
     }
 
     private void salvaOrdinazione(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, OrdinazioniFragment ordinazioniFragment,
-                                  String nomeAttivita, String indirizzoAttivita) {
+                                  int idAttivita) {
         if(ordinazioneAPI == null){
             ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
         }
 
-        ordinazioneAPI.saveConCampi(tavolo, commensali, nomeAttivita, indirizzoAttivita)
+        ordinazioneAPI.saveConCampi(tavolo, commensali, idAttivita)
                 .enqueue(new Callback<Ordinazione>() {
                     @Override
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
@@ -1337,14 +1345,25 @@ public class Controller {
                     @Override
                     public void onResponse(Call<List<Conto>> call, Response<List<Conto>> response) {
                         if(response.body() != null){
-                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                            Fragment fragment = GraficoStatisticaFragment.newInstance(response.body());
-                            visualizzaStatisticheFragment.sostituisciFragment(fragment);
                             Double totale = 0.0;
-                            for(Conto conto : response.body()){
-                                totale += conto.getImporto();
+                            Double valoreMedio = 0.0;
+                            if(!(response.body().isEmpty())){
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                                Fragment fragment = GraficoStatisticaFragment.newInstance(response.body());
+                                visualizzaStatisticheFragment.sostituisciFragment(fragment);
+                                for(Conto conto : response.body()){
+                                    totale += conto.getImporto();
+                                }
+                                if(totale != 0.0){
+                                    valoreMedio = totale / response.body().size();
+                                }
+                                visualizzaStatisticheFragment.setTextView(String.valueOf(totale), String.valueOf(valoreMedio));
+                            }else{
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "ERROR: " + response.body());
+                                visualizzaStatisticheFragment.setTextView(String.valueOf(totale), String.valueOf(valoreMedio));
+                                Toast.makeText(visualizzaStatisticheFragment.getActivity(), "Nessuna statistica da visualizzare", Toast.LENGTH_SHORT).show();
                             }
-                            visualizzaStatisticheFragment.setTextView(String.valueOf(totale), String.valueOf(totale/response.body().size()));
+
                             //setStatistiche(response.body(), visualizzaStatisticheFragment);
                         }
                     }

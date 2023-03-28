@@ -9,6 +9,8 @@ import java.util.ArrayList;
 @Repository
 public interface SezioneMenuRepository extends JpaRepository<SezioneMenu, String> {
 
-    ArrayList<SezioneMenu> findAllByNomeAttivitaAndIndirizzoAttivita(String nomeAttivita, String indirizzoAttivita);
+    //ArrayList<SezioneMenu> findAllByNomeAttivitaAndIndirizzoAttivita(String nomeAttivita, String indirizzoAttivita);
+
+    ArrayList<SezioneMenu> findAllByIdAttivita(int idAttivita);
 
 }

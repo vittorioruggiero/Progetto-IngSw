@@ -7,7 +7,11 @@ import java.util.List;
 
 @Repository
 public interface OrdinazioneRepository extends JpaRepository<Ordinazione, Integer> {
-    List<Ordinazione> findAllByNomeAttivitaAndIndirizzoAttivita(String nomeAttivita, String indirizzoAttivita);
+    //List<Ordinazione> findAllByNomeAttivitaAndIndirizzoAttivita(String nomeAttivita, String indirizzoAttivita);
 
-    Ordinazione findByNomeAttivitaAndIndirizzoAttivitaAndNumeroTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo);
+    List<Ordinazione> findAllByIdAttivita(int idAttivita);
+
+    //Ordinazione findByNomeAttivitaAndIndirizzoAttivitaAndNumeroTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo);
+
+    Ordinazione findByIdAttivitaAndNumeroTavolo(int idAttivita, int numeroTavolo);
 }

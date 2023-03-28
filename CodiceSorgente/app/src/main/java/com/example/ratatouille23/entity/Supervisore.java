@@ -5,8 +5,7 @@ public class Supervisore {
     private String email;
     private String nomeUtente;
     private String password;
-    private String nomeAttivita;
-    private String indirizzoAttivita;
+    private int idAttivita;
     private Boolean primoAccesso;
 
     public Supervisore(){
@@ -43,20 +42,12 @@ public class Supervisore {
         this.password = password;
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     public Boolean getPrimoAccesso() {
@@ -73,8 +64,7 @@ public class Supervisore {
                 "email='" + email + '\'' +
                 ", nomeUtente='" + nomeUtente + '\'' +
                 ", password='" + password + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 ", primoAccesso=" + primoAccesso +
                 '}';
     }

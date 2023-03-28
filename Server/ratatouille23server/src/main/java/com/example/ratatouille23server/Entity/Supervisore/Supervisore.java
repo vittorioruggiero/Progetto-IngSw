@@ -14,20 +14,24 @@ public class Supervisore {
     private String nomeUtente;
     @Column(nullable = false)
     private String password;
-    @Column(name = "nomeAttivita")
+    @Column(name = "idAttivita")
+    private int idAttivita = 0;
+    /*@Column(name = "nomeAttivita")
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
-    private String indirizzoAttivita;
+    private String indirizzoAttivita;*/
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean primoAccesso = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
+    @JoinColumn(name = "idAttivita", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"), insertable = false, updatable = false)
+    /*@JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
                     foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"), insertable = false, updatable = false),
             @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
                     foreignKey = @ForeignKey(name = "supervisore_attivita_fkey"), insertable = false, updatable = false)
-    })
+    })*/
     private Attivita attivitaSupervisore;
 
     public String getEmail() {
@@ -54,22 +58,6 @@ public class Supervisore {
         this.password = password;
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
-    }
-
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
-    }
-
     public Boolean getPrimoAccesso() {
         return primoAccesso;
     }
@@ -78,14 +66,21 @@ public class Supervisore {
         this.primoAccesso = primoAccesso;
     }
 
+    public int getIdAttivita() {
+        return idAttivita;
+    }
+
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
+    }
+
     @Override
     public String toString() {
         return "Supervisore{" +
                 "email='" + email + '\'' +
                 ", nomeUtente='" + nomeUtente + '\'' +
                 ", password='" + password + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 ", primoAccesso=" + primoAccesso +
                 '}';
     }

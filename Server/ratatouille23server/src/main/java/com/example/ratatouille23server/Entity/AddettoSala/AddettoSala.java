@@ -14,20 +14,24 @@ public class AddettoSala {
     private String nomeUtente;
     @Column(nullable = false)
     private String password;
-    @Column(name = "nomeAttivita")
+    @Column(name = "idAttivita")
+    private int idAttivita = 0;
+    /*@Column(name = "nomeAttivita")
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
-    private String indirizzoAttivita;
+    private String indirizzoAttivita;*/
     @Column(nullable = false, name = "primoAccesso", columnDefinition = "boolean default true")
     private Boolean primoAccesso = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
+    @JoinColumn(name = "idAttivita", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "addettosala_attivita_fkey"), insertable = false, updatable = false)
+    /*@JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
                     foreignKey = @ForeignKey(name = "addetto_sala_attivita_fkey"), insertable = false, updatable = false),
             @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
                     foreignKey = @ForeignKey(name = "addetto_sala_attivita_fkey"), insertable = false, updatable = false)
-    })
+    })*/
     private Attivita attivitaAddettoSala;
 
     public String getEmail() {
@@ -54,20 +58,12 @@ public class AddettoSala {
         this.password = password;
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     public Boolean getPrimoAccesso() {
@@ -84,8 +80,7 @@ public class AddettoSala {
                 "email='" + email + '\'' +
                 ", nomeUtente='" + nomeUtente + '\'' +
                 ", password='" + password + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 ", primoAccesso=" + primoAccesso +
                 '}';
     }

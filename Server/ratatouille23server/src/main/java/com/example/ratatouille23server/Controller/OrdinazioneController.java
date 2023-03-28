@@ -21,10 +21,9 @@ public class OrdinazioneController {
     }
 
     @RequestMapping(value = "/ordinazione/get-by-tavolo", method = RequestMethod.GET)
-    public ResponseEntity<Ordinazione> getOrdinazioneByTavolo(@RequestParam("nomeAttivita") String nomeAttivita,
-                                                                    @RequestParam("indirizzoAttivita") String indirizzoAttivita,
+    public ResponseEntity<Ordinazione> getOrdinazioneByTavolo(@RequestParam("idAttivita") int idAttivita,
                                                                     @RequestParam("numeroTavolo") int numeroTavolo) {
-        return ordinazioneDAO.getByTavolo(nomeAttivita, indirizzoAttivita, numeroTavolo);
+        return ordinazioneDAO.getByTavolo(idAttivita, numeroTavolo);
     }
 
     @PostMapping("/ordinazione/save")
@@ -35,9 +34,8 @@ public class OrdinazioneController {
     @PostMapping("/ordinazione/save-con-campi")
     public Ordinazione save(@RequestParam("numeroTavolo") int numeroTavolo,
                       @RequestParam("numeroCommensali") int numeroCommensali,
-                      @RequestParam("nomeAttivita") String nomeAttivita,
-                      @RequestParam("indirizzoAttivita") String indirizzoAttivita){
-        return ordinazioneDAO.saveConCampi(numeroTavolo, numeroCommensali, nomeAttivita, indirizzoAttivita);
+                      @RequestParam("idAttivita") int idAttivita){
+        return ordinazioneDAO.saveConCampi(numeroTavolo, numeroCommensali, idAttivita);
     }
 
     @RequestMapping(value = "/ordinazione/delete-by-id", method = RequestMethod.DELETE)

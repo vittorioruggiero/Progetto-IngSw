@@ -81,10 +81,9 @@ public class HomeAdminFragment extends Fragment {
         logoutButton = v.findViewById(R.id.logoutButton);
         controllerAdmin = new Controller(getActivity().toString());
 
-        if(amministratore.getNomeAttivita() != null){
-            String nome = amministratore.getNomeAttivita();
-            String indirizzo = amministratore.getIndirizzoAttivita();
-            controllerAdmin.checkAttivita(nome, indirizzo, this);
+        if(amministratore.getIdAttivita() != 0){
+            int idAttivita = amministratore.getIdAttivita();
+            controllerAdmin.checkAttivita(idAttivita, this);
         }else{
             Toast.makeText(getActivity(), "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
         }
@@ -106,6 +105,14 @@ public class HomeAdminFragment extends Fragment {
             String indirizzoAttivita;
             String telefonoAttivita;
             int capienzaAttivita;
+            int idAttivita;
+
+            if(amministratore.getIdAttivita() != 0){
+                idAttivita = amministratore.getIdAttivita();
+            }else{
+                idAttivita = 0;
+            }
+
 
 
             if(nomeAttivitaEditText.isFocusable()){
@@ -130,8 +137,8 @@ public class HomeAdminFragment extends Fragment {
                         || capienzaAttivita == 0){
                     Toast.makeText(getActivity(), "Inserisci tutti i dettagli correttamente", Toast.LENGTH_SHORT).show();
                 }else{
-                    attivita = new Attivita(nomeAttivita, indirizzoAttivita, telefonoAttivita, capienzaAttivita);
-                    controllerAdmin.salvaAttivitaEdAdmin(attivita, getActivity());
+                    controllerAdmin.salvaAttivitaEdAdmin(idAttivita, nomeAttivita, indirizzoAttivita,
+                            telefonoAttivita, capienzaAttivita, getActivity());
                 }
             }else{
                 nomeAttivitaEditText.setFocusableInTouchMode(true);
@@ -210,14 +217,14 @@ public class HomeAdminFragment extends Fragment {
                     (dialog, id) -> {
                     if(testoAvvisoEditText.getText().toString().equals("")){
                         Toast.makeText(getActivity(), "Inserire testo avviso", Toast.LENGTH_SHORT).show();
+                    }else if(amministratore.getIdAttivita() == 0){
+                        Toast.makeText(getActivity(), "Inserire prima l'attivita", Toast.LENGTH_SHORT).show();
                     }else{
                         Avviso avviso = new Avviso();
                         avviso.setAvviso(testoAvvisoEditText.getText().toString());
-                        avviso.setNomeAttivita(amministratore.getNomeAttivita());
-                        avviso.setIndirizzoAttivita(amministratore.getIndirizzoAttivita());
+                        avviso.setIdAttivita(amministratore.getIdAttivita());
                         controllerAdmin.salvaAvvisoSupervisore(avviso, getActivity());
                         controllerAdmin.salvaAvvisoAddettoSala(avviso, getActivity());
-                        //sendAvvisi(avviso);
                         testoAvvisoEditText.setText("");
                         dialog.cancel();
                     }

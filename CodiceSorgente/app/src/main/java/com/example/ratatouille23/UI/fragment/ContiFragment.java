@@ -85,10 +85,9 @@ public class ContiFragment extends Fragment {
         totaleCifraTextView = inflatedView.findViewById(R.id.totaleCifraTextView);
         recyclerView = inflatedView.findViewById(R.id.contiRecyclerView);
 
-        if(supervisore.getNomeAttivita() != null){
-            String nome = supervisore.getNomeAttivita();
-            String indirizzo = supervisore.getIndirizzoAttivita();
-            controller.checkAttivitaSupervisore(nome, indirizzo, this);
+        if(supervisore.getIdAttivita() != 0){
+            int idAttivita = supervisore.getIdAttivita();
+            controller.checkAttivitaSupervisore(idAttivita, this);
         }else{
             Toast.makeText(getActivity(), "Errore! Contattare l'amministratore", Toast.LENGTH_SHORT).show();
         }
@@ -96,7 +95,7 @@ public class ContiFragment extends Fragment {
         selezionaTavoloSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                controller.getOrdinazioneByTavolo(ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita(), i+1);
+                controller.getOrdinazioneByTavolo(ContiFragment.this, supervisore.getIdAttivita(), i+1);
             }
 
             @Override
@@ -112,7 +111,7 @@ public class ContiFragment extends Fragment {
                 Toast.makeText(getActivity(), "Nessuna ordinazione!", Toast.LENGTH_SHORT).show();
             }else{
                 controller.visualizzaConto(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
-                        ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita());
+                        ContiFragment.this, supervisore.getIdAttivita());
             }
         });
 
@@ -162,7 +161,7 @@ public class ContiFragment extends Fragment {
                 "Conferma",
                 (dialog, id) -> {
                     controller.chiusuraConto(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
-                            ContiFragment.this, supervisore.getNomeAttivita(), supervisore.getIndirizzoAttivita(),
+                            ContiFragment.this, supervisore.getIdAttivita(),
                             Double.parseDouble(totaleCifraTextView.getText().toString()));
                     sostituisciFragment(preparaBundle(listaProdotti));
                     numeroCommensaliCifraTextView.setText("");

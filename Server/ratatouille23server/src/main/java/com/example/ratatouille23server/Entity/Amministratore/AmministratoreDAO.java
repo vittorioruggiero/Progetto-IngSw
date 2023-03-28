@@ -25,10 +25,11 @@ public class AmministratoreDAO {
     }
 
     public List<Amministratore> getAll(){
-        List<Amministratore> amministratoriList = new ArrayList<>();
+        /*List<Amministratore> amministratoriList = new ArrayList<>();
         Streamable.of(repository.findAll())
                 .forEach(amministratoriList::add);
-        return amministratoriList;
+        return amministratoriList;*/
+        return repository.findAll();
     }
 
     public Optional<Amministratore> getById(String email){

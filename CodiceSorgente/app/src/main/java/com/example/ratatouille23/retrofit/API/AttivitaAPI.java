@@ -19,13 +19,20 @@ public interface AttivitaAPI {
     Call<List<Attivita>> getAllAttivita();
 
     @GET("/attivita/get-by-id")
-    Call<Attivita> getAttivitaById(@Query("nome") String nome, @Query("indirizzo") String indirizzo);
+    Call<Attivita> getAttivitaById(@Query("id") int id);
 
     @POST("/attivita/save")
     Call<Attivita> save(@Body Attivita attivita);
 
+    @POST("/attivita/update-by-id")
+    Call<Attivita> update(@Query("id") int id,
+                          @Query("nome") String nome,
+                          @Query("indirizzo") String indirizzo,
+                          @Query("telefono") String telefono,
+                          @Query("capienza") int capienza);
+
     @POST("/attivita/delete-by-id")
-    void deleteById(@Body AttivitaPkey attivitaPkey);
+    void deleteById(@Query("id") int id);
 
     @POST("/attivita/delete")
     void delete(@Body Attivita attivita);

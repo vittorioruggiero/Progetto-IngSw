@@ -2,16 +2,30 @@ package com.example.ratatouille23.entity;
 
 public class Attivita {
 
+    private int id;
     private String nome;
     private String indirizzo;
     private String telefono;
     private int capienza;
 
-    public Attivita(String nome, String indirizzo, String telefono, int capienza) {
+    public Attivita(){
+
+    }
+
+    public Attivita(int id, String nome, String indirizzo, String telefono, int capienza) {
+        this.id = id;
         this.nome = nome;
         this.indirizzo = indirizzo;
         this.telefono = telefono;
         this.capienza = capienza;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -49,7 +63,8 @@ public class Attivita {
     @Override
     public String toString() {
         return "Attivita{" +
-                "nome='" + nome + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
                 ", indirizzo='" + indirizzo + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", capienza=" + capienza +

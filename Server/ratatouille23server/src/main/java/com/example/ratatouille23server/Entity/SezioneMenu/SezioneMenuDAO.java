@@ -43,10 +43,10 @@ public class SezioneMenuDAO{
                 return repository.findById(sezioneMenuPkey);
         }
 
-        public ResponseEntity<ArrayList<SezioneMenu>> findByAttivita(String nomeAttivita, String indirizzoAttivita){
+        public ResponseEntity<ArrayList<SezioneMenu>> findByAttivita(int idAttivita){
                 ArrayList<SezioneMenu> sezioni;
                 try{
-                        sezioni = repository.findAllByNomeAttivitaAndIndirizzoAttivita(nomeAttivita, indirizzoAttivita);
+                        sezioni = repository.findAllByIdAttivita(idAttivita);
                         return new ResponseEntity<>(sezioni, HttpStatus.OK);
                 }catch(NullPointerException e){
                         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

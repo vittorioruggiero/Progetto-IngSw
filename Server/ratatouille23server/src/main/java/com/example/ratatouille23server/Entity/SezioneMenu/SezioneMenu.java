@@ -12,36 +12,33 @@ public class SezioneMenu {
 
     @Id
     private String nome;
-    @Column(name = "nomeAttivita")
+
+    @Column(name = "idAttivita")
+    private int idAttivita = 0;
+    /*@Column(name = "nomeAttivita")
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
-    private String indirizzoAttivita;
+    private String indirizzoAttivita;*/
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
+    @JoinColumn(name = "idAttivita", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "sezionemenu_attivita_fkey"), insertable = false, updatable = false)
+    /*@JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
                     foreignKey = @ForeignKey(name = "sezione_attivita_fkey"), insertable = false, updatable = false),
             @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
                     foreignKey = @ForeignKey(name = "sezione_attivita_fkey"), insertable = false, updatable = false)
-    })
+    })*/
     private Attivita attivitaSezione;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sezioneMenu")
     private List<ProdottoMenu> prodottiMenu;
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     public String getNome() {
@@ -56,8 +53,7 @@ public class SezioneMenu {
     public String toString() {
         return "SezioneMenu{" +
                 "nome='" + nome + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 '}';
     }
 }

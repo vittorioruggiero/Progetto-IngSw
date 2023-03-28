@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="81dp"
         android:layout_marginEnd="310dp"
         android:layout_marginBottom="10dp"
         android:text="@string/aggiungiSezioneFondo"
@@ -20,7 +21,8 @@
         app:layout_constraintBottom_toTopOf="@+id/nuovaSezioneLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nuovaSezioneLayout"

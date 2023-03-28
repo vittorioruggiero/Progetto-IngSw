@@ -70,12 +70,12 @@ public class RegistratiActivity extends AppCompatActivity {
 
                     /*supervisore.setNomeUtenteSupervisore(nomeUtente);
                     supervisore.setEmailSupervisore(email);
-                    supervisore.setPasswordSupervisore(password);*/
+                    supervisore.setPasswordSupervisore(password);
                     admin.setNomeAttivita("Pizzeria");
                     admin.setIndirizzoAttivita("Via Roma");
                     admin.setNomeUtenteAmministratore(nomeUtente);
                     admin.setEmailAmministratore(email);
-                    admin.setPasswordAmministratore(password);
+                    admin.setPasswordAmministratore(password);*/
                     //salvaSupervisore(supervisore);
                     salvaAdmin(admin);
                     campiNonCompilatiTextView.setVisibility(View.INVISIBLE);

@@ -41,10 +41,10 @@ public class OrdinazioneDAO {
         return repository.findById(ordinazionePkey);
     }
 
-    public ResponseEntity<List<Ordinazione>> getAllByAttivita(String nomeAttivita, String indirizzoAttivita) {
+    public ResponseEntity<List<Ordinazione>> getAllByAttivita(int idAttivita) {
         List<Ordinazione> listaOrdinazioni;
         try {
-            listaOrdinazioni = repository.findAllByNomeAttivitaAndIndirizzoAttivita(nomeAttivita, indirizzoAttivita);
+            listaOrdinazioni = repository.findAllByIdAttivita(idAttivita);
             return new ResponseEntity<>(listaOrdinazioni, HttpStatus.OK);
         }
         catch(NullPointerException e) {
@@ -52,23 +52,22 @@ public class OrdinazioneDAO {
         }
     }
 
-    public ResponseEntity<Ordinazione> getByTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo){
+    public ResponseEntity<Ordinazione> getByTavolo(int idAttivita, int numeroTavolo){
         Ordinazione ordinazione;
         try{
-            ordinazione = repository.findByNomeAttivitaAndIndirizzoAttivitaAndNumeroTavolo(nomeAttivita, indirizzoAttivita, numeroTavolo);
+            ordinazione = repository.findByIdAttivitaAndNumeroTavolo(idAttivita, numeroTavolo);
             return new ResponseEntity<>(ordinazione, HttpStatus.OK);
         }catch(NullPointerException e){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
-    public Ordinazione saveConCampi(int numeroTavolo, int numeroCommensali, String nomeAttivita, String indirizzoAttivita) {
+    public Ordinazione saveConCampi(int numeroTavolo, int numeroCommensali, int idAttivita) {
 
         Ordinazione ordinazione = new Ordinazione();
         ordinazione.setNumeroTavolo(numeroTavolo);
         ordinazione.setNumeroCommensali(numeroCommensali);
-        ordinazione.setNomeAttivita(nomeAttivita);
-        ordinazione.setIndirizzoAttivita(indirizzoAttivita);
+        ordinazione.setIdAttivita(idAttivita);
         return repository.save(ordinazione);
 
     }

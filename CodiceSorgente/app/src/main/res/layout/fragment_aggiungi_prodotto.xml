@@ -93,7 +93,8 @@
     <TextView
         android:id="@+id/nuovoProdottoTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="27dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="12dp"
         android:text="@string/nuovoProdotto"
         android:textColor="@color/black"
@@ -101,7 +102,8 @@
         app:layout_constraintBottom_toTopOf="@+id/nomeProdottoLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/aggiungiProdottoButton"

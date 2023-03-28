@@ -30,10 +30,10 @@ public class AvvisoDAO {
         return avvisoList;
     }
 
-    public ResponseEntity<List<Avviso>> getAllByAttivita(String nomeAttivita, String indirizzoAttivita) {
+    public ResponseEntity<List<Avviso>> getAllByAttivita(int idAttivita) {
         List<Avviso> listaAvvisi;
         try {
-            listaAvvisi = repository.findAllByNomeAttivitaAndIndirizzoAttivita(nomeAttivita, indirizzoAttivita);
+            listaAvvisi = repository.findAllByIdAttivita(idAttivita);
             return new ResponseEntity<>(listaAvvisi, HttpStatus.OK);
         }
         catch(NullPointerException e) {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,16 +29,34 @@ public class AttivitaDAO {
         repository.delete(attivita);
     }
 
-    public void deleteById(AttivitaPkey attivitaPkey){
-        repository.deleteById(attivitaPkey);
+    public void deleteById(int id){
+        repository.deleteById(id);
     }
 
-    public Optional<Attivita> getById(String nome, String indirizzo){
+    public Optional<Attivita> getById(int id){
+        return repository.findById(id);
+    }
 
-        AttivitaPkey attivitaPkey = new AttivitaPkey();
-        attivitaPkey.setNome(nome);
-        attivitaPkey.setIndirizzo(indirizzo);
-        return repository.findById(attivitaPkey);
+    public Attivita updateById(int id, String nome, String indirizzo, String telefono, int capienza){
+
+
+        if(repository.findById(id).get().getId() == 0){
+            Attivita attivita = new Attivita();
+            attivita.setCapienza(capienza);
+            attivita.setIndirizzo(indirizzo);
+            attivita.setNome(nome);
+            attivita.setTelefono(telefono);
+            return repository.save(attivita);
+        }else{
+            Attivita attivita = repository.findById(id).get();
+            attivita.setCapienza(capienza);
+            attivita.setIndirizzo(indirizzo);
+            attivita.setNome(nome);
+            attivita.setTelefono(telefono);
+            return repository.save(attivita);
+        }
+
+
     }
 
 }

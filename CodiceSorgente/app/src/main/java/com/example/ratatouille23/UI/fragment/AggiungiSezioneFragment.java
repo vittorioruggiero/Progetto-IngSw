@@ -1,5 +1,8 @@
 package com.example.ratatouille23.UI.fragment;
 
+import static com.example.ratatouille23.UI.activity.LoginActivity.getAdmin;
+import static com.example.ratatouille23.UI.activity.LoginActivity.getSupervisore;
+
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -20,6 +23,7 @@ import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.SezioneMenu;
+import com.example.ratatouille23.entity.Supervisore;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,6 +45,7 @@ public class AggiungiSezioneFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private Controller controllerAdmin;
     private Controller controllerSupervisore;
+
     private static final String CONTROLLER_AGGIUNGI_SEZIONE = "controllerAggiungiSezione";
 
 
@@ -91,11 +96,21 @@ public class AggiungiSezioneFragment extends Fragment {
                 Toast.makeText(getActivity(), "Inserisci il nome della sezione", Toast.LENGTH_SHORT).show();
             }else{
                 if(getActivity().toString().contains("Admin")){
-                    SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
-                    controllerAdmin.addSezioneAdmin(nuovaSezione, getActivity(), this);
+                    if(getAdmin().getIdAttivita() != 0){
+                        SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
+                        controllerAdmin.addSezioneAdmin(nuovaSezione, getActivity(), this);
+                    }else{
+                        Toast.makeText(getActivity(), "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
+                    }
+
                 }else if(getActivity().toString().contains("Supervisore")){
-                    SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
-                    controllerSupervisore.addSezioneSupervisore(nuovaSezione, getActivity(), this);
+                    if(getSupervisore().getIdAttivita() != 0){
+                        SezioneMenu nuovaSezione = new SezioneMenu(nomeSezione);
+                        controllerSupervisore.addSezioneSupervisore(nuovaSezione, getActivity(), this);
+                    }else{
+                        Toast.makeText(getActivity(), "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 

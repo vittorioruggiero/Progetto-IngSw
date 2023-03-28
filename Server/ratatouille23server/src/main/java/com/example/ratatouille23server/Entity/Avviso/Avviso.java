@@ -12,19 +12,23 @@ public class Avviso {
     private int id;
     @Column(nullable = false)
     private String avviso;
-    @Column(name = "nomeAttivita")
+    @Column(name = "idAttivita")
+    private int idAttivita = 0;
+    /*@Column(name = "nomeAttivita")
     private String nomeAttivita;
     @Column(name = "indirizzoAttivita")
-    private String indirizzoAttivita;
+    private String indirizzoAttivita;*/
     @Column(name = "email")
     private String email;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
+    @JoinColumn(name = "idAttivita", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "avviso_attivita_fkey"), insertable = false, updatable = false)
+    /*@JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
                     foreignKey = @ForeignKey(name = "avviso_attivita_fkey"), insertable = false, updatable = false),
             @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
                     foreignKey = @ForeignKey(name = "avviso_attivita_fkey"), insertable = false, updatable = false)
-    })
+    })*/
     private Attivita attivitaAvviso;
 
 
@@ -44,20 +48,12 @@ public class Avviso {
         this.avviso = avviso;
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     public String getEmail() {
@@ -73,8 +69,7 @@ public class Avviso {
         return "Avviso{" +
                 "id=" + id +
                 ", avviso='" + avviso + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

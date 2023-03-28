@@ -29,8 +29,8 @@ public class AvvisoController {
     }
 
     @RequestMapping(value = "/avviso/get-all-by-attivita", method = RequestMethod.GET)
-    public ResponseEntity<List<Avviso>> getAllAvvisiByAttivita(@RequestParam("nomeAttivita") String nomeAttivita, @RequestParam("indirizzoAttivita") String indirizzoAttivita) {
-        return avvisoDAO.getAllByAttivita(nomeAttivita, indirizzoAttivita);
+    public ResponseEntity<List<Avviso>> getAllAvvisiByAttivita(@RequestParam("idAttivita") int idAttivita) {
+        return avvisoDAO.getAllByAttivita(idAttivita);
     }
 
     @RequestMapping(value = "/avviso/get-by-email", method = RequestMethod.GET)

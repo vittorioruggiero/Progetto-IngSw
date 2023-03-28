@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         return supervisore;
     }
 
-    public void setAdmin(Amministratore nuovoAdmin) {
+    public static void setAdmin(Amministratore nuovoAdmin) {
         admin = nuovoAdmin;
     }
 

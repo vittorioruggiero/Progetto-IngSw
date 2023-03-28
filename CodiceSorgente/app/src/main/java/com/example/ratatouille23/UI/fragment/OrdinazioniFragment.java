@@ -98,11 +98,10 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
 
 
 
-        if(addettoSala.getNomeAttivita() != null){
-            String nome = addettoSala.getNomeAttivita();
-            String indirizzo = addettoSala.getIndirizzoAttivita();
+        if(addettoSala.getIdAttivita() != 0){
+            int idAttivita = addettoSala.getIdAttivita();
             if(tavoli.isEmpty())
-                controller.checkAttivitaAddettoSala(nome, indirizzo, this);
+                controller.checkAttivitaAddettoSala(idAttivita, this);
             else{
                 ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(),
                         android.R.layout.simple_spinner_item, tavoli);
@@ -133,10 +132,8 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         salvaOrdinazioneButton.setOnClickListener(view -> {
             if(selezionaTavoloSpinner.getSelectedItem() != null){
                 controller.checkOrdinazione(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
-                        Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine, OrdinazioniFragment.this, addettoSala.getNomeAttivita(),
-                        addettoSala.getIndirizzoAttivita());
-                //ordinazione = new Ordinazione(prodottiOrdine, Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), Integer.parseInt(numeroCommensaliEditText.getText().toString()));
-                //Toast.makeText(getActivity(), "Ordinazione creata con successo", Toast.LENGTH_SHORT).show();
+                        Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine,
+                        OrdinazioniFragment.this, addettoSala.getIdAttivita());
             }else{
                 Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
             }

@@ -22,10 +22,11 @@ public class AddettoSalaDAO {
     }
 
     public List<AddettoSala> getAll(){
-        List<AddettoSala> addettiSalaList = new ArrayList<>();
+        /*List<AddettoSala> addettiSalaList = new ArrayList<>();
         Streamable.of(repository.findAll())
                 .forEach(addettiSalaList::add);
-        return addettiSalaList;
+        return addettiSalaList;*/
+        return repository.findAll();
     }
 
     public void delete(AddettoSala addettoSala){
@@ -50,6 +51,8 @@ public class AddettoSalaDAO {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+
 
 
 }

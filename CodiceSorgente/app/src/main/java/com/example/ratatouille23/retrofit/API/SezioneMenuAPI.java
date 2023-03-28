@@ -19,7 +19,7 @@ public interface SezioneMenuAPI {
     Call<ArrayList<SezioneMenu>> getAllSezioneMenu();
 
     @GET("/sezioneMenu/get-by-attivita")
-    Call<ArrayList<SezioneMenu>> getSezioniByAttivita(@Query("nomeAttivita") String nomeAttivita, @Query("indirizzoAttivita") String indirizzoAttivita);
+    Call<ArrayList<SezioneMenu>> getSezioniByAttivita(@Query("idAttivita") int idAttivita);
 
     @POST("/sezioneMenu/save")
     Call<SezioneMenu> save(@Body SezioneMenu sezioneMenu);

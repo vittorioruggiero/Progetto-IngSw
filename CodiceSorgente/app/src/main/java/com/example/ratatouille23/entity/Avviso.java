@@ -4,18 +4,11 @@ public class Avviso {
 
     private int id;
     private String avviso;
-    private String nomeAttivita;
-    private String indirizzoAttivita;
+    private int idAttivita;
     private String email;
 
     public Avviso(){
 
-    }
-
-    public Avviso(String avviso, String nomeAttivita, String indirizzoAttivita){
-        this.avviso = avviso;
-        this.nomeAttivita = nomeAttivita;
-        this.indirizzoAttivita = indirizzoAttivita;
     }
 
     public Avviso(String avviso) {
@@ -38,20 +31,12 @@ public class Avviso {
         this.id = id;
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     public String getEmail() {
@@ -67,8 +52,7 @@ public class Avviso {
         return "Avviso{" +
                 "id=" + id +
                 ", avviso='" + avviso + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

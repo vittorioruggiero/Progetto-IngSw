@@ -25,8 +25,8 @@ public class SezioneMenuController {
     }
 
     @RequestMapping(value = "/sezioneMenu/get-by-attivita", method = RequestMethod.GET)
-    public ResponseEntity<ArrayList<SezioneMenu>> getSezioniByAttivita(@RequestParam("nomeAttivita") String nomeAttivita, @RequestParam("indirizzoAttivita") String indirizzoAttivita){
-        return sezioneMenuDAO.findByAttivita(nomeAttivita, indirizzoAttivita);
+    public ResponseEntity<ArrayList<SezioneMenu>> getSezioniByAttivita(@RequestParam("idAttivita") int idAttivita){
+        return sezioneMenuDAO.findByAttivita(idAttivita);
     }
 
     @PostMapping("/sezioneMenu/save")

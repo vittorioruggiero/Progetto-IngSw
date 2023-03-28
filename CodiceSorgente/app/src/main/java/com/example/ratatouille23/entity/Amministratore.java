@@ -5,8 +5,7 @@ public class Amministratore {
     private String email;
     private String nomeUtente;
     private String password;
-    private String indirizzoAttivita;
-    private String nomeAttivita;
+    private int idAttivita;
 
     public Amministratore(){
 
@@ -18,44 +17,36 @@ public class Amministratore {
         this.password = passwordAmministratore;
     }
 
-    public String getEmailAmministratore() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmailAmministratore(String emailAmministratore) {
-        this.email = emailAmministratore;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getNomeUtenteAmministratore() {
+    public String getNomeUtente() {
         return nomeUtente;
     }
 
-    public void setNomeUtenteAmministratore(String nomeUtenteAmministratore) {
-        this.nomeUtente = nomeUtenteAmministratore;
+    public void setNomeUtente(String nomeUtente) {
+        this.nomeUtente = nomeUtente;
     }
 
-    public String getPasswordAmministratore() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPasswordAmministratore(String passwordAmministratore) {
-        this.password = passwordAmministratore;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
-    }
-
-    public String getNomeAttivita() {
-        return nomeAttivita;
-    }
-
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     @Override
@@ -64,8 +55,7 @@ public class Amministratore {
                 "email='" + email + '\'' +
                 ", nomeUtente='" + nomeUtente + '\'' +
                 ", password='" + password + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 '}';
     }
 }

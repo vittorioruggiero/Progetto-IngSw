@@ -17,7 +17,7 @@ public interface AvvisoAPI {
     Call<List<Avviso>> getAllAvvisi();
 
     @GET("/avviso/get-all-by-attivita")
-    Call<List<Avviso>> getAllAvvisiByAttivita(@Query("nomeAttivita") String nomeAttivita, @Query("indirizzoAttivita") String indirizzoAttivita);
+    Call<List<Avviso>> getAllAvvisiByAttivita(@Query("idAttivita") int idAttivita);
 
     @GET("/avviso/get-by-email")
     Call<List<Avviso>> getAllAvvisiByEmail(@Query("email") String email);

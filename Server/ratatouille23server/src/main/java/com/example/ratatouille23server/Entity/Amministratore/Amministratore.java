@@ -2,6 +2,8 @@ package com.example.ratatouille23server.Entity.Amministratore;
 
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.ForeignKeys;
+import org.springframework.context.annotation.EnableMBeanExport;
 
 @Entity
 @Table(name = "amministratore", uniqueConstraints = @UniqueConstraint(name = "unique_nome_utente_admin", columnNames = "nomeUtente"))
@@ -13,17 +15,18 @@ public class Amministratore {
     private String nomeUtente;
     @Column(nullable = false)
     private String password;
-    @Column(name = "nomeAttivita")
-    private String nomeAttivita;
-    @Column(name = "indirizzoAttivita")
-    private String indirizzoAttivita;
+    @Column(name = "idAttivita")
+    private int idAttivita = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
+    @JoinColumn(name = "idAttivita", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "admin_attivita_fkey"), insertable = false, updatable = false)
+    /*@JoinColumns({
             @JoinColumn(name = "nomeAttivita", referencedColumnName = "nome",
                     foreignKey = @ForeignKey(name = "admin_attivita_fkey"), insertable = false, updatable = false),
-            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo", insertable = false, updatable = false)
-    })
+            @JoinColumn(name = "indirizzoAttivita", referencedColumnName = "indirizzo",
+                    foreignKey = @ForeignKey(name = "admin_attivita_fkey"), insertable = false, updatable = false)
+    })*/
     private Attivita attivitaAdmin;
 
     public String getEmail() {
@@ -50,20 +53,12 @@ public class Amministratore {
         this.password = password;
     }
 
-    public String getNomeAttivita() {
-        return nomeAttivita;
+    public int getIdAttivita() {
+        return idAttivita;
     }
 
-    public void setNomeAttivita(String nomeAttivita) {
-        this.nomeAttivita = nomeAttivita;
-    }
-
-    public String getIndirizzoAttivita() {
-        return indirizzoAttivita;
-    }
-
-    public void setIndirizzoAttivita(String indirizzoAttivita) {
-        this.indirizzoAttivita = indirizzoAttivita;
+    public void setIdAttivita(int idAttivita) {
+        this.idAttivita = idAttivita;
     }
 
     @Override
@@ -72,8 +67,7 @@ public class Amministratore {
                 "email='" + email + '\'' +
                 ", nomeUtente='" + nomeUtente + '\'' +
                 ", password='" + password + '\'' +
-                ", nomeAttivita='" + nomeAttivita + '\'' +
-                ", indirizzoAttivita='" + indirizzoAttivita + '\'' +
+                ", idAttivita='" + idAttivita + '\'' +
                 '}';
     }
 }
