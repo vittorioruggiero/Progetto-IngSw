@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,7 @@ import com.example.ratatouille23.UI.activity.LoginActivity;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Avviso;
+import com.example.ratatouille23.entity.Immagine;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.logging.Level;
@@ -43,6 +47,7 @@ public class HomeAdminFragment extends Fragment {
     private Button creaAvvisoButton, logoutButton;
     private static Attivita attivita;
     private Controller controllerAdmin;
+    private static final String TAG = "PERMESSI";
 
     private boolean isEditing = false;
 
@@ -84,6 +89,13 @@ public class HomeAdminFragment extends Fragment {
         if(amministratore.getIdAttivita() != 0){
             int idAttivita = amministratore.getIdAttivita();
             controllerAdmin.checkAttivita(idAttivita, this);
+            if(checkPermission()){
+                Log.d(TAG, "onClick: already ok");
+                controllerAdmin.checkImmagine(amministratore.getIdAttivita(), this);
+            }else{
+                Log.d(TAG, "onClick: NO");
+                requestPermission();
+            }
         }else{
             Toast.makeText(getActivity(), "Inserire dettagli attività", Toast.LENGTH_SHORT).show();
         }
@@ -173,6 +185,40 @@ public class HomeAdminFragment extends Fragment {
         return v;
     }
 
+    private void requestPermission(){
+
+        try{
+            Log.d(TAG, "requestPermission: try");
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            Uri uri = Uri.fromParts("package", getActivity().getPackageName(), this.toString());
+            intent.setData(uri);
+            storageActivityResultLaunch.launch(intent);
+        }catch(Exception e){
+            Log.e(TAG, "requestPermission: catch", e);
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+            storageActivityResultLaunch.launch(intent);
+        }
+    }
+
+    public boolean checkPermission(){
+        return Environment.isExternalStorageManager();
+    }
+
+    private ActivityResultLauncher<Intent> storageActivityResultLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Log.d(TAG, "onActivityResult: ");
+                if(Environment.isExternalStorageManager()){
+                    Log.d(TAG, "onActivityResult: OK");
+                    controllerAdmin.checkImmagine(amministratore.getIdAttivita(), this);
+                }else{
+                    Log.d(TAG, "onActivityResult: ERROR");
+                }
+            }
+    );
+
     public void setAttivita(Attivita attivitaBody){
         attivita = attivitaBody;
         nomeAttivitaEditText.setText(attivita.getNome());
@@ -197,6 +243,7 @@ public class HomeAdminFragment extends Fragment {
                 if (data != null && result.getResultCode() == Activity.RESULT_OK) {
                     Uri resultUri = data.getData();
                     foto.setImageURI(resultUri);
+                    controllerAdmin.salvaImmagine(resultUri, amministratore.getIdAttivita());
                     Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + resultUri);
                 }
             });
@@ -236,6 +283,11 @@ public class HomeAdminFragment extends Fragment {
                 (dialog, id) -> dialog.cancel());
 
         return inserisciAvvisoAlertDialogBuilder.create();
+    }
+
+    public void setUri(Immagine immagine){
+        Uri uri = Uri.parse(immagine.getUri());
+        foto.setImageURI(uri);
     }
 
 }

@@ -40,11 +40,10 @@ public class LoginActivity extends AppCompatActivity {
     private Controller controller;
     private EditText nomeUtenteEditText, passwordEditText;
     private TextView campiErratiTextView;
-    //private TextView registratiTextView;
     private Button accediButton;
-    private AmministratoreAPI amministratoreAPI;
+    /*private AmministratoreAPI amministratoreAPI;
     private AddettoSalaAPI addettoSalaAPI;
-    private SupervisoreAPI supervisoreAPI;
+    private SupervisoreAPI supervisoreAPI;*/
     private RetrofitService retrofitService;
     private static Amministratore admin;
     private static AddettoSala addettoSala;
@@ -56,11 +55,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         controller = new Controller();
-
         retrofitService = new RetrofitService();
-        amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
+        /*amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
         supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
-        addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);
+        addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);*/
 
         Login();
     }

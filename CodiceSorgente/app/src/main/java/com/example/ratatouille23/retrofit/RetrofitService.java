@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
 
     private final String ipPCAnielloFisso = "192.168.1.79";
-    private final String ipPCAnielloPortatile = "192.168.1.30";
+    private final String ipPCAnielloPortatile = "192.168.1.33";
     private final String ipAnielloPortatileUnina = "192.168.231.173";
     private final String ipVittorio = "192.168.0.29";
     private Retrofit retrofit;
@@ -24,7 +24,7 @@ public class RetrofitService {
                 .setDateFormat("yyyy-MM-dd")
                 .create();
 
-        retrofit = new Retrofit.Builder().baseUrl("http://" + ipAnielloPortatileUnina + ":8080")
+        retrofit = new Retrofit.Builder().baseUrl("http://" + ipPCAnielloPortatile + ":8080")
                 .addConverterFactory(new NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))

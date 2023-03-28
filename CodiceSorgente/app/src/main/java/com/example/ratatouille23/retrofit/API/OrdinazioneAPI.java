@@ -1,6 +1,5 @@
 package com.example.ratatouille23.retrofit.API;
 
-import com.example.ratatouille23.entity.Conto;
 import com.example.ratatouille23.entity.Ordinazione;
 
 import java.util.List;

@@ -9,6 +9,7 @@ import static com.example.ratatouille23.UI.activity.LoginActivity.setSupervisore
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
 import com.example.ratatouille23.entity.Avviso;
 import com.example.ratatouille23.entity.Conto;
+import com.example.ratatouille23.entity.Immagine;
 import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
 import com.example.ratatouille23.entity.SezioneMenu;
@@ -47,6 +49,7 @@ import com.example.ratatouille23.retrofit.API.AmministratoreAPI;
 import com.example.ratatouille23.retrofit.API.AttivitaAPI;
 import com.example.ratatouille23.retrofit.API.AvvisoAPI;
 import com.example.ratatouille23.retrofit.API.ContoAPI;
+import com.example.ratatouille23.retrofit.API.ImmagineAPI;
 import com.example.ratatouille23.retrofit.API.OrdinazioneAPI;
 import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
@@ -55,6 +58,9 @@ import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
 import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,6 +68,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,6 +85,7 @@ public class Controller {
     private ProdottoMenuAPI prodottoMenuAPI;
     private SingoloOrdineAPI singoloOrdineAPI;
     private OrdinazioneAPI ordinazioneAPI;
+    private ImmagineAPI immagineAPI;
     private ContoAPI contoAPI;
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
@@ -359,6 +368,7 @@ public class Controller {
                         if(response.body() != null){
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
                             homeAdminFragment.setAttivita(response.body());
+                            //checkImmagine(response.body().getId(), homeAdminFragment);
                         }else{
                             Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
@@ -370,6 +380,34 @@ public class Controller {
                     }
                 });
 
+    }
+
+    public void checkImmagine(int idAttivita, HomeAdminFragment homeAdminFragment){
+        if(immagineAPI == null){
+            immagineAPI = retrofitService.getRetrofit().create(ImmagineAPI.class);
+        }
+
+        immagineAPI.getByIdAttivita(idAttivita)
+                .enqueue(new Callback<Immagine>() {
+                    @Override
+                    public void onResponse(Call<Immagine> call, Response<Immagine> response) {
+                        if(response.body() != null){
+                            if(!(response.body().getUri().equals(""))){
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                                homeAdminFragment.setUri(response.body());
+                            }else{
+                                Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                            }
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Immagine> call, Throwable t) {
+
+                    }
+                });
     }
 
     public void checkAttivitaAddettoSala(int idAttivita, OrdinazioniFragment ordinazioniFragment){
@@ -1378,4 +1416,32 @@ public class Controller {
     }
 
 
+    public void salvaImmagine(Uri resultUri, int idAttivita) {
+
+        if(immagineAPI == null){
+            immagineAPI = retrofitService.getRetrofit().create(ImmagineAPI.class);
+        }
+
+        String uri = resultUri.toString();
+
+        immagineAPI.salvaImmagine(uri, idAttivita)
+                .enqueue(new Callback<Immagine>() {
+                    @Override
+                    public void onResponse(Call<Immagine> call, Response<Immagine> response) {
+                        if(response.body() != null){
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + response.body());
+                            //homeAdminFragment.setUri(response.body());
+
+                        }else{
+                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "ERROR: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Immagine> call, Throwable t) {
+
+                    }
+                });
+
+    }
 }
