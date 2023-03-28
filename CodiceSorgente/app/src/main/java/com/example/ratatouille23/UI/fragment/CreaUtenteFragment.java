@@ -17,6 +17,9 @@ import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CreaUtenteFragment#newInstance} factory method to
@@ -25,7 +28,9 @@ import com.google.android.material.textfield.TextInputEditText;
 public class CreaUtenteFragment extends Fragment {
 
     private View inflatedView;
-    private TextInputEditText nuovoUtenteEmailTextInputEditText, nuovoUtenteNomeTextInputEditText, nuovoUtentePasswordTextInputEditText;
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static TextInputEditText nuovoUtenteEmailTextInputEditText, nuovoUtenteNomeTextInputEditText, nuovoUtentePasswordTextInputEditText;
     private Spinner tipologiaUtenteSpinner;
     private Button creaUtenteButton;
     private AlertDialog creazioneUtenteAlertDialog, uscitaCreazioneUtenteAlertDialog;
@@ -62,10 +67,10 @@ public class CreaUtenteFragment extends Fragment {
         nuovoUtentePasswordTextInputEditText = inflatedView.findViewById(R.id.nuovoUtentePasswordTextInputEditText);
         nuovoUtentePasswordTextInputEditText.setSaveEnabled(false);
 
-        tipologiaUtenteSpinner = (Spinner) inflatedView.findViewById(R.id.tipologiaUtenteSpinner);
+        tipologiaUtenteSpinner = inflatedView.findViewById(R.id.tipologiaUtenteSpinner);
         tipologiaUtenteSpinner.setSaveEnabled(false);
 
-        creaUtenteButton = (Button) inflatedView.findViewById(R.id.creaUtenteButton);
+        creaUtenteButton = inflatedView.findViewById(R.id.creaUtenteButton);
 
         uscitaCreazioneUtenteAlertDialog = creaUscitaCreazioneUtenteAlertDialog();
 
@@ -77,14 +82,21 @@ public class CreaUtenteFragment extends Fragment {
         tipologiaUtenteSpinner.setSelection(adapter.getPosition("Supervisore"));
 
         creazioneUtenteAlertDialog = creaCreazioneUtenteAlertDialog();
-        creaUtenteButton.setOnClickListener(view -> creazioneUtenteAlertDialog.show());
+        creaUtenteButton.setOnClickListener(view -> {
+            creazioneUtenteAlertDialog.show();
+        });
 
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 setEnabled(false);
-                uscitaCreazioneUtenteAlertDialog.show();
+                if(!(nuovoUtenteNomeTextInputEditText.getText().toString().equals("") &&
+                        nuovoUtenteEmailTextInputEditText.getText().toString().equals("") &&
+                        nuovoUtentePasswordTextInputEditText.getText().toString().equals(""))){
+                    uscitaCreazioneUtenteAlertDialog.show();
+                }
+
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -105,13 +117,18 @@ public class CreaUtenteFragment extends Fragment {
                         String email = nuovoUtenteEmailTextInputEditText.getText().toString();
                         String password = nuovoUtentePasswordTextInputEditText.getText().toString();
                         String tipologiaUtente = tipologiaUtenteSpinner.getSelectedItem().toString();
-                        if(tipologiaUtente.equals("Supervisore")){
-                            controllerAdmin.salvaSupervisore(nomeUtente, email, password, getActivity());
-                            clearCampi();
-                        }else if(tipologiaUtente.equals("Addetto alla sala")){
-                            controllerAdmin.salvaAddettoSala(nomeUtente, email, password, getActivity());
-                            clearCampi();
+                        if(validate(email)){
+                            if(tipologiaUtente.equals("Supervisore")){
+                                controllerAdmin.salvaSupervisore(nomeUtente, email, password, getActivity());
+                                clearCampi();
+                            }else if(tipologiaUtente.equals("Addetto alla sala")){
+                                controllerAdmin.salvaAddettoSala(nomeUtente, email, password, getActivity());
+                                clearCampi();
+                            }
+                        }else{
+                            Toast.makeText(getActivity(), "Email non corretta", Toast.LENGTH_SHORT).show();
                         }
+
                     }catch(NullPointerException e){
                         Toast.makeText(getActivity(), "Inserisci tutti i campi", Toast.LENGTH_SHORT).show();
                     }
@@ -134,6 +151,11 @@ public class CreaUtenteFragment extends Fragment {
         nuovoUtentePasswordTextInputEditText.setText("");
     }
 
+    private boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.matches();
+    }
+
     AlertDialog creaUscitaCreazioneUtenteAlertDialog() {
 
         AlertDialog.Builder uscitaCreazioneUtenteAlertDialogBuilder = new AlertDialog.Builder(getContext());
@@ -149,6 +171,12 @@ public class CreaUtenteFragment extends Fragment {
                 (dialog, id) -> dialog.cancel());
 
         return uscitaCreazioneUtenteAlertDialogBuilder.create();
+    }
+
+    public static boolean checkTextView(){
+        return nuovoUtenteNomeTextInputEditText.getText().toString().equals("") &&
+                nuovoUtenteEmailTextInputEditText.getText().toString().equals("") &&
+                nuovoUtentePasswordTextInputEditText.getText().toString().equals("");
     }
 
 }

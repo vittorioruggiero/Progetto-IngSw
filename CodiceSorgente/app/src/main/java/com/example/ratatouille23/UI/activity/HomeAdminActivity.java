@@ -16,6 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.fragment.ContiFragment;
+import com.example.ratatouille23.UI.fragment.CreaUtenteFragment;
+import com.example.ratatouille23.UI.fragment.HomeAdminFragment;
 import com.example.ratatouille23.entity.Amministratore;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -29,7 +32,6 @@ public class HomeAdminActivity extends AppCompatActivity {
     private NavHostFragment navHostFragment;
     private NavController navController;
     public BottomNavigationView bottomNavigationView;
-    private Amministratore admin = new Amministratore();
     private AlertDialog uscitaCreazioneUtenteAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +52,14 @@ public class HomeAdminActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        Gson gson = new Gson();
-        admin = gson.fromJson(getIntent().getStringExtra("admin"), Amministratore.class);
-
-        Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: " + admin);
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             if(bottomNavigationView.getMenu().findItem(R.id.creaUtenteFragment).isChecked() && item.getItemId()!=R.id.creaUtenteFragment) {
-                uscitaCreazioneUtenteAlertDialog.show();
+                if(!(CreaUtenteFragment.checkTextView())){
+                    uscitaCreazioneUtenteAlertDialog.show();
+                }else{
+                    navController.navigate(item.getItemId());
+                }
             }
             else navController.navigate(item.getItemId());
 
@@ -107,10 +108,6 @@ public class HomeAdminActivity extends AppCompatActivity {
                 });
 
         return uscitaCreazioneUtenteAlertDialogBuilder.create();
-    }
-
-    public Amministratore getAmministratore(){
-        return admin;
     }
 
 }
