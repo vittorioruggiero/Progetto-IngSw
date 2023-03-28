@@ -4,6 +4,7 @@ package com.example.ratatouille23server.Entity.Attivita;
 import com.example.ratatouille23server.Entity.AddettoSala.AddettoSala;
 import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
 import com.example.ratatouille23server.Entity.Avviso.Avviso;
+import com.example.ratatouille23server.Entity.Immagine.Immagine;
 import com.example.ratatouille23server.Entity.Ordinazione.Ordinazione;
 import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenu;
 import com.example.ratatouille23server.Entity.Supervisore.Supervisore;
@@ -48,6 +49,9 @@ public class Attivita {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaOrdinazione")
     private List<Ordinazione> ordinazioni;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attivitaImmagine")
+    private List<Immagine> immagini;
 
     public int getId() {
         return id;

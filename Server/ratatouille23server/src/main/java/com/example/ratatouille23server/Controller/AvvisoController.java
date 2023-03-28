@@ -1,8 +1,5 @@
 package com.example.ratatouille23server.Controller;
 
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import com.example.ratatouille23server.Entity.Avviso.Avviso;
 import com.example.ratatouille23server.Entity.Avviso.AvvisoDAO;
 import org.springframework.beans.factory.annotation.Autowired;

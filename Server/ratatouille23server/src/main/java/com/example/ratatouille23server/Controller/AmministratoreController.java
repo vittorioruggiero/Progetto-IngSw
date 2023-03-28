@@ -1,15 +1,8 @@
 package com.example.ratatouille23server.Controller;
 
-import com.example.ratatouille23server.Entity.AddettoSala.AddettoSala;
-import com.example.ratatouille23server.Entity.AddettoSala.AddettoSalaDAO;
 import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
 import com.example.ratatouille23server.Entity.Amministratore.AmministratoreDAO;
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.QueryAnnotation;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

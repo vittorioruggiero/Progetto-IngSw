@@ -1,7 +1,6 @@
 package com.example.ratatouille23server.Entity.Avviso;
 
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
 import jakarta.persistence.*;
 
 @Entity

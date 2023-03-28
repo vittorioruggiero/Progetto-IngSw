@@ -1,8 +1,5 @@
 package com.example.ratatouille23server.Entity.Avviso;
 
-import com.example.ratatouille23server.Entity.Attivita.Attivita;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;

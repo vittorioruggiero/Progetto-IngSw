@@ -4,8 +4,6 @@ import com.example.ratatouille23server.Entity.Amministratore.Amministratore;
 import com.example.ratatouille23server.Entity.Amministratore.AmministratoreDAO;
 import com.example.ratatouille23server.Entity.Attivita.Attivita;
 import com.example.ratatouille23server.Entity.Attivita.AttivitaDAO;
-import com.example.ratatouille23server.Entity.Attivita.AttivitaPkey;
-import com.example.ratatouille23server.Entity.Avviso.Avviso;
 import com.example.ratatouille23server.Entity.Avviso.AvvisoDAO;
 import com.example.ratatouille23server.Entity.SezioneMenu.SezioneMenuDAO;
 import org.junit.jupiter.api.Test;
