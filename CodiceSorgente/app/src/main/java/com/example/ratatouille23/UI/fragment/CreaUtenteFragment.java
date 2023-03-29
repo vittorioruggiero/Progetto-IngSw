@@ -112,12 +112,25 @@ public class CreaUtenteFragment extends Fragment {
         creazioneUtenteAlertDialogBuilder.setPositiveButton(
                 "Conferma",
                 (dialog, id) -> {
+
                     try{
                         String nomeUtente = nuovoUtenteNomeTextInputEditText.getText().toString();
                         String email = nuovoUtenteEmailTextInputEditText.getText().toString();
                         String password = nuovoUtentePasswordTextInputEditText.getText().toString();
                         String tipologiaUtente = tipologiaUtenteSpinner.getSelectedItem().toString();
-                        if(validate(email)){
+                        if(controlloCampiCreazioneUtente(nomeUtente, email, password, tipologiaUtente)){
+                            if(tipologiaUtente.equals("Supervisore")){
+                                controllerAdmin.salvaSupervisore(nomeUtente, email, password, getActivity());
+                                clearCampi();
+                            }else if(tipologiaUtente.equals("Addetto alla sala")){
+                                controllerAdmin.salvaAddettoSala(nomeUtente, email, password, getActivity());
+                                clearCampi();
+                            }
+                        }else{
+                            //Toast.makeText(getActivity(), "Email non corretta", Toast.LENGTH_SHORT).show();
+                        }
+
+                        /*if(validate(email)){
                             if(tipologiaUtente.equals("Supervisore")){
                                 controllerAdmin.salvaSupervisore(nomeUtente, email, password, getActivity());
                                 clearCampi();
@@ -127,7 +140,7 @@ public class CreaUtenteFragment extends Fragment {
                             }
                         }else{
                             Toast.makeText(getActivity(), "Email non corretta", Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
 
                     }catch(NullPointerException e){
                         Toast.makeText(getActivity(), "Inserisci tutti i campi", Toast.LENGTH_SHORT).show();
@@ -142,6 +155,30 @@ public class CreaUtenteFragment extends Fragment {
                 });
 
         return creazioneUtenteAlertDialogBuilder.create();
+
+    }
+
+    private boolean controlloCampiCreazioneUtente(String nomeUtente, String email, String password, String tipologiaUtente){
+
+        if(nomeUtente == null || email == null || password == null || tipologiaUtente == null){
+            Toast.makeText(getActivity(), "Qualcosa è andato storto", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(!(VALID_EMAIL_ADDRESS_REGEX.matcher(email)).matches()){
+            Toast.makeText(getActivity(), "Email non corretta", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(nomeUtente.equals("") || email.equals("") || password.equals("") || tipologiaUtente.equals("")){
+            Toast.makeText(getActivity(), "Compilare bene i campi", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+
+        return true;
+
 
     }
 

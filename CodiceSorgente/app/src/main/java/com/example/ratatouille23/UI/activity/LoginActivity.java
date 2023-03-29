@@ -42,9 +42,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText nomeUtenteEditText, passwordEditText;
     private TextView campiErratiTextView;
     private Button accediButton;
-    /*private AmministratoreAPI amministratoreAPI;
-    private AddettoSalaAPI addettoSalaAPI;
-    private SupervisoreAPI supervisoreAPI;*/
     private RetrofitService retrofitService;
     private FirebaseAnalytics mFirebaseAnalytics;
     private static Amministratore admin;
@@ -59,10 +56,6 @@ public class LoginActivity extends AppCompatActivity {
         controller = new Controller();
         retrofitService = new RetrofitService();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        /*amministratoreAPI = retrofitService.getRetrofit().create(AmministratoreAPI.class);
-        supervisoreAPI = retrofitService.getRetrofit().create(SupervisoreAPI.class);
-        addettoSalaAPI = retrofitService.getRetrofit().create(AddettoSalaAPI.class);*/
 
         Login();
     }

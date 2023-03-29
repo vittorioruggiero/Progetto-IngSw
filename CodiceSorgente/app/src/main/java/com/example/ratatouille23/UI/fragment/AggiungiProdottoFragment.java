@@ -108,64 +108,8 @@ public class AggiungiProdottoFragment extends Fragment {
             }catch(NumberFormatException e){
                 costo = 0;
             }
-            ProdottoMenu nuovoProdotto;
 
-            if(!(nomeProdotto.equals("")) && !(ingredienti.equals("")) && costo != 0){
-                if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
-                    if(allergeni.equals("")){
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
-                        try {
-                            if(getActivity().toString().contains("Admin")){
-                                controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }else{
-                                controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }
-                        }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo, allergeni);
-                        try {
-                            if(getActivity().toString().contains("Admin")){
-                                controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }else{
-                                controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }
-                        }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                }
-                else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
-                    Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if(allergeni.equals("")){
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
-                        try {
-                            if(getActivity().toString().contains("Admin")){
-                                controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }else{
-                                controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }                    }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo, allergeni);
-                        try {
-                            if(getActivity().toString().contains("Admin")){
-                                controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }else{
-                                controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
-                            }                    }catch(IndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            }else{
-                Toast.makeText(getActivity(), "Compilare i campi correttamente", Toast.LENGTH_SHORT).show();
-            }
+            controlloProdotto(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, allergeni, costo);
 
         });
 
@@ -178,6 +122,69 @@ public class AggiungiProdottoFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return v;
+    }
+
+    private void controlloProdotto(String nomeProdotto, String nomeProdottoSecondaLingua, String ingredienti, String ingredientiSecondaLingua, String allergeni, double costo) {
+
+        ProdottoMenu nuovoProdotto;
+
+        if(!(nomeProdotto.equals("")) && !(ingredienti.equals("")) && costo != 0){
+            if(nomeProdottoSecondaLingua.equals("") && ingredientiSecondaLingua.equals("")){
+                if(allergeni.equals("")){
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo);
+                    try {
+                        if(getActivity().toString().contains("Admin")){
+                            controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }else{
+                            controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }
+                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, ingredienti, costo, allergeni);
+                    try {
+                        if(getActivity().toString().contains("Admin")){
+                            controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }else{
+                            controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }
+                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+            else if((nomeProdottoSecondaLingua.equals("") || ingredientiSecondaLingua.equals(""))){
+                Toast.makeText(getActivity(), "Devi inserire entrambi i campi della seconda lingua", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                if(allergeni.equals("")){
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo);
+                    try {
+                        if(getActivity().toString().contains("Admin")){
+                            controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }else{
+                            controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    nuovoProdotto = new ProdottoMenu(nomeProdotto, nomeProdottoSecondaLingua, ingredienti, ingredientiSecondaLingua, costo, allergeni);
+                    try {
+                        if(getActivity().toString().contains("Admin")){
+                            controllerAdmin.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }else{
+                            controllerSupervisore.aggiungiProdotto(nuovoProdotto, tipologiaProdottoSpinner.getSelectedItem().toString(), getActivity(), this);
+                        }                    }catch(IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Non ci sono sezioni!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }else{
+            Toast.makeText(getActivity(), "Compilare i campi correttamente", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void sostituisciFragment(){
