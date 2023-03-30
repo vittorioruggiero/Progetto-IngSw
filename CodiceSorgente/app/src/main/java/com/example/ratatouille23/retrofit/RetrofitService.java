@@ -12,6 +12,7 @@ public class RetrofitService {
     private final String ipPCAnielloPortatile = "192.168.1.33";
     private final String ipAnielloPortatileUnina = "192.168.231.173";
     private final String ipVittorio = "192.168.0.29";
+    private final String ipEC2 = "18.134.13.65";
     private Retrofit retrofit;
 
     public RetrofitService(){
@@ -24,7 +25,7 @@ public class RetrofitService {
                 .setDateFormat("yyyy-MM-dd")
                 .create();
 
-        retrofit = new Retrofit.Builder().baseUrl("http://" + ipVittorio + ":8080")
+        retrofit = new Retrofit.Builder().baseUrl("http://" + ipEC2 + ":8080")
                 .addConverterFactory(new NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
