@@ -1,6 +1,5 @@
 package com.example.ratatouille23.retrofit.API;
 
-import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.ProdottoMenu;
 
 import java.util.List;

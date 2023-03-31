@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -42,6 +44,7 @@ import com.example.ratatouille23.entity.Conto;
 import com.example.ratatouille23.entity.Immagine;
 import com.example.ratatouille23.entity.Ordinazione;
 import com.example.ratatouille23.entity.ProdottoMenu;
+import com.example.ratatouille23.entity.ProdottoMenuOpenData;
 import com.example.ratatouille23.entity.SezioneMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
 import com.example.ratatouille23.entity.Supervisore;
@@ -53,6 +56,7 @@ import com.example.ratatouille23.retrofit.API.ContoAPI;
 import com.example.ratatouille23.retrofit.API.ImmagineAPI;
 import com.example.ratatouille23.retrofit.API.OrdinazioneAPI;
 import com.example.ratatouille23.retrofit.API.ProdottoMenuAPI;
+import com.example.ratatouille23.retrofit.API.ProdottoMenuOpenDataAPI;
 import com.example.ratatouille23.retrofit.API.SezioneMenuAPI;
 import com.example.ratatouille23.retrofit.API.SingoloOrdineAPI;
 import com.example.ratatouille23.retrofit.API.SupervisoreAPI;
@@ -94,9 +98,11 @@ public class Controller {
     private ContoAPI contoAPI;
     private AttivitaAPI attivitaAPI;
     private AvvisoAPI avvisoAPI;
+    private ProdottoMenuOpenDataAPI prodottoMenuOpenDataAPI;
     private AddettoSala addettoSala;
     private RetrofitService retrofitService;
     private ArrayList<SezioneMenu> sezioni;
+    private List<ProdottoMenuOpenData> prodottiOpenData = new ArrayList<>();
 
     public Controller() {
 
@@ -1562,6 +1568,51 @@ public class Controller {
 
                     }
                 });
+
+    }
+
+    public void getAllProdottiOpenData(AggiungiProdottoFragment aggiungiProdottoFragment, String tipologiaProdottoSpinner) {
+
+        if(prodottoMenuOpenDataAPI == null){
+            prodottoMenuOpenDataAPI = retrofitService.getRetrofit().create(ProdottoMenuOpenDataAPI.class);
+        }
+
+        if(tipologiaProdottoSpinner.equals("Bibite") || tipologiaProdottoSpinner.equals("Bevande")){
+            prodottoMenuOpenDataAPI.getAllProdottoMenuOpenData()
+                    .enqueue(new Callback<List<ProdottoMenuOpenData>>() {
+                        @Override
+                        public void onResponse(Call<List<ProdottoMenuOpenData>> call, Response<List<ProdottoMenuOpenData>> response) {
+                            if(response.body() != null){
+                                prodottiOpenData = response.body();
+                                ArrayAdapter<ProdottoMenuOpenData> adapter = new ArrayAdapter<>(aggiungiProdottoFragment.getActivity(),
+                                        android.R.layout.simple_dropdown_item_1line, prodottiOpenData);
+                                aggiungiProdottoFragment.getAutoCompleteTextView().setAdapter(adapter);
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ProdottoMenuOpenData>> call, Throwable t) {
+
+                        }
+                    });
+        }else{
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(aggiungiProdottoFragment.getActivity(),
+                    android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
+            aggiungiProdottoFragment.getAutoCompleteTextView().setAdapter(adapter);
+        }
+
+
+
+    }
+
+    public void checkProdottoOpenData(String nomeProdottoSelezionato, AggiungiProdottoFragment aggiungiProdottoFragment) {
+
+        for(ProdottoMenuOpenData prodottoMenuOpenData : prodottiOpenData){
+            if(prodottoMenuOpenData.getNome().equals(nomeProdottoSelezionato)){
+                aggiungiProdottoFragment.setEditText(prodottoMenuOpenData.getIngredienti(), prodottoMenuOpenData.getAllergeni());
+            }
+        }
 
     }
 }

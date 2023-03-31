@@ -9,7 +9,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
 import com.example.ratatouille23.entity.ProdottoMenu;
+import com.example.ratatouille23.entity.ProdottoMenuOpenData;
 import com.example.ratatouille23.entity.SezioneMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -28,7 +32,7 @@ import java.util.ArrayList;
 public class AggiungiProdottoFragment extends Fragment {
 
     private Spinner tipologiaProdottoSpinner;
-    private EditText nomeProdottoEditText;
+    private AutoCompleteTextView nomeProdottoAutoCompleteTextView;
     private EditText nomeProdottoSecondaLinguaEditText;
     private EditText costoProdottoEditText;
     private EditText ingredientiProdottoEditText;
@@ -72,7 +76,7 @@ public class AggiungiProdottoFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_aggiungi_prodotto, container, false);
 
-        nomeProdottoEditText = v.findViewById(R.id.nomeProdottoEditText);
+        nomeProdottoAutoCompleteTextView = v.findViewById(R.id.nomeProdottoEditText);
         nomeProdottoSecondaLinguaEditText = v.findViewById(R.id.nomeProdottoSecondaLinguaEditText);
         costoProdottoEditText = v.findViewById(R.id.costoProdottoEditText);
         ingredientiProdottoEditText = v.findViewById(R.id.ingredientiProdottoEditText);
@@ -94,9 +98,59 @@ public class AggiungiProdottoFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tipologiaProdottoSpinner.setAdapter(adapter);
 
+        ArrayAdapter<String> adapterTemp = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
+        nomeProdottoAutoCompleteTextView.setAdapter(adapterTemp);
+
+        tipologiaProdottoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (getActivity().toString().contains("Admin")) {
+                    controllerAdmin.getAllProdottiOpenData(AggiungiProdottoFragment.this, tipologiaProdottoSpinner.getSelectedItem().toString());
+
+                } else {
+                    controllerSupervisore.getAllProdottiOpenData(AggiungiProdottoFragment.this, tipologiaProdottoSpinner.getSelectedItem().toString());
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        /*nomeProdottoAutoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ProdottoMenuOpenData prodottoMenuOpenData = (ProdottoMenuOpenData) adapterView.getSelectedItem();
+                Toast.makeText(getActivity(), "PROVA:" + prodottoMenuOpenData, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });*/
+
+        nomeProdottoAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), "OK: " + nomeProdottoAutoCompleteTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                if (getActivity().toString().contains("Admin")) {
+                    controllerAdmin.checkProdottoOpenData(nomeProdottoAutoCompleteTextView.getText().toString(), AggiungiProdottoFragment.this);
+
+                } else {
+                    controllerSupervisore.checkProdottoOpenData(nomeProdottoAutoCompleteTextView.getText().toString(), AggiungiProdottoFragment.this);
+                }
+            }
+        });
+
+
 
         aggiungiProdottoButton.setOnClickListener(view -> {
-            String nomeProdotto = nomeProdottoEditText.getText().toString();
+            String nomeProdotto = nomeProdottoAutoCompleteTextView.getText().toString();
             String nomeProdottoSecondaLingua = nomeProdottoSecondaLinguaEditText.getText().toString();
             String ingredienti = ingredientiProdottoEditText.getText().toString();
             String ingredientiSecondaLingua = ingredientiProdottoSecondaLinguaEditText.getText().toString();
@@ -209,4 +263,20 @@ public class AggiungiProdottoFragment extends Fragment {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
+    public AutoCompleteTextView getAutoCompleteTextView(){
+        return nomeProdottoAutoCompleteTextView;
+    }
+
+
+    public void setEditText(String ingredienti, String allergeni) {
+
+        if(ingredienti != null){
+            ingredientiProdottoEditText.setText(ingredienti);
+        }
+        if(allergeni != null){
+            allergeniEditText.setText(allergeni);
+        }
+
+
+    }
 }
