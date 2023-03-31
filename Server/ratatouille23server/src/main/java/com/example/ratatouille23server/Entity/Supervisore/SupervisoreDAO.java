@@ -20,7 +20,10 @@ public class SupervisoreDAO {
     private SupervisoreRepository repository;
 
     public Supervisore salvataggioSupervisore(Supervisore supervisore){
-        return repository.save(supervisore);
+        if(repository.findByEmail(supervisore.getEmail()) != null)
+            return null;
+        else
+            return repository.save(supervisore);
     }
 
     public List<Supervisore> getAll(){

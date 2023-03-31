@@ -1039,6 +1039,8 @@ public class Controller {
 
                                 Toast.makeText(activity, "Addetto Sala salvato correttamente", Toast.LENGTH_SHORT).show();
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
+                            }else{
+                                Toast.makeText(activity, "Email già esistente", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -1077,6 +1079,8 @@ public class Controller {
 
                                 Toast.makeText(activity, "Supervisore salvato correttamente", Toast.LENGTH_SHORT).show();
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "OK: ", response.body());
+                            }else{
+                                Toast.makeText(activity, "Email già esistente", Toast.LENGTH_SHORT).show();
                             }
                         }
 

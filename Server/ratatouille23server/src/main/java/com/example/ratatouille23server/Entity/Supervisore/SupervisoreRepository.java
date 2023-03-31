@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SupervisoreRepository extends JpaRepository<Supervisore, String> {
     Supervisore findByNomeUtente(String nomeUtente);
+
+    Supervisore findByEmail(String email);
 }

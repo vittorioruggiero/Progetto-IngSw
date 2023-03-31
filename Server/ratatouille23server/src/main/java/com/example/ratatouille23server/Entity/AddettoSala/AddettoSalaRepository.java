@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface AddettoSalaRepository extends JpaRepository<AddettoSala, String> {
 
     AddettoSala findByNomeUtente(String nomeUtente);
+
+    AddettoSala findByEmail(String email);
 }

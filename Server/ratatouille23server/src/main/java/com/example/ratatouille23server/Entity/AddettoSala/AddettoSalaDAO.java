@@ -18,7 +18,10 @@ public class AddettoSalaDAO {
     private AddettoSalaRepository repository;
 
     public AddettoSala save(AddettoSala addettoSala){
-        return repository.save(addettoSala);
+        if(repository.findByEmail(addettoSala.getEmail()) != null){
+            return null;
+        }else
+            return repository.save(addettoSala);
     }
 
     public List<AddettoSala> getAll(){
