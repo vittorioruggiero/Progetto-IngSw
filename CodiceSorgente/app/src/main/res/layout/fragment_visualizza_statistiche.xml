@@ -9,11 +9,30 @@
     tools:context=".UI.fragment.VisualizzaStatisticheFragment">
 
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="40dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/intervalloStatisticheTextView">
+
+        <Spinner
+            android:id="@+id/tipologiaStatisticaSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/seleziona_tipologia_di_utente_text" />
+    </RelativeLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cercaButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
         android:text="@string/cerca"
         android:textSize="14sp"
         app:backgroundTint="@color/YELLOW_LOGO"
@@ -26,12 +45,12 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/graficoFragmentContainerView"
         android:name="com.example.ratatouille23.UI.fragment.GraficoStatisticaFragment"
-        android:layout_width="391dp"
-        android:layout_height="528dp"
-        android:layout_marginTop="200dp"
+        android:layout_width="387dp"
+        android:layout_height="420dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/valoreTextView"
         tools:layout="@layout/fragment_grafico_statistica" />
 
     <Button
@@ -71,47 +90,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/incassoTotaleTextView"
+        android:id="@+id/valoreTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="60dp"
-        android:text="@string/incassoTotale"
+        android:layout_height="49dp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/incassoMedioTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dataInizioButton" />
-
-    <TextView
-        android:id="@+id/incassoMedioTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/incassoMedio"
-        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/incassoTotaleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/dataFineButton" />
-
-    <TextView
-        android:id="@+id/valoreIncassoTotaleTextView"
-        android:layout_width="62dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/incassoTotaleTextView" />
-
-    <TextView
-        android:id="@+id/valoreIncassoMedioTextView"
-        android:layout_width="62dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="65dp"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/incassoMedioTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

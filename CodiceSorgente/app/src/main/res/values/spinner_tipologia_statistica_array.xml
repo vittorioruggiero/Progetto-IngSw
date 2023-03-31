@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipologia_statistica_array">
+        <item>Valore medio conti</item>
+        <item>Valore medio incassi</item>
+        <item>Incassi totali</item>
+    </string-array>
+</resources>

@@ -12,7 +12,7 @@ public class RetrofitService {
     private final String ipPCAnielloPortatile = "192.168.1.33";
     private final String ipAnielloPortatileUnina = "192.168.231.173";
     private final String ipVittorio = "192.168.0.29";
-    private final String ipEC2 = "18.134.13.65";
+    private final String ipEC2 = "18.170.45.127";
     private Retrofit retrofit;
 
     public RetrofitService(){

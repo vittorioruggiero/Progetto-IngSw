@@ -5,26 +5,34 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
+import com.example.ratatouille23.UI.activity.HomeAdminActivity;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VisualizzaStatisticheFragment extends Fragment {
 
     private Button dataInizioButton, dataFineButton, cercaButton;
     private java.sql.Date dataInizio, dataFine;
-    private TextView incassoTotaleTextView, incassoMedioTextView;
+    private TextView valoreTextView;
+    private Spinner tipologiaStatisticaSpinner;
     private Controller controller;
     private FragmentTransaction transaction;
 
@@ -46,8 +54,18 @@ public class VisualizzaStatisticheFragment extends Fragment {
         cercaButton = v.findViewById(R.id.cercaButton);
         dataInizioButton = v.findViewById(R.id.dataInizioButton);
         dataFineButton = v.findViewById(R.id.dataFineButton);
-        incassoTotaleTextView = v.findViewById(R.id.valoreIncassoTotaleTextView);
-        incassoMedioTextView = v.findViewById(R.id.valoreIncassoMedioTextView);
+        valoreTextView = v.findViewById(R.id.valoreTextView);
+
+        tipologiaStatisticaSpinner = v.findViewById(R.id.tipologiaStatisticaSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.tipologia_statistica_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipologiaStatisticaSpinner.setAdapter(adapter);
+
+        tipologiaStatisticaSpinner.setSelection(adapter.getPosition("Incassi totali"));
+
+
         controller = new Controller(getActivity().toString());
 
 
@@ -96,7 +114,14 @@ public class VisualizzaStatisticheFragment extends Fragment {
             datePickerDialog.show();
         });
 
-        cercaButton.setOnClickListener(view -> controller.cercaContiPerDate(dataInizio, dataFine, VisualizzaStatisticheFragment.this));
+        cercaButton.setOnClickListener(view -> {
+
+            long timeDiff = Math.abs(dataFine.getTime() - dataInizio.getTime());
+            long dayDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "GIORNI: " + dayDiff);
+
+            controller.cercaContiPerDate(dataInizio, dataFine, VisualizzaStatisticheFragment.this, tipologiaStatisticaSpinner.getSelectedItem().toString());
+        });
 
 
         return v;
@@ -109,9 +134,8 @@ public class VisualizzaStatisticheFragment extends Fragment {
         transaction.commit();
     }
 
-    public void setTextView(String valoreTotale, String valoreMedio){
-        incassoTotaleTextView.setText(valoreTotale);
-        incassoMedioTextView.setText(valoreMedio);
+    public void setTextView(String valore){
+        valoreTextView.setText("€" + valore);
     }
 
 }

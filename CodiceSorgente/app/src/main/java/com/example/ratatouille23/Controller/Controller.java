@@ -62,11 +62,14 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -740,7 +743,8 @@ public class Controller {
                                     prodottoMenu.setCosto(response.body().getCosto());
                                     singoloOrdine.setProdottoMenu(prodottoMenu);
                                     ordinazione.setListaProdotti(singoliOrdini);
-                                    contiFragment.sostituisciFragment(contiFragment.preparaBundle(singoliOrdini));
+                                    Bundle bundle2 = contiFragment.preparaBundle(singoliOrdini);
+                                    contiFragment.sostituisciFragment(bundle2);
 
                                     Bundle bundle = new Bundle();
                                     FirebaseAnalytics.getInstance(contiFragment.getActivity()).logEvent("conto_visualizzato", bundle);
@@ -1451,7 +1455,7 @@ public class Controller {
 
     }
 
-    public void cercaContiPerDate(java.sql.Date dataInizio, java.sql.Date dataFine, VisualizzaStatisticheFragment visualizzaStatisticheFragment) {
+    public void cercaContiPerDate(java.sql.Date dataInizio, java.sql.Date dataFine, VisualizzaStatisticheFragment visualizzaStatisticheFragment, String posizione) {
 
         if(contoAPI == null){
             contoAPI = retrofitService.getRetrofit().create(ContoAPI.class);
@@ -1463,7 +1467,8 @@ public class Controller {
                     public void onResponse(Call<List<Conto>> call, Response<List<Conto>> response) {
                         if(response.body() != null){
                             Double totale = 0.0;
-                            Double valoreMedio = 0.0;
+                            Double valoreMedio;
+                            Double incassoMedio;
                             if(!(response.body().isEmpty())){
 
                                 Bundle bundle = new Bundle();
@@ -1475,14 +1480,42 @@ public class Controller {
                                 for(Conto conto : response.body()){
                                     totale += conto.getImporto();
                                 }
-                                if(totale != 0.0){
-                                    valoreMedio = totale / response.body().size();
+                                if(posizione.equals("Incassi totali")){
+                                    visualizzaStatisticheFragment.setTextView(String.valueOf(totale));
+                                }else if(posizione.equals("Valore medio incassi")){
+
+                                    if(totale != 0.0){
+                                        long timeDiff = Math.abs(dataFine.getTime() - dataInizio.getTime());
+                                        if(timeDiff >= 0){
+                                            long dayDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+                                            Double giorniDifferenza = Double.parseDouble(String.valueOf(dayDiff)) + 2;
+                                            Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "GIORNI 2: " + giorniDifferenza);
+                                            incassoMedio = totale / giorniDifferenza;
+                                            Double incassoMedioTroncato = BigDecimal.valueOf(incassoMedio)
+                                                    .setScale(2, RoundingMode.HALF_UP)
+                                                    .doubleValue();
+                                            visualizzaStatisticheFragment.setTextView(String.valueOf(incassoMedioTroncato));
+                                        }
+
+                                    }
+
+                                }else if(posizione.equals("Valore medio conti")){
+
+                                    if(totale != 0.0){
+                                        valoreMedio = totale / response.body().size();
+                                        Double valoreMedioTroncato = BigDecimal.valueOf(valoreMedio)
+                                                .setScale(2, RoundingMode.HALF_UP)
+                                                .doubleValue();
+                                        visualizzaStatisticheFragment.setTextView(String.valueOf(valoreMedioTroncato));
+                                    }
                                 }
-                                visualizzaStatisticheFragment.setTextView(String.valueOf(totale), String.valueOf(valoreMedio));
+
                             }else{
                                 Logger.getLogger(HomeAdminActivity.class.getName()).log(Level.SEVERE, "ERROR: " + response.body());
-                                visualizzaStatisticheFragment.setTextView(String.valueOf(totale), String.valueOf(valoreMedio));
+                                visualizzaStatisticheFragment.setTextView(String.valueOf(totale));
                                 Toast.makeText(visualizzaStatisticheFragment.getActivity(), "Nessuna statistica da visualizzare", Toast.LENGTH_SHORT).show();
+                                Fragment fragment = GraficoStatisticaFragment.newInstance(response.body());
+                                visualizzaStatisticheFragment.sostituisciFragment(fragment);
                             }
 
                             //setStatistiche(response.body(), visualizzaStatisticheFragment);
