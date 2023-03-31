@@ -137,7 +137,6 @@ public class AggiungiProdottoFragment extends Fragment {
         nomeProdottoAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "OK: " + nomeProdottoAutoCompleteTextView.getText().toString(), Toast.LENGTH_SHORT).show();
                 if (getActivity().toString().contains("Admin")) {
                     controllerAdmin.checkProdottoOpenData(nomeProdottoAutoCompleteTextView.getText().toString(), AggiungiProdottoFragment.this);
 

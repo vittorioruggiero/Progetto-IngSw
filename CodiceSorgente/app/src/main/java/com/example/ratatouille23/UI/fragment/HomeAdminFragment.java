@@ -45,7 +45,7 @@ public class HomeAdminFragment extends Fragment {
     private AlertDialog inserisciAvvisoAlertDialog;
     private static Amministratore amministratore = getAdmin();
     private Button creaAvvisoButton, logoutButton;
-    private static Attivita attivita;
+    private Attivita attivita;
     private Controller controllerAdmin;
     private static final String TAG = "PERMESSI";
 

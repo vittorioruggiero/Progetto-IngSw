@@ -1,15 +1,8 @@
 package com.example.ratatouille23.UI.fragment;
 
-//import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
-
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,24 +12,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ratatouille23.Controller.Controller;
 import com.example.ratatouille23.R;
-import com.example.ratatouille23.UI.activity.HomeSupervisoreActivity;
 import com.example.ratatouille23.adapter.ProdottiOrdinazioneAdapter;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Attivita;
-import com.example.ratatouille23.entity.Ordinazione;
-import com.example.ratatouille23.entity.ProdottoMenu;
-import com.example.ratatouille23.entity.SezioneMenu;
 import com.example.ratatouille23.entity.SingoloOrdine;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazioneAdapter.ItemClickListenerOrdinazione{
 
@@ -46,7 +36,7 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
     private EditText numeroCommensaliEditText;
     private RecyclerView recyclerView;
     private static ArrayList<Integer> tavoli = new ArrayList<>();
-    private  ProdottiOrdinazioneAdapter prodottiOrdinazioneAdapter;
+    private ProdottiOrdinazioneAdapter prodottiOrdinazioneAdapter;
     private List<SingoloOrdine> prodottiOrdine = new ArrayList<>();
     private static final String TAVOLO_ORDINAZIONI = "tavoloOrdinazioni";
     private static final String COMMENSALI_ORDINAZIONI = "commensaliOrdinazioni";

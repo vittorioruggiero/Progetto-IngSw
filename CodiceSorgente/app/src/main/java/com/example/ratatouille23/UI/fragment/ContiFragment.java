@@ -43,10 +43,8 @@ public class ContiFragment extends Fragment {
 
     private Controller controller;
     private View inflatedView;
-    private FragmentTransaction transaction;
     private TextView numeroCommensaliCifraTextView, totaleCifraTextView;
     private Spinner selezionaTavoloSpinner;
-    private Ordinazione ordinazione;
     private ArrayList<Integer> tavoli = new ArrayList<>();
     private List<SingoloOrdine> singoliOrdini = new ArrayList<>();
     private SingoliOrdiniAdapter singoliOrdiniAdapter;
