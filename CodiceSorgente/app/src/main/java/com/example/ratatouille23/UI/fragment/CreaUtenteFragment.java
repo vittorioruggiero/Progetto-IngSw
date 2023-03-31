@@ -126,21 +126,7 @@ public class CreaUtenteFragment extends Fragment {
                                 controllerAdmin.salvaAddettoSala(nomeUtente, email, password, getActivity());
                                 clearCampi();
                             }
-                        }else{
-                            //Toast.makeText(getActivity(), "Email non corretta", Toast.LENGTH_SHORT).show();
                         }
-
-                        /*if(validate(email)){
-                            if(tipologiaUtente.equals("Supervisore")){
-                                controllerAdmin.salvaSupervisore(nomeUtente, email, password, getActivity());
-                                clearCampi();
-                            }else if(tipologiaUtente.equals("Addetto alla sala")){
-                                controllerAdmin.salvaAddettoSala(nomeUtente, email, password, getActivity());
-                                clearCampi();
-                            }
-                        }else{
-                            Toast.makeText(getActivity(), "Email non corretta", Toast.LENGTH_SHORT).show();
-                        }*/
 
                     }catch(NullPointerException e){
                         Toast.makeText(getActivity(), "Inserisci tutti i campi", Toast.LENGTH_SHORT).show();
