@@ -30,4 +30,7 @@ public interface OrdinazioneAPI {
     @DELETE("/ordinazione/delete-by-id")
     Call<Void> deleteById(@Query("id_ordinazione") int id_ordinazione);
 
+    @DELETE("/ordinazione/delete-con-campi")
+    Call<Void> deleteConCampi(@Query("numeroTavolo") int numeroTavolo, @Query("idAttivita") int idAttivita);
+
 }

@@ -3,9 +3,11 @@ package com.example.ratatouille23.UI.fragment;
 import static com.example.ratatouille23.UI.activity.LoginActivity.getAddettoSala;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,10 +85,11 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         salvaOrdinazioneButton = v.findViewById(R.id.salvaOrdinazioneButton);
         numeroCommensaliEditText = v.findViewById(R.id.numeroCommensaliOrdinazioneEditText);
         selezionaTavoloSpinner = v.findViewById(R.id.selezionaTavoloOrdinazioneSpinner);
+        selezionaTavoloSpinner.setTag("setSelection()");
         recyclerView = v.findViewById(R.id.contiRecyclerView);
         controller = new Controller(getActivity().toString());
 
-
+        Log.e("Ordini", prodottiOrdine.toString());
 
         if(addettoSala.getIdAttivita() != 0){
             int idAttivita = addettoSala.getIdAttivita();
@@ -98,6 +101,7 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 selezionaTavoloSpinner.setAdapter(adapter);
                 if(getArguments() != null){
+                    selezionaTavoloSpinner.setTag("setSelection()");
                     selezionaTavoloSpinner.setSelection(tavolo - 1);
                     numeroCommensaliEditText.setText(String.valueOf(commensali));
                 }
@@ -109,23 +113,61 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
         prodottiOrdinazioneAdapter = new ProdottiOrdinazioneAdapter(prodottiOrdine, getActivity(), this);
         recyclerView.setAdapter(prodottiOrdinazioneAdapter);
 
+//        if(getArguments() != null){
+//            selezionaTavoloSpinner.setTag("setSelection()");
+//            selezionaTavoloSpinner.setSelection(tavolo - 1);
+//            numeroCommensaliEditText.setText(String.valueOf(commensali));
+//        }
+
+        selezionaTavoloSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Log.e("Ciao", "Tavolo precedente: " + tavolo + " - Tavolo attuale: " + i);
+                if(selezionaTavoloSpinner.getTag().equals("setSelection()") && prodottiOrdine.isEmpty()) {
+                    controller.setOrdinazione(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), addettoSala.getIdAttivita(), prodottiOrdine, prodottiOrdinazioneAdapter, OrdinazioniFragment.this);
+//                    if(!prodottiOrdine.isEmpty()) clearProdotti();
+//                    controller.setSingoliOrdini(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), addettoSala.getIdAttivita(), prodottiOrdine, prodottiOrdinazioneAdapter);
+                }
+                else if(selezionaTavoloSpinner.getTag().equals("Selezione manuale")){
+                    clearProdotti();
+                    Log.e("Nuovo tavolo:", selezionaTavoloSpinner.getSelectedItem().toString());
+                    controller.setOrdinazione(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()), addettoSala.getIdAttivita(), prodottiOrdine, prodottiOrdinazioneAdapter, OrdinazioniFragment.this);
+                }
+                selezionaTavoloSpinner.setTag("Selezione manuale");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         aggiungiProdottoButton.setOnClickListener(view -> {
             if(!(numeroCommensaliEditText.getText().toString().equals("")) && selezionaTavoloSpinner.getSelectedItem() != null){
                 Fragment fragment = VisualizzaMenuFragment.newInstance(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
                         Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine);
                 sostituisciFragment(fragment);
-            }else{
+            }
+            else {
                 Toast.makeText(getActivity(), "Inserire i campi correttamente", Toast.LENGTH_SHORT).show();
             }
-
         });
+
         salvaOrdinazioneButton.setOnClickListener(view -> {
-            if(selezionaTavoloSpinner.getSelectedItem() != null){
-                controller.checkOrdinazione(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
+            if(!(numeroCommensaliEditText.getText().toString().equals("")) && selezionaTavoloSpinner.getSelectedItem() != null
+            && !prodottiOrdine.isEmpty()){
+                controller.salvaOrdinazione(Integer.parseInt(selezionaTavoloSpinner.getSelectedItem().toString()),
                         Integer.parseInt(numeroCommensaliEditText.getText().toString()), prodottiOrdine,
                         OrdinazioniFragment.this, addettoSala.getIdAttivita());
-            }else{
+            }
+            else if(prodottiOrdine.isEmpty()) {
+                Toast.makeText(getActivity(), "Inserire almeno un prodotto", Toast.LENGTH_SHORT).show();
+            }
+            else if(selezionaTavoloSpinner.getSelectedItem() == null) {
                 Toast.makeText(getActivity(), "Non esistono ordinazioni!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getActivity(), "Inserire il numero di commensali", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -156,12 +198,23 @@ public class OrdinazioniFragment extends Fragment implements ProdottiOrdinazione
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             selezionaTavoloSpinner.setAdapter(adapter);
 
+            selezionaTavoloSpinner.setTag("setSelection()");
+            selezionaTavoloSpinner.setSelection(tavolo - 1);
         }
+    }
+
+    public void setNumeroCommensaliEditText(String numeroCommensali) {
+        numeroCommensaliEditText.setText(numeroCommensali);
+    }
+
+    public ProdottiOrdinazioneAdapter getProdottiOrdinazioneAdapter() {
+        return prodottiOrdinazioneAdapter;
     }
 
     public void clearProdotti(){
         prodottiOrdine.clear();
         prodottiOrdinazioneAdapter.notifyDataSetChanged();
+        numeroCommensaliEditText.setText("");
     }
 
 

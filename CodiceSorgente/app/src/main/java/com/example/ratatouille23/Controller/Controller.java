@@ -11,8 +11,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -36,6 +36,7 @@ import com.example.ratatouille23.UI.fragment.OrdinazioniFragment;
 import com.example.ratatouille23.UI.fragment.PersonalizzaMenuFragment;
 import com.example.ratatouille23.UI.fragment.VisualizzaMenuFragment;
 import com.example.ratatouille23.UI.fragment.VisualizzaStatisticheFragment;
+import com.example.ratatouille23.adapter.ProdottiOrdinazioneAdapter;
 import com.example.ratatouille23.entity.AddettoSala;
 import com.example.ratatouille23.entity.Amministratore;
 import com.example.ratatouille23.entity.Attivita;
@@ -64,11 +65,8 @@ import com.example.ratatouille23.retrofit.RetrofitService;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,8 +75,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -1396,9 +1392,10 @@ public class Controller {
                     public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
                         if(response.body() == null){
                             salvaOrdinazione(tavolo, commensali, prodottiOrdine, ordinazioniFragment, idAttivita);
-                        }else{
-                            Toast.makeText(ordinazioniFragment.getActivity(), "È già presente un'ordinazione", Toast.LENGTH_SHORT).show();
                         }
+//                        else{
+//                            Toast.makeText(ordinazioniFragment.getActivity(), "È già presente un'ordinazione", Toast.LENGTH_SHORT).show();
+//                        }
                     }
 
                     @Override
@@ -1410,26 +1407,38 @@ public class Controller {
 
     }
 
-    private void salvaOrdinazione(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, OrdinazioniFragment ordinazioniFragment,
+    public void salvaOrdinazione(int tavolo, int commensali, List<SingoloOrdine> prodottiOrdine, OrdinazioniFragment ordinazioniFragment,
                                   int idAttivita) {
+
         if(ordinazioneAPI == null){
             ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
         }
 
-        ordinazioneAPI.saveConCampi(tavolo, commensali, idAttivita)
-                .enqueue(new Callback<Ordinazione>() {
-                    @Override
-                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
-                        if(response.body() != null){
-                            salvaSingoliOrdini(prodottiOrdine, response.body().getId_ordinazione(), ordinazioniFragment);
-                        }
-                    }
+        ordinazioneAPI.deleteConCampi(tavolo, idAttivita)
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                ordinazioneAPI.saveConCampi(tavolo, commensali, idAttivita)
+                                        .enqueue(new Callback<Ordinazione>() {
+                                            @Override
+                                            public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                                                if(response.body() != null){
+                                                    salvaSingoliOrdini(prodottiOrdine, response.body().getId_ordinazione(), ordinazioniFragment);
+                                                }
+                                            }
 
-                    @Override
-                    public void onFailure(Call<Ordinazione> call, Throwable t) {
-                        Toast.makeText(ordinazioniFragment.getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                            @Override
+                                            public void onFailure(Call<Ordinazione> call, Throwable t) {
+                                                Toast.makeText(ordinazioniFragment.getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(ordinazioniFragment.getActivity(), "Controlla la connessione", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
     }
 
@@ -1453,7 +1462,7 @@ public class Controller {
                             FirebaseAnalytics.getInstance(ordinazioniFragment.getActivity()).logEvent("ordinazione_creata", bundle);
 
                             Toast.makeText(ordinazioniFragment.getActivity(), "Ordinazione salvata correttamente", Toast.LENGTH_SHORT).show();
-                            ordinazioniFragment.clearProdotti();
+//                            ordinazioniFragment.clearProdotti();
                         }
                     }
 
@@ -1463,6 +1472,94 @@ public class Controller {
                     }
                 });
 
+    }
+
+    public void setOrdinazione(int tavolo, int idAttivita, List<SingoloOrdine> prodottiOrdine, ProdottiOrdinazioneAdapter prodottiOrdinazioneAdapter, OrdinazioniFragment ordinazioniFragment) {
+
+        if(ordinazioneAPI == null){
+            ordinazioneAPI = retrofitService.getRetrofit().create(OrdinazioneAPI.class);
+        }
+
+        ordinazioneAPI.getOrdinazioneByTavolo(idAttivita, tavolo)
+                .enqueue(new Callback<Ordinazione>() {
+                    @Override
+                    public void onResponse(Call<Ordinazione> call, Response<Ordinazione> response) {
+                        if(response.body()!=null) {
+
+                            Ordinazione ordinazione = response.body();
+
+                            if(singoloOrdineAPI == null){
+                                singoloOrdineAPI = retrofitService.getRetrofit().create(SingoloOrdineAPI.class);
+                            }
+
+                            singoloOrdineAPI.getAllSingoliOrdiniByOrdinazione(response.body().getId_ordinazione())
+                                    .enqueue(new Callback<List<SingoloOrdine>>() {
+                                        @Override
+                                        public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
+                                            if(response.body()!=null) {
+                                                prodottiOrdine.addAll(response.body());
+                                                Log.e("ProdottiOrdine", prodottiOrdine.toString());
+
+                                                if(prodottoMenuAPI == null){
+                                                    prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
+                                                }
+
+                                                Iterator<SingoloOrdine> iterator = prodottiOrdine.iterator();
+                                                SingoloOrdine singoloOrdine;
+
+                                                if(iterator.hasNext()) {
+                                                    setSingoloOrdine(iterator, prodottiOrdinazioneAdapter);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<List<SingoloOrdine>> call, Throwable t) {
+
+                                        }
+                                    });
+
+                            ordinazioniFragment.setNumeroCommensaliEditText(String.valueOf(ordinazione.getNumeroCommensali()));
+
+                        }
+                        else {
+                            Log.e("Ordinazione: ", "Nessuna ordinazione");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ordinazione> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    public void setSingoloOrdine(Iterator<SingoloOrdine> iterator, ProdottiOrdinazioneAdapter prodottiOrdinazioneAdapter) {
+
+        SingoloOrdine singoloOrdine = iterator.next();
+
+        prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+                .enqueue(new Callback<ProdottoMenu>() {
+                    @Override
+                    public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+                        if(response.body() != null) {
+                            ProdottoMenu prodottoMenu = new ProdottoMenu();
+                            prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+                            prodottoMenu.setCosto(response.body().getCosto());
+                            singoloOrdine.setProdottoMenu(prodottoMenu);
+
+                            if(iterator.hasNext())
+                                setSingoloOrdine(iterator, prodottiOrdinazioneAdapter);
+                            else prodottiOrdinazioneAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+
+                    }
+                });
     }
 
     public void cercaContiPerDate(java.sql.Date dataInizio, java.sql.Date dataFine, VisualizzaStatisticheFragment visualizzaStatisticheFragment, String posizione) {

@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class VisualizzaProdottoFragment extends Fragment {
@@ -129,23 +131,45 @@ public class VisualizzaProdottoFragment extends Fragment {
         //ArrayList<SezioneMenu> sezioni = getSezioni();
 
         nomeProdottoEditText.setText(nomeProdotto);
+        nomeProdottoEditText.setEnabled(false);
         if(nomeProdottoSecondaLingua != null)
             nomeProdottoSecondaLinguaEditText.setText(nomeProdottoSecondaLingua);
+//        nomeProdottoSecondaLinguaEditText.setEnabled(false);
         if(ingredienti != null)
             ingredientiEditText.setText(ingredienti);
+        ingredientiEditText.setEnabled(false);
         if(ingredientiSecondaLingua != null)
             ingredientiSecondaLinguaEditText.setText(ingredientiSecondaLingua);
+        ingredientiSecondaLinguaEditText.setEnabled(false);
         costoEditText.setText(String.valueOf(prezzo));
+        costoEditText.setEnabled(false);
         if(allergeni != null)
             allergeniEditText.setText(allergeni);
+        allergeniEditText.setEnabled(false);
+        quantitaEditText.setText("1");
 
         aggiungiProdottoButton.setOnClickListener(view -> {
             try {
+                Iterator<SingoloOrdine> iterator = prodottiOrdine.iterator();
                 quantita = Integer.parseInt(quantitaEditText.getText().toString());
-                singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), sezioni.get(posizioneSezione).getProdottiMenu().get(posizione).getNomeProdotto(), quantita);
-                aggiungiProdottoOrdinazione(singoloOrdine);
+                boolean prodottoInLista = false;
+
+                while(iterator.hasNext() && prodottoInLista==false) {
+                    SingoloOrdine singoloOrdineCorrente = iterator.next();
+                    if((singoloOrdineCorrente.getNomeProdotto()).equals(nomeProdottoEditText.getText().toString())) {
+                        singoloOrdineCorrente.setQuantita(singoloOrdineCorrente.getQuantita() + quantita);
+                        prodottoInLista = true;
+                    }
+                }
+
+                if(prodottoInLista==false) {
+                    singoloOrdine = new SingoloOrdine(sezioni.get(posizioneSezione).getProdottiMenu().get(posizione), sezioni.get(posizioneSezione).getProdottiMenu().get(posizione).getNomeProdotto(), quantita);
+                    aggiungiProdottoOrdinazione(singoloOrdine);
+                }
+
                 Fragment fragment = VisualizzaMenuFragment.newInstance(tavolo, commensali, prodottiOrdine);
                 sostituisciFragmentSecond(fragment);
+
             }catch(NumberFormatException e){
                 Toast.makeText(getActivity(), "Inserire una quantità valida", Toast.LENGTH_SHORT).show();
             }

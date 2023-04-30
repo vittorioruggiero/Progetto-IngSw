@@ -43,6 +43,10 @@ public class OrdinazioneController {
         ordinazioneDAO.deleteById(id_ordinazione);
     }
 
+    @RequestMapping(value = "/ordinazione/delete-con-campi", method = RequestMethod.DELETE)
+    public void deleteConCampi(@RequestParam("numeroTavolo") int numeroTavolo, @RequestParam("idAttivita") int idAttivita) {
+        ordinazioneDAO.deleteConCampi(numeroTavolo, idAttivita);
+    }
 
 
 }

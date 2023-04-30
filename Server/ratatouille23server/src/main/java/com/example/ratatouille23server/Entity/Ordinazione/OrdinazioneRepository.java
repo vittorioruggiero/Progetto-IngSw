@@ -11,6 +11,8 @@ public interface OrdinazioneRepository extends JpaRepository<Ordinazione, Intege
 
     List<Ordinazione> findAllByIdAttivita(int idAttivita);
 
+    long deleteByNumeroTavoloAndIdAttivita(int numeroTavolo, int idAttivita);
+
     //Ordinazione findByNomeAttivitaAndIndirizzoAttivitaAndNumeroTavolo(String nomeAttivita, String indirizzoAttivita, int numeroTavolo);
 
     Ordinazione findByIdAttivitaAndNumeroTavolo(int idAttivita, int numeroTavolo);

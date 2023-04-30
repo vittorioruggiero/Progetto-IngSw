@@ -6,6 +6,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,11 @@ public class OrdinazioneDAO {
 
     public void deleteById(Integer ordinazionePkey){
         repository.deleteById(ordinazionePkey);
+    }
+
+    @Transactional
+    public void deleteConCampi(int numeroTavolo, int idAttivita) {
+        repository.deleteByNumeroTavoloAndIdAttivita(numeroTavolo, idAttivita);
     }
 
     public Optional<Ordinazione> getById(Integer ordinazionePkey){
