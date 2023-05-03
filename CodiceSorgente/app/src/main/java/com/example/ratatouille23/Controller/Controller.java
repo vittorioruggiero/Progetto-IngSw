@@ -549,7 +549,10 @@ public class Controller {
                     @Override
                     public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
                         if(response.body() != null){
-                            setProdottiSingoloOrdine(response.body(), contiFragment, ordinazione);
+                            Iterator<SingoloOrdine> iterator = response.body().iterator();
+
+                            if(iterator.hasNext())
+                                setProdottiSingoloOrdine(response.body(), contiFragment, ordinazione, iterator);
                         }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
@@ -563,15 +566,17 @@ public class Controller {
                 });
     }
 
-    public void setProdottiSingoloOrdine(List<SingoloOrdine> singoliOrdini, ContiFragment contiFragment, Ordinazione ordinazione){
+    public void setProdottiSingoloOrdine(List<SingoloOrdine> singoliOrdini, ContiFragment contiFragment, Ordinazione ordinazione, Iterator<SingoloOrdine> iterator){
         if(prodottoMenuAPI == null){
             prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
         }
-        Iterator<SingoloOrdine> iterator = singoliOrdini.iterator();
+//        Iterator<SingoloOrdine> iterator = singoliOrdini.iterator();
 
-        while(iterator.hasNext()){
-            SingoloOrdine singoloOrdine = iterator.next();
-            if(iterator.hasNext()){
+        SingoloOrdine singoloOrdine = iterator.next();
+
+//        while(iterator.hasNext()){
+//            SingoloOrdine singoloOrdine = iterator.next();
+//            if(iterator.hasNext()){
                 prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
                         .enqueue(new Callback<ProdottoMenu>() {
                             @Override
@@ -584,6 +589,16 @@ public class Controller {
                                     contiFragment.setSingoliOrdiniRecyclerAdapter(singoliOrdini);
                                     Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
 
+                                    if(iterator.hasNext())
+                                        setProdottiSingoloOrdine(singoliOrdini, contiFragment, ordinazione, iterator);
+                                    else {
+                                        contiFragment.notifyDataChanged();
+                                        ordinazione.setListaProdotti(singoliOrdini);
+                                        contiFragment.setTextView(String.valueOf(ordinazione.getNumeroCommensali()), String.valueOf(ordinazione.calcolaTotale()));
+                                        contiFragment.setChiusuraContoAlertDialog(contiFragment.creaChiusuraContoAlertDialog(singoliOrdini));
+                                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+                                    }
+
                                 } else {
                                     Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                                 }
@@ -595,38 +610,39 @@ public class Controller {
                             }
 
                         });
-            }else{
-                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
-                        .enqueue(new Callback<ProdottoMenu>() {
-                            @Override
-                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
-                                if (response.body() != null) {
-                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
-                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
-                                    prodottoMenu.setCosto(response.body().getCosto());
-                                    singoloOrdine.setProdottoMenu(prodottoMenu);
-                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
-                                    contiFragment.notifyDataChanged();
-                                    ordinazione.setListaProdotti(singoliOrdini);
-                                    contiFragment.setTextView(String.valueOf(ordinazione.getNumeroCommensali()), String.valueOf(ordinazione.calcolaTotale()));
-                                    contiFragment.setChiusuraContoAlertDialog(contiFragment.creaChiusuraContoAlertDialog(singoliOrdini));
-                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+//            }
+//            else{
+//                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+//                        .enqueue(new Callback<ProdottoMenu>() {
+//                            @Override
+//                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+//                                if (response.body() != null) {
+//                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
+//                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+//                                    prodottoMenu.setCosto(response.body().getCosto());
+//                                    singoloOrdine.setProdottoMenu(prodottoMenu);
+//                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
+//                                    contiFragment.notifyDataChanged();
+//                                    ordinazione.setListaProdotti(singoliOrdini);
+//                                    contiFragment.setTextView(String.valueOf(ordinazione.getNumeroCommensali()), String.valueOf(ordinazione.calcolaTotale()));
+//                                    contiFragment.setChiusuraContoAlertDialog(contiFragment.creaChiusuraContoAlertDialog(singoliOrdini));
+//                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+//
+//                                } else {
+//                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+//                                }
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+//
+//                            }
+//                        });
+//            }
 
-                                } else {
-                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                                }
 
-                            }
-
-                            @Override
-                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
-
-                            }
-                        });
-            }
-
-
-        }
+//        }
 
     }
 
@@ -689,7 +705,9 @@ public class Controller {
                     @Override
                     public void onResponse(Call<List<SingoloOrdine>> call, Response<List<SingoloOrdine>> response) {
                         if(response.body() != null){
-                            setProdottiSingoloOrdineVisualizza(response.body(), contiFragment, ordinazione);
+                            Iterator<SingoloOrdine> iterator = response.body().iterator();
+                            if(iterator.hasNext())
+                                setProdottiSingoloOrdineVisualizza(response.body(), contiFragment, ordinazione, iterator);
                         }else{
                             Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                         }
@@ -703,15 +721,15 @@ public class Controller {
                 });
     }
 
-    public void setProdottiSingoloOrdineVisualizza(List<SingoloOrdine> singoliOrdini, ContiFragment contiFragment, Ordinazione ordinazione){
+    public void setProdottiSingoloOrdineVisualizza(List<SingoloOrdine> singoliOrdini, ContiFragment contiFragment, Ordinazione ordinazione, Iterator<SingoloOrdine> iterator){
         if(prodottoMenuAPI == null){
             prodottoMenuAPI = retrofitService.getRetrofit().create(ProdottoMenuAPI.class);
         }
-        Iterator<SingoloOrdine> iterator = singoliOrdini.iterator();
+//        Iterator<SingoloOrdine> iterator = singoliOrdini.iterator();
 
-        while(iterator.hasNext()){
+//        while(iterator.hasNext()){
             SingoloOrdine singoloOrdine = iterator.next();
-            if(iterator.hasNext()){
+//            if(iterator.hasNext()){
                 prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
                         .enqueue(new Callback<ProdottoMenu>() {
                             @Override
@@ -723,6 +741,19 @@ public class Controller {
                                     singoloOrdine.setProdottoMenu(prodottoMenu);
                                     Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + prodottoMenu);
 
+                                    if(iterator.hasNext())
+                                        setProdottiSingoloOrdineVisualizza(singoliOrdini, contiFragment, ordinazione, iterator);
+                                    else {
+                                        ordinazione.setListaProdotti(singoliOrdini);
+                                        Bundle bundle2 = contiFragment.preparaBundle(singoliOrdini);
+                                        contiFragment.sostituisciFragment(bundle2);
+
+                                        Bundle bundle = new Bundle();
+                                        FirebaseAnalytics.getInstance(contiFragment.getActivity()).logEvent("conto_visualizzato", bundle);
+
+                                        Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+                                    }
+
                                 } else {
                                     Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
                                 }
@@ -734,40 +765,41 @@ public class Controller {
                             }
 
                         });
-            }else{
-                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
-                        .enqueue(new Callback<ProdottoMenu>() {
-                            @Override
-                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
-                                if (response.body() != null) {
-                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
-                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
-                                    prodottoMenu.setCosto(response.body().getCosto());
-                                    singoloOrdine.setProdottoMenu(prodottoMenu);
-                                    ordinazione.setListaProdotti(singoliOrdini);
-                                    Bundle bundle2 = contiFragment.preparaBundle(singoliOrdini);
-                                    contiFragment.sostituisciFragment(bundle2);
+//            }
+//            else{
+//                prodottoMenuAPI.getProdottoById(singoloOrdine.getNomeProdotto())
+//                        .enqueue(new Callback<ProdottoMenu>() {
+//                            @Override
+//                            public void onResponse(Call<ProdottoMenu> call, Response<ProdottoMenu> response) {
+//                                if (response.body() != null) {
+//                                    ProdottoMenu prodottoMenu = new ProdottoMenu();
+//                                    prodottoMenu.setNomeProdotto(response.body().getNomeProdotto());
+//                                    prodottoMenu.setCosto(response.body().getCosto());
+//                                    singoloOrdine.setProdottoMenu(prodottoMenu);
+//                                    ordinazione.setListaProdotti(singoliOrdini);
+//                                    Bundle bundle2 = contiFragment.preparaBundle(singoliOrdini);
+//                                    contiFragment.sostituisciFragment(bundle2);
+//
+//                                    Bundle bundle = new Bundle();
+//                                    FirebaseAnalytics.getInstance(contiFragment.getActivity()).logEvent("conto_visualizzato", bundle);
+//
+//                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
+//
+//                                } else {
+//                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
+//                                }
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
+//
+//                            }
+//                        });
+//            }
 
-                                    Bundle bundle = new Bundle();
-                                    FirebaseAnalytics.getInstance(contiFragment.getActivity()).logEvent("conto_visualizzato", bundle);
 
-                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "PROVA: " + singoliOrdini);
-
-                                } else {
-                                    Logger.getLogger(HomeSupervisoreActivity.class.getName()).log(Level.SEVERE, "Error: " + response.body());
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<ProdottoMenu> call, Throwable t) {
-
-                            }
-                        });
-            }
-
-
-        }
+//        }
 
     }
 
